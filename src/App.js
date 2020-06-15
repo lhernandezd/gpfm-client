@@ -1,5 +1,6 @@
 import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { RecoilRoot } from 'recoil';
 import {
   BrowserRouter as Router,
   Switch,
@@ -14,16 +15,18 @@ function App() {
     <React.Fragment>
       <CssBaseline />
       <div className="App">
-        <Router>
-          <Switch>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
-        </Router>
+        <RecoilRoot>
+          <Router>
+            <Switch>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route path="/">
+                <Home />
+              </Route>
+            </Switch>
+          </Router>
+        </RecoilRoot>
       </div>
     </React.Fragment>
   );

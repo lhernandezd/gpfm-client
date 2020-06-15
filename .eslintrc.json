@@ -25,9 +25,7 @@
       "react/static-property-placement": "off",
       "react/jsx-filename-extension": "off",
       "react/state-in-constructor": "off",
-      "react/jsx-props-no-spreading": {
-        "custom": "ignore"
-      }
+      "react/jsx-props-no-spreading": "off"
     },
     "globals": {
       "window": true,

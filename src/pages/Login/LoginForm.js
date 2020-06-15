@@ -12,6 +12,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Form, Formik, Field } from "formik";
 import * as Yup from "yup";
 import { TextField, CheckboxWithLabel } from "formik-material-ui";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { useHistory } from "react-router-dom";
+import { userState } from "../../atoms/index";
+import { userPostMehtod } from "../../selectors/index";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -50,12 +54,36 @@ const LoginSchema = Yup.object().shape({
 });
 
 export default function LoginForm() {
-  const handleSubmit = (values) => {
-    console.log(JSON.stringify(values));
-  };
-
   const classes = useStyles();
+  const history = useHistory();
+  const [user, setUser] = useRecoilState(userState);
+  const setuserPostMehtod = useSetRecoilState(userPostMehtod);
+  // const {
+  //   get, post, response, loading, error,
+  // } = useFetch("http://localhost:3001/api");
 
+  const handleSubmit = async (values) => {
+    // setUser({ ...user, loading: true });
+    console.log(JSON.stringify(values));
+    await setuserPostMehtod(values);
+    history.push("/");
+    // const userData = await post("/auth/signin", values);
+    // if (response.ok) {
+    //   setUser({
+    //     ...user,
+    //     data: userData,
+    //     loading: false,
+    //     error: "",
+    //   });
+    // } else {
+    //   setUser({
+    //     ...user,
+    //     data: [],
+    //     loading: false,
+    //     error,
+    //   });
+    // }
+  };
   return (
     <Formik
       initialValues={initialValues}
@@ -64,7 +92,9 @@ export default function LoginForm() {
     >
       {({ submitForm, isSubmitting }) => (
         <>
-          {isSubmitting ? <LinearProgress className={classes.progress} /> : <div className={classes.progressSkeleton} />}
+          {isSubmitting
+            ? <LinearProgress className={classes.progress} />
+            : <div className={classes.progressSkeleton} />}
           <div className={classes.formContainer}>
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />

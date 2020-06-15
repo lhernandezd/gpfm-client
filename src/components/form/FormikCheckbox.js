@@ -14,8 +14,10 @@ export default function FormikCheckbox(props) {
     checked: field.value,
   });
 
+  const { label, name } = props;
+
   const CustomCheckbox = (customProps) => {
-    if (props.label) {
+    if (label) {
       return (
         <FormControlLabel
           label={props.label}
@@ -26,17 +28,21 @@ export default function FormikCheckbox(props) {
     return <Checkbox {...fieldToCheckbox(customProps)} />;
   };
 
-  const [field, meta, helper] = useField(props.name);
+  const [field, meta, helper] = useField(name);
   return (
     <CustomCheckbox field={field} meta={meta} helper={helper} />
   );
 }
 
 FormikCheckbox.propTypes = {
-  id: PropTypes.string,
   name: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   label: PropTypes.string,
-  type: PropTypes.string,
-  error: PropTypes.bool,
+  isSubmitting: PropTypes.bool,
+};
+
+FormikCheckbox.defaultProps = {
+  disabled: false,
+  label: "",
+  isSubmitting: false,
 };

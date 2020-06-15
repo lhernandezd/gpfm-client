@@ -4,6 +4,9 @@ import TextField from "@material-ui/core/TextField";
 import { useField } from "formik";
 
 export default function FormikField(props) {
+  const {
+    name, disabled, isSubmitting, helperText,
+  } = props;
   const fieldToTextField = ({ field, meta, helper }) => {
     const showError = meta.touched && !!meta.error;
 
@@ -13,11 +16,11 @@ export default function FormikField(props) {
       ...meta,
       ...helper,
       error: showError,
-      helperText: showError ? meta.error : props.helperText,
-      disabled: props.disabled ?? props.isSubmitting,
+      helperText: showError ? meta.error : helperText,
+      disabled: disabled ?? isSubmitting,
     };
   };
-  const [field, meta, helper] = useField(props.name);
+  const [field, meta, helper] = useField(name);
 
   return (
     <TextField
@@ -30,11 +33,15 @@ export default function FormikField(props) {
 }
 
 FormikField.propTypes = {
-  id: PropTypes.string,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  type: PropTypes.string,
-  error: PropTypes.bool,
-  autoFocus: PropTypes.bool,
-  autoComplete: PropTypes.string,
+  disabled: PropTypes.bool,
+  isSubmitting: PropTypes.bool,
+  helperText: PropTypes.string,
+};
+
+FormikField.defaultProps = {
+  disabled: false,
+  helperText: "",
+  isSubmitting: false,
 };

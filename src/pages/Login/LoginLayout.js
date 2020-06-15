@@ -1,23 +1,23 @@
-import React from 'react';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles';
-import LoginForm from './LoginForm';
-import Copyright from '../../components/Copyright';
+import React from "react";
+import Container from "@material-ui/core/Container";
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
+import { makeStyles } from "@material-ui/core/styles";
+import LoginForm from "./LoginForm";
+import Copyright from "../../components/Copyright";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   layout: {
-    height: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column",
   },
   container: {
-    display: 'flex',
+    display: "flex",
     flexGrow: 1,
-    alignItems: 'center',
-    flexDirection: 'column',
-    justifyContent: 'center',
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "center",
   },
 }));
 
