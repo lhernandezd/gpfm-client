@@ -19,12 +19,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
   },
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: theme.spacing(3),
-  },
 }));
 
 export default function LoginLayout() {
@@ -33,7 +27,7 @@ export default function LoginLayout() {
   return (
     <div className={classes.layout}>
       <Container component="main" maxWidth="xs" className={classes.container}>
-        <Paper elevation={3} className={classes.paper}>
+        <Paper elevation={3}>
           <LoginForm />
         </Paper>
         <Box mt={8}>
