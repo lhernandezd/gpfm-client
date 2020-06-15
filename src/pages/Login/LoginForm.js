@@ -1,27 +1,27 @@
-import React from 'react';
+import React from "react";
 import {
   Avatar,
   Typography,
   Button,
   Link,
   Grid,
-  LinearProgress
-} from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { makeStyles } from '@material-ui/core/styles';
-import {Form, Formik, Field} from 'formik';
-import * as Yup from 'yup';
-import { TextField, CheckboxWithLabel } from 'formik-material-ui';
+  LinearProgress,
+} from "@material-ui/core";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { makeStyles } from "@material-ui/core/styles";
+import { Form, Formik, Field } from "formik";
+import * as Yup from "yup";
+import { TextField, CheckboxWithLabel } from "formik-material-ui";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     padding: theme.spacing(3),
   },
   progress: {
-    borderRadius: '2px 2px 0 0',
+    borderRadius: "2px 2px 0 0",
   },
   progressSkeleton: {
     height: 4,
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -40,13 +40,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initialValues = {
-  email: '',
-  password: '',
-  test: true
-}
+  email: "",
+  password: "",
+  remember: true,
+};
 
 const LoginSchema = Yup.object().shape({
-  email: Yup.string().email().required('Required'),
+  email: Yup.string().email().required("Required"),
 });
 
 export default function LoginForm() {
@@ -63,8 +63,8 @@ export default function LoginForm() {
       validationSchema={LoginSchema}
     >
       {({ submitForm, isSubmitting }) => (
-        <React.Fragment>
-          {isSubmitting ? <LinearProgress className={classes.progress}/> : <div className={classes.progressSkeleton}/>}
+        <>
+          {isSubmitting ? <LinearProgress className={classes.progress} /> : <div className={classes.progressSkeleton} />}
           <div className={classes.formContainer}>
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />
@@ -98,7 +98,7 @@ export default function LoginForm() {
               />
               <Field
                 component={CheckboxWithLabel}
-                name="test"
+                name="remember"
                 color="primary"
                 Label={{ label: "Remember me" }}
               />
@@ -117,13 +117,13 @@ export default function LoginForm() {
             </Form>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="/" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
             </Grid>
           </div>
-        </React.Fragment>
+        </>
       )}
     </Formik>
   );

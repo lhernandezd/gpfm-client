@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
-import {useField} from 'formik';
+import React from "react";
+import PropTypes from "prop-types";
+import TextField from "@material-ui/core/TextField";
+import { useField } from "formik";
 
 export default function FormikField(props) {
-  const fieldToTextField = ({field, meta, helper}) => {
+  const fieldToTextField = ({ field, meta, helper }) => {
     const showError = meta.touched && !!meta.error;
-    
+
     return {
       ...props,
       ...field,
@@ -16,7 +16,7 @@ export default function FormikField(props) {
       helperText: showError ? meta.error : props.helperText,
       disabled: props.disabled ?? props.isSubmitting,
     };
-  }
+  };
   const [field, meta, helper] = useField(props.name);
 
   return (
@@ -24,7 +24,7 @@ export default function FormikField(props) {
       variant="outlined"
       margin="normal"
       fullWidth
-     {...fieldToTextField({field, meta, helper})}
+      {...fieldToTextField({ field, meta, helper })}
     />
   );
 }
