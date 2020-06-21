@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { useRecoilValue } from "recoil";
-import { Container, Typography } from "@material-ui/core";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { Container, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { userState } from "../../atoms/index";
+import { logout } from "../../actions/authentication";
 
 const useStyles = makeStyles(() => ({
   layout: {
@@ -21,20 +21,22 @@ const useStyles = makeStyles(() => ({
 
 export default function LoginLayout() {
   const classes = useStyles();
-  const user = useRecoilValue(userState);
 
-  useEffect(() => {
-    console.log(user);
-  }, []);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <div className={classes.layout}>
       <Container component="main" maxWidth="xs" className={classes.container}>
         <Typography variant="h1" component="h2">
           Home
-          {" "}
-          {user.data.email}
         </Typography>
+        <Button color="primary" onClick={handleLogout}>
+          Logout
+        </Button>
       </Container>
     </div>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import {
   Avatar,
   Typography,
@@ -11,11 +12,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import { Form, Formik, Field } from "formik";
 import * as Yup from "yup";
-import { TextField, CheckboxWithLabel } from "formik-material-ui";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { useHistory } from "react-router-dom";
-import { userState } from "../../atoms/index";
-import { userPostMehtod } from "../../selectors/index";
+import { TextField } from "formik-material-ui";
+import { login } from "../../actions/authentication";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -46,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
 const initialValues = {
   email: "",
   password: "",
-  remember: true,
 };
 
 const LoginSchema = Yup.object().shape({
@@ -55,34 +52,11 @@ const LoginSchema = Yup.object().shape({
 
 export default function LoginForm() {
   const classes = useStyles();
-  const history = useHistory();
-  const [user, setUser] = useRecoilState(userState);
-  const setuserPostMehtod = useSetRecoilState(userPostMehtod);
-  // const {
-  //   get, post, response, loading, error,
-  // } = useFetch("http://localhost:3001/api");
+
+  const dispatch = useDispatch();
 
   const handleSubmit = async (values) => {
-    // setUser({ ...user, loading: true });
-    console.log(JSON.stringify(values));
-    await setuserPostMehtod(values);
-    history.push("/");
-    // const userData = await post("/auth/signin", values);
-    // if (response.ok) {
-    //   setUser({
-    //     ...user,
-    //     data: userData,
-    //     loading: false,
-    //     error: "",
-    //   });
-    // } else {
-    //   setUser({
-    //     ...user,
-    //     data: [],
-    //     loading: false,
-    //     error,
-    //   });
-    // }
+    dispatch(login(values));
   };
   return (
     <Formik
@@ -125,12 +99,6 @@ export default function LoginForm() {
                 variant="outlined"
                 margin="normal"
                 fullWidth
-              />
-              <Field
-                component={CheckboxWithLabel}
-                name="remember"
-                color="primary"
-                Label={{ label: "Remember me" }}
               />
               <Button
                 type="submit"

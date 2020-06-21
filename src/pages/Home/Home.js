@@ -1,6 +1,5 @@
-
-import React from 'react';
-import HomeLayout from './HomeLayout';
+import React from "react";
+import HomeLayout from "./HomeLayout";
 
 export default function Home() {
   return (
