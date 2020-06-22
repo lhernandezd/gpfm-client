@@ -1,4 +1,5 @@
 import http from "../utils/http";
+import { showSnackbar } from "./snackbar";
 import * as types from "./constants/authenticationTypes";
 
 export function logout() {
@@ -7,7 +8,7 @@ export function logout() {
   };
 }
 
-export function login({ email, password }) {
+export function login({ email, password }, history) {
   return async (dispatch) => {
     try {
       dispatch({
@@ -23,11 +24,13 @@ export function login({ email, password }) {
           accessToken: response.data.accessToken,
         },
       });
+      history.push("/home");
     } catch (e) {
       dispatch({
         type: types.LOGIN_USER_FAILURE,
         payload: e.response,
       });
+      dispatch(showSnackbar("error", e.response.data.message));
     }
   };
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
   Avatar,
   Typography,
@@ -50,18 +51,22 @@ const LoginSchema = Yup.object().shape({
   email: Yup.string().email().required("Required"),
 });
 
-export default function LoginForm() {
+const LoginForm = () => {
   const classes = useStyles();
-
+  const history = useHistory();
   const dispatch = useDispatch();
 
-  const handleSubmit = async (values) => {
-    dispatch(login(values));
+  const handleSubmit = (values, setSubmitting) => {
+    setTimeout(() => {
+      dispatch(login(values, history));
+      setSubmitting(false);
+    }, 1000);
   };
+
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={handleSubmit}
+      onSubmit={(values, { setSubmitting }) => handleSubmit(values, setSubmitting)}
       validationSchema={LoginSchema}
     >
       {({ submitForm, isSubmitting }) => (
@@ -125,4 +130,6 @@ export default function LoginForm() {
       )}
     </Formik>
   );
-}
+};
+
+export default LoginForm;

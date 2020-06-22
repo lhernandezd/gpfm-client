@@ -1,15 +1,17 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { useSelector } from "react-redux";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from "react-router-dom";
+import { CssBaseline, CircularProgress, Typography } from "@material-ui/core";
 import "./App.css";
-import Home from "./pages/Home/Home";
-import Login from "./pages/Login/Login";
+import NotificationSnackbar from "./components/NotificationSnackbar";
+
+const Home = lazy(() => import("./pages/Home/Home"));
+const Login = lazy(() => import("./pages/Login/Login"));
 
 function App() {
   const isAuthenticated = useSelector((state) => state.authentication.isAuthenticated);
@@ -17,6 +19,7 @@ function App() {
     <>
       <CssBaseline />
       <div className="App">
+        <NotificationSnackbar />
         <Router>
           {isAuthenticated ? (
             <Redirect
@@ -32,15 +35,32 @@ function App() {
             />
           )}
           <Switch>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/home">
-              <Home />
-            </Route>
-            <Route path="/">
-              <Home />
-            </Route>
+            <Suspense fallback={(
+              <div style={{
+                height: "100vh",
+                display: "flex",
+                flexGrow: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              >
+                <Typography variant="h2" component="h2">
+                  Loading .....
+                </Typography>
+                <CircularProgress size={100} />
+              </div>
+            )}
+            >
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route path="/home">
+                <Home />
+              </Route>
+              <Route path="/">
+                <Home />
+              </Route>
+            </Suspense>
           </Switch>
         </Router>
       </div>
