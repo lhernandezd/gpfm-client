@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Container, Paper, Box, Snackbar,
+  Container, Paper, Box,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import LoginForm from "./LoginForm";
@@ -23,19 +23,9 @@ const useStyles = makeStyles(() => ({
 
 export default function LoginLayout() {
   const classes = useStyles();
-  const vertical = "top";
-  const horizontal = "center";
   return (
     <div className={classes.layout}>
       <Container component="main" maxWidth="xs" className={classes.container}>
-        <Snackbar
-          anchorOrigin={{ vertical, horizontal }}
-          // open={open}
-          message="I love snacks"
-          key={vertical + horizontal}
-          autoHideDuration={2000}
-        />
-
         <Paper elevation={3}>
           <LoginForm />
         </Paper>

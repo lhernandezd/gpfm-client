@@ -11,6 +11,7 @@ import "./App.css";
 import NotificationSnackbar from "./components/NotificationSnackbar";
 
 const Home = lazy(() => import("./pages/Home/Home"));
+const Users = lazy(() => import("./pages/Users/Users"));
 const Login = lazy(() => import("./pages/Login/Login"));
 
 function App() {
@@ -51,15 +52,13 @@ function App() {
               </div>
             )}
             >
-              <Route path="/login">
-                <Login />
-              </Route>
-              <Route path="/home">
-                <Home />
-              </Route>
-              <Route path="/">
-                <Home />
-              </Route>
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/home" component={Home} />
+              <Route exact path="/users" component={Users} />
+              <Route exact path="/clients" component={Home} />
+              <Route exact path="/appointments" component={Home} />
+              <Route exact path="/companies" component={Home} />
+              <Route exact path="/" component={Home} />
             </Suspense>
           </Switch>
         </Router>

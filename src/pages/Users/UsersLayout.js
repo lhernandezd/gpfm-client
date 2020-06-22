@@ -12,13 +12,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function LoginLayout() {
+export default function UsersLayout() {
   const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs" className={classes.container}>
       <Typography variant="h1" component="h2">
-        Home
+        Users
       </Typography>
     </Container>
   );

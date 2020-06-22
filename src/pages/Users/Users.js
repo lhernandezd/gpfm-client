@@ -1,11 +1,11 @@
 import React from "react";
 import AppLayout from "../../components/AppLayout";
-import HomeLayout from "./HomeLayout";
+import UsersLayout from "./UsersLayout";
 
-export default function Home() {
+export default function Users() {
   return (
     <AppLayout>
-      <HomeLayout />
+      <UsersLayout />
     </AppLayout>
   );
 }
