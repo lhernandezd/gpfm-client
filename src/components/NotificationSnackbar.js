@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
+  return <MuiAlert elevation={6} {...props} />;
 }
 
 export default function NotificationSnackbar() {
