@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { get, capitalize } from "lodash";
@@ -6,13 +6,14 @@ import {
   AppBar, IconButton, Toolbar, Typography,
   Popover, ClickAwayListener, Divider, ListItemIcon,
   List, ListItem, ListItemAvatar, Avatar, ListItemText,
-  Chip,
+  Chip, InputBase,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import FaceIcon from "@material-ui/icons/Face";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, fade } from "@material-ui/core/styles";
 import { logout } from "../actions/authentication";
 
 const drawerWidth = 200;
@@ -48,6 +49,43 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  search: {
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.black, 0.05),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.black, 0.1),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(3),
+      width: "auto",
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputRoot: {
+    color: "inherit",
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
   list: {
     width: "100%",
     maxWidth: "36ch",
@@ -60,6 +98,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
   },
   roleContainer: {
+    display: "block",
     marginTop: 8,
   },
   role: {
@@ -74,17 +113,17 @@ const renderList = (classes, user, handleLogout) => (
         <Avatar className={classes.avatar}>A</Avatar>
       </ListItemAvatar>
       <ListItemText
-        primary={capitalize(user ? user.username : "")}
+        primary={capitalize(get(user, "username"))}
         secondary={(
           <>
-            {user ? user.email : ""}
+            {get(user, "email")}
             <br />
-            <div className={classes.roleContainer} style={{ marginTop: 8 }}>
+            <span className={classes.roleContainer}>
               {user && user.roles.map((role, index) => (
               // eslint-disable-next-line react/no-array-index-key
                 <Chip className={classes.role} key={index} label={capitalize(role)} size="small" />
               ))}
-            </div>
+            </span>
           </>
           )}
       />
@@ -126,7 +165,7 @@ const renderMenu = (anchorEl, isMenuOpen, handleMenuClose, handleLogout, classes
   </Popover>
 );
 
-export default function AppNavbar({ handleDrawerToggle, history }) {
+export default function AppNavbar({ handleDrawerToggle }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authentication.currentUser);
@@ -135,9 +174,9 @@ export default function AppNavbar({ handleDrawerToggle, history }) {
 
   const isMenuOpen = Boolean(anchorEl);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     dispatch(logout());
-  };
+  }, [dispatch]);
 
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -146,9 +185,6 @@ export default function AppNavbar({ handleDrawerToggle, history }) {
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
-  const pathname = get(history, "location.pathname");
-  const navigationTitle = pathname ? pathname.split("/")[1] : "Home";
   return (
     <AppBar position="fixed" className={classes.appBar} elevation={3}>
       <Toolbar>
@@ -163,8 +199,21 @@ export default function AppNavbar({ handleDrawerToggle, history }) {
         </IconButton>
         <div className={classes.titleSkeleton} />
         <Typography className={classes.title} variant="h6" noWrap>
-          {capitalize(navigationTitle)}
+          {capitalize("")}
         </Typography>
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            inputProps={{ "aria-label": "search" }}
+          />
+        </div>
         <IconButton
           edge="end"
           aria-label="account of current user"
@@ -183,6 +232,4 @@ export default function AppNavbar({ handleDrawerToggle, history }) {
 
 AppNavbar.propTypes = {
   handleDrawerToggle: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  history: PropTypes.object.isRequired,
 };

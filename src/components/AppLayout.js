@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
-import { Drawer, Hidden } from "@material-ui/core";
+import { Drawer, Hidden, Container } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AppNavbar from "./AppNavbar";
 import AppDrawer from "./AppDrawer";
+import AppDirection from "./AppDirection";
 
 const drawerWidth = 200;
 
@@ -33,27 +33,28 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     width: "100%",
+    marginTop: 76,
     [theme.breakpoints.up("sm")]: {
       width: `calc(100% - ${drawerWidth}px)`,
+      marginTop: 84,
     },
   },
 }));
 
-export default function AppLayout({ children }) {
+export default function AppLayout({ children, location }) {
   const classes = useStyles();
   const theme = useTheme();
-  const history = useHistory();
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleDrawerToggle = () => {
+  const handleDrawerToggle = useCallback(() => {
     setMobileOpen(!mobileOpen);
-  };
+  }, [mobileOpen]);
 
   const container = window !== undefined ? () => window.document.body : undefined;
   return (
     <div className={classes.root}>
-      <AppNavbar handleDrawerToggle={handleDrawerToggle} history={history} />
+      <AppNavbar handleDrawerToggle={handleDrawerToggle} />
       <nav className={classes.drawer} aria-label="navigation container">
         <Hidden smUp implementation="css">
           <Drawer
@@ -80,17 +81,24 @@ export default function AppLayout({ children }) {
             variant="permanent"
             open
           >
-            <AppDrawer history={history} />
+            <AppDrawer />
           </Drawer>
         </Hidden>
       </nav>
-      <div className={classes.layout}>
+      <Container component="main" maxWidth="xl" className={classes.layout}>
+        <AppDirection location={location} />
         {children}
-      </div>
+      </Container>
     </div>
   );
 }
 
 AppLayout.propTypes = {
   children: PropTypes.node.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  location: PropTypes.object,
+};
+
+AppLayout.defaultProps = {
+  location: {},
 };

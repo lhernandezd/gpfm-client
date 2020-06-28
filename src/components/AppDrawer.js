@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AppDrawer({ handleDrawerToggle }) {
+const AppDrawer = memo(({ handleDrawerToggle }) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -61,7 +61,9 @@ export default function AppDrawer({ handleDrawerToggle }) {
       </List>
     </>
   );
-}
+});
+
+export default AppDrawer;
 
 AppDrawer.propTypes = {
   // eslint-disable-next-line react/require-default-props

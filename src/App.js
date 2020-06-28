@@ -37,7 +37,7 @@ function App() {
             </Typography>
             <CircularProgress size={100} />
           </div>
-            )}
+        )}
         >
           <Router>
             {isAuthenticated ? (
