@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 import HomeLayout from "./HomeLayout";
 
-export default function Home() {
-  return (
-    <HomeLayout />
-  );
-}
+const Home = memo((props) => (
+  <HomeLayout {...props} />
+));
+
+export default Home;

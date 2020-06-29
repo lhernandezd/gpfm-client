@@ -1,3 +1,5 @@
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/forbid-prop-types */
 import React, { memo } from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
@@ -25,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AppDrawer = memo(({ handleDrawerToggle }) => {
+const AppDrawer = memo(({ handleDrawerToggle, location }) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -47,9 +49,9 @@ const AppDrawer = memo(({ handleDrawerToggle }) => {
           <ListItem
             button
             key={text}
-            selected={history.location.pathname === href}
+            selected={location.pathname.includes(href)}
             onClick={() => handleLink(href)}
-            className={history.location.pathname === href ? classes.listItem : ""}
+            className={location.pathname.includes(href) ? classes.listItem : ""}
           >
             <ListItemIcon><IconComponent className={classes.icon} /></ListItemIcon>
             <ListItemText
@@ -66,6 +68,6 @@ const AppDrawer = memo(({ handleDrawerToggle }) => {
 export default AppDrawer;
 
 AppDrawer.propTypes = {
-  // eslint-disable-next-line react/require-default-props
   handleDrawerToggle: PropTypes.func,
+  location: PropTypes.object.isRequired,
 };

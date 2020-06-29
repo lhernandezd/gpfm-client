@@ -58,7 +58,7 @@ export default function SummaryCard() {
   return (
     <Paper className={classes.root} square>
       <div className={classes.header}>
-        <Typography variant="h5" component="h2" className={classes.title} color="textPimary">
+        <Typography variant="h5" component="h2" className={classes.title} color="textPrimary">
           Summary Users
         </Typography>
       </div>

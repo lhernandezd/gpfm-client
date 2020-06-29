@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { CssBaseline, CircularProgress, Typography } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core/styles";
-import NotificationSnackbar from "./components/NotificationSnackbar";
+import NotificationSnackbar from "./components/shared/NotificationSnackbar";
 import CustomTheme from "./utils/theme";
 import AppLayout from "./components/AppLayout";
 
@@ -54,14 +54,14 @@ function App() {
               />
             )}
             <Switch>
-              <Route exact path="/login" component={Login} />
+              <Route path="/login" component={Login} />
               <AppLayout>
-                <Route exact path="/home" component={Home} />
-                <Route exact path="/users" component={Users} />
-                <Route exact path="/clients" component={Home} />
-                <Route exact path="/appointments" component={Home} />
-                <Route exact path="/companies" component={Home} />
                 <Route exact path="/" component={Home} />
+                <Route path="/home" component={Home} />
+                <Route path="/users" component={Users} />
+                <Route path="/clients" component={Home} />
+                <Route path="/appointments" component={Home} />
+                <Route path="/companies" component={Home} />
               </AppLayout>
             </Switch>
           </Router>

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 import UsersLayout from "./UsersLayout";
 
-export default function Users() {
-  return (
-    <UsersLayout />
-  );
-}
+const Users = memo((props) => (
+  <UsersLayout {...props} />
+));
+
+export default Users;

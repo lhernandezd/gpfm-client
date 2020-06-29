@@ -4,7 +4,6 @@ import { Drawer, Hidden, Container } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AppNavbar from "./AppNavbar";
 import AppDrawer from "./AppDrawer";
-import AppDirection from "./AppDirection";
 
 const drawerWidth = 200;
 
@@ -70,7 +69,7 @@ export default function AppLayout({ children, location }) {
               keepMounted: true,
             }}
           >
-            <AppDrawer handleDrawerToggle={handleDrawerToggle} />
+            <AppDrawer handleDrawerToggle={handleDrawerToggle} location={location} />
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
@@ -81,12 +80,11 @@ export default function AppLayout({ children, location }) {
             variant="permanent"
             open
           >
-            <AppDrawer />
+            <AppDrawer location={location} />
           </Drawer>
         </Hidden>
       </nav>
       <Container component="main" maxWidth="xl" className={classes.layout}>
-        <AppDirection location={location} />
         {children}
       </Container>
     </div>
