@@ -1,10 +1,12 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
+import { Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { getDirectionTitle } from "../../utils/directions";
 import DynamicDirection from "../../components/shared/DynamicDirection";
-import { getUsers } from "../../actions/users";
+import UsersGrid from "./UsersGrid";
+import UserProfile from "./UserProfile";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -15,26 +17,24 @@ const useStyles = makeStyles(() => ({
 const UsersLayout = memo(({ location, history, match }) => {
   const classes = useStyles();
   const [routes, setRoutes] = useState([]);
-  const dispatch = useDispatch();
-  const usersData = useSelector((state) => state.users);
 
   useEffect(() => {
-    dispatch(getUsers());
-  }, [dispatch]);
-
-  useEffect(() => {
+    const directionaTitle = getDirectionTitle(location.search);
     const pathnames = location.pathname.split("/").filter((x) => x);
     const arrangeRoutes = pathnames.map((item, index) => ({
-      title: item,
+      title: index !== 0 && directionaTitle ? directionaTitle : item,
       path: index === 0 ? match.path : `${match.path}/${item}`,
     }));
     setRoutes(arrangeRoutes);
-  }, [location.pathname, match.path]);
+  }, [location.pathname, match.path, location.search]);
 
   return (
     <section className={classes.container}>
       <DynamicDirection path={match.path} routes={routes} refresh />
-      {usersData.data.map((user) => <p>{user.username}</p>)}
+      <Switch>
+        <Route exact path={match.path} component={UsersGrid} />
+        <Route path={`${match.path}/:id`} component={UserProfile} />
+      </Switch>
     </section>
   );
 });

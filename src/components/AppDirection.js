@@ -18,9 +18,6 @@ const useStyles = makeStyles(() => ({
   title: {
     marginRight: 5,
   },
-  icon: {
-    fontSize: "1.2rem",
-  },
 }));
 
 const AppDirection = memo(({ location }) => {
@@ -30,7 +27,7 @@ const AppDirection = memo(({ location }) => {
       <Typography variant="subtitle1" component="p" className={classes.title}>
         Home
       </Typography>
-      <AutorenewIcon size="small" color="primary" />
+      <AutorenewIcon fontSize="small" color="primary" />
     </Paper>
   ) : (
     <Paper className={classes.paper} square>

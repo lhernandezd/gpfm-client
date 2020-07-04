@@ -1,7 +1,9 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable react/forbid-prop-types */
 import React, { memo } from "react";
 import PropTypes from "prop-types";
-import { capitalize } from "lodash";
+import { Link as RouterLink } from "react-router-dom";
+import { startCase } from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Paper, Breadcrumbs, Typography, Link,
@@ -26,10 +28,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const MainDirection = ({ refresh, classes, text }) => (
+const MainDirection = ({
+  refresh, classes, text,
+}) => (
   <>
     <Typography color="textPrimary" variant="subtitle1" component="p" className={classes.title}>
-      {capitalize(text)}
+      {startCase(text)}
     </Typography>
     {refresh && <AutorenewIcon fontSize="small" color="primary" />}
   </>
@@ -40,6 +44,7 @@ const DynamicDirection = memo(({
 }) => {
   const classes = useStyles();
   const routesLength = routes.length;
+
   return routesLength > 0 && (
     <Paper className={classes.paper} square>
       <Breadcrumbs
@@ -53,11 +58,18 @@ const DynamicDirection = memo(({
           ? <MainDirection refresh={refresh} classes={classes} text={routes[0].title} />
           : routes.map((route, index) => {
             if (index === routesLength - 1) {
-              return <MainDirection refresh={refresh} classes={classes} text={route.title} />;
+              return (
+                <MainDirection
+                  key={index}
+                  refresh={refresh}
+                  classes={classes}
+                  text={route.title}
+                />
+              );
             }
             return (
-              <Link color="inherit" href={route.url}>
-                {capitalize(route.title)}
+              <Link key={index} color="inherit" component={RouterLink} to={route.path}>
+                {startCase(route.title)}
               </Link>
             );
           })}

@@ -22,7 +22,7 @@ function App() {
     <ThemeProvider theme={CustomTheme}>
       <CssBaseline />
       <div className="App">
-        <NotificationSnackbar />
+        <NotificationSnackbar isAuthenticated={isAuthenticated} />
         <Suspense fallback={(
           <div style={{
             height: "100vh",
