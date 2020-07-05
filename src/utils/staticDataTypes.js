@@ -31,3 +31,8 @@ export const navigationLinks = [
     IconComponent: BusinessIcon,
   },
 ];
+
+export const roles = [
+  { name: "admin" },
+  { name: "user" },
+];

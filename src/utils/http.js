@@ -12,6 +12,11 @@ const http = {
     axios.defaults.headers.common.Authorization = token ? `Bearer ${getAccessToken()}` : "";
     return axios.post(url, payload);
   },
+  put(url, payload) {
+    const token = getAccessToken();
+    axios.defaults.headers.common.Authorization = token ? `Bearer ${getAccessToken()}` : "";
+    return axios.put(url, payload);
+  },
   delete(url) {
     const token = getAccessToken();
     axios.defaults.headers.common.Authorization = token ? `Bearer ${getAccessToken()}` : "";

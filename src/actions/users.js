@@ -50,3 +50,29 @@ export function getUser(id) {
     }
   };
 }
+
+export function updateUser(id, values) {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: types.UPDATE_USER_REQUEST,
+      });
+      const response = await http.put(`${process.env.REACT_APP_API_URL}/users/${id}`, {
+        ...values,
+      });
+      dispatch({
+        type: types.UPDATE_USER_SUCCESS,
+        payload: {
+          ...response,
+          data: response.data.data,
+        },
+      });
+    } catch (e) {
+      dispatch({
+        type: types.UPDATE_USER_FAILURE,
+        payload: e.response,
+      });
+      dispatch(showSnackbar("error", e.response.data.message));
+    }
+  };
+}

@@ -1,16 +1,19 @@
 /* eslint-disable react/no-array-index-key */
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import PropTypes from "prop-types";
 import { get, capitalize } from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Paper, Typography, Divider, List, ListItem, ListItemText, ListItemIcon, Chip,
+  Paper, Typography, Divider, List, ListItem, ListItemText, ListItemIcon, Chip, IconButton,
 } from "@material-ui/core";
 import PhoneOutlinedIcon from "@material-ui/icons/PhoneOutlined";
 import AccountBoxOutlinedIcon from "@material-ui/icons/AccountBoxOutlined";
 import SubtitlesOutlinedIcon from "@material-ui/icons/SubtitlesOutlined";
 import ContactMailOutlinedIcon from "@material-ui/icons/ContactMailOutlined";
 import LocationCityOutlinedIcon from "@material-ui/icons/LocationCityOutlined";
+import EditIcon from "@material-ui/icons/Edit";
+import ClearIcon from "@material-ui/icons/Clear";
+import DetailsForm from "./DetailsForm";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -25,6 +28,7 @@ const useStyles = makeStyles(() => ({
   },
   title: {
     fontSize: 14,
+    flex: 1,
   },
   chip: {
     marginRight: 5,
@@ -33,6 +37,8 @@ const useStyles = makeStyles(() => ({
 
 const Details = memo(({ user }) => {
   const classes = useStyles();
+  const [detailForm, setDetailForm] = useState(false);
+
   const generateList = () => {
     const list = [];
     if (get(user, "username")) {
@@ -84,36 +90,48 @@ const Details = memo(({ user }) => {
         <Typography variant="h5" component="h2" className={classes.title} color="textPrimary">
           Details
         </Typography>
+        <IconButton
+          edge="end"
+          aria-label="edit details"
+          onClick={() => setDetailForm(!detailForm)}
+          color="primary"
+        >
+          {detailForm ? <ClearIcon fontSize="small" /> : <EditIcon fontSize="small" />}
+        </IconButton>
       </div>
       <Divider />
-      <List>
-        {generateList().map((item, index) => (
-          <ListItem key={index}>
-            <ListItemIcon>
-              <item.icon />
-            </ListItemIcon>
-            {item.text
-              ? (
-                <ListItemText
-                  key={index}
-                  primary={(
-                    <Typography variant="subtitle1" component="span" className={classes.title}>
-                      {item.text}
-                    </Typography>
+      {detailForm
+        ? <DetailsForm user={user} toggleForm={setDetailForm} />
+        : (
+          <List>
+            {generateList().map((item, index) => (
+              <ListItem key={index}>
+                <ListItemIcon>
+                  <item.icon />
+                </ListItemIcon>
+                {item.text
+                  ? (
+                    <ListItemText
+                      key={index}
+                      primary={(
+                        <Typography variant="subtitle1" component="span" className={classes.title}>
+                          {item.text}
+                        </Typography>
                   )}
-                />
-              )
-              : (
-                <ListItemText
-                  key={index}
-                  primary={item.content.map((item2, index2) => renderSubComponent(
-                    item.component, item2, index2,
-                  ))}
-                />
-              )}
-          </ListItem>
-        ))}
-      </List>
+                    />
+                  )
+                  : (
+                    <ListItemText
+                      key={index}
+                      primary={item.content.map((item2, index2) => renderSubComponent(
+                        item.component, item2, index2,
+                      ))}
+                    />
+                  )}
+              </ListItem>
+            ))}
+          </List>
+        )}
     </Paper>
   );
 });

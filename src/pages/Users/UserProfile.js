@@ -5,7 +5,7 @@ import { get } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Paper, Typography, Avatar,
+  Paper, Typography, Avatar, CircularProgress,
 } from "@material-ui/core";
 import Details from "../../components/users/Details";
 import { getUser } from "../../actions/users";
@@ -29,11 +29,17 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     color: theme.palette.common.white,
   },
+  loadingContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "50vh",
+  },
 }));
 
 const UserProfile = memo(({ match }) => {
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.users.user);
+  const users = useSelector((state) => state.users);
   const classes = useStyles();
 
   useEffect(() => {
@@ -42,18 +48,28 @@ const UserProfile = memo(({ match }) => {
 
   return (
     <>
-      <Paper className={classes.paperContainer} square>
-        <Avatar className={classes.avatar}>LH</Avatar>
-        <div className={classes.basicInfo}>
-          <Typography variant="h5" component="h2">
-            Luis Hernandez
-          </Typography>
-          <Typography variant="subtitle1" component="p">
-            ldhdv95@gmail.com
-          </Typography>
-        </div>
-      </Paper>
-      {!Array.isArray(userData) && <Details user={userData} />}
+      {users.isFetching
+        ? (
+          <div className={classes.loadingContainer}>
+            <CircularProgress />
+          </div>
+        )
+        : (
+          <>
+            <Paper className={classes.paperContainer} square>
+              <Avatar className={classes.avatar}>LH</Avatar>
+              <div className={classes.basicInfo}>
+                <Typography variant="h5" component="h2">
+                  Luis Hernandez
+                </Typography>
+                <Typography variant="subtitle1" component="p">
+                  ldhdv95@gmail.com
+                </Typography>
+              </div>
+            </Paper>
+            {!Array.isArray(users.user) && <Details user={users.user} />}
+          </>
+        )}
     </>
   );
 });

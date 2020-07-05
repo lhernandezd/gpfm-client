@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { get, capitalize } from "lodash";
 import {
   AppBar, IconButton, Toolbar, Typography,
@@ -106,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const renderList = (classes, user, handleLogout) => (
+const renderList = (classes, user, handleLogout, profileRedirect) => (
   <List className={classes.list} id="app-menu">
     <ListItem alignItems="flex-start">
       <ListItemAvatar>
@@ -129,7 +130,7 @@ const renderList = (classes, user, handleLogout) => (
       />
     </ListItem>
     <Divider component="li" />
-    <ListItem button>
+    <ListItem button onClick={profileRedirect}>
       <ListItemIcon><FaceIcon /></ListItemIcon>
       <ListItemText
         disableTypography
@@ -146,7 +147,10 @@ const renderList = (classes, user, handleLogout) => (
   </List>
 );
 
-const renderMenu = (anchorEl, isMenuOpen, handleMenuClose, handleLogout, classes, user) => (
+const renderMenu = (
+  anchorEl, isMenuOpen, handleMenuClose,
+  handleLogout, classes, user, profileRedirect,
+) => (
   <Popover
     anchorEl={anchorEl}
     anchorOrigin={{
@@ -160,13 +164,14 @@ const renderMenu = (anchorEl, isMenuOpen, handleMenuClose, handleLogout, classes
     open={isMenuOpen}
   >
     <ClickAwayListener onClickAway={handleMenuClose}>
-      {renderList(classes, user, handleLogout)}
+      {renderList(classes, user, handleLogout, profileRedirect)}
     </ClickAwayListener>
   </Popover>
 );
 
 export default function AppNavbar({ handleDrawerToggle }) {
   const classes = useStyles();
+  const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authentication.currentUser);
 
@@ -181,6 +186,17 @@ export default function AppNavbar({ handleDrawerToggle }) {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  const profileRedirect = useCallback(() => {
+    handleMenuClose();
+    const firstName = get(user, "first_name");
+    const lastName = get(user, "last_name");
+    const id = get(user, "id");
+    history.push(`/users/${id}`, {
+      directionName: `${firstName}_${lastName}`,
+      user_id: id,
+    });
+  }, [history, user]);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -224,7 +240,8 @@ export default function AppNavbar({ handleDrawerToggle }) {
         >
           <AccountCircle />
         </IconButton>
-        {renderMenu(anchorEl, isMenuOpen, handleMenuClose, handleLogout, classes, user)}
+        {renderMenu(anchorEl, isMenuOpen,
+          handleMenuClose, handleLogout, classes, user, profileRedirect)}
       </Toolbar>
     </AppBar>
   );
