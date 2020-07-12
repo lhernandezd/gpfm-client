@@ -5,12 +5,16 @@ import { get, capitalize, difference } from "lodash";
 import {
   Button,
   LinearProgress,
-  MenuItem,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Form, Formik, Field } from "formik";
 import * as Yup from "yup";
-import { TextField, Select } from "formik-material-ui";
+import { TextField } from "formik-material-ui";
+import MuiTextField from "@material-ui/core/TextField";
+import {
+  Autocomplete,
+  AutocompleteRenderInputParams,
+} from "formik-material-ui-lab";
 import { updateUser, getUser } from "../../actions/users";
 import { roles as DefaultRoles } from "../../utils/staticDataTypes";
 
@@ -53,12 +57,13 @@ const DetailsForm = ({ user, toggleForm }) => {
     username: get(user, "username", ""),
     phone_number: get(user, "phone_number", ""),
     address: get(user, "address", ""),
-    roles: roles.length ? rolesByName : [],
+    roles: roles.length ? roles.map((role) => ({ name: role.name })) : [],
   };
 
   const handleSubmit = async (values) => {
-    const valuesUpdated = { ...values };
-    const rolesDiff = difference(rolesByName, values.roles);
+    const rolesArray = values.roles.map((rolesForm) => rolesForm.name);
+    const valuesUpdated = { ...values, roles: rolesArray };
+    const rolesDiff = difference(rolesByName, rolesArray);
     if (rolesDiff.length) valuesUpdated.remove_roles = rolesDiff;
     await dispatch(updateUser(user.id, valuesUpdated));
     await dispatch(getUser(user.id));
@@ -71,7 +76,9 @@ const DetailsForm = ({ user, toggleForm }) => {
       onSubmit={(values) => handleSubmit(values)}
       validationSchema={DetailSchema}
     >
-      {({ submitForm, isSubmitting }) => (
+      {({
+        submitForm, isSubmitting, touched, errors,
+      }) => (
         <>
           {isSubmitting
             ? <LinearProgress className={classes.progress} />
@@ -82,47 +89,40 @@ const DetailsForm = ({ user, toggleForm }) => {
               id="username"
               label="Username"
               name="username"
-              variant="outlined"
               margin="normal"
               fullWidth
-              style={{ marginTop: 0 }}
             />
             <Field
               component={TextField}
               id="phone_number"
               label="Phone Number"
               name="phone_number"
-              variant="outlined"
               margin="normal"
               fullWidth
-              style={{ marginTop: 0 }}
             />
             <Field
               component={TextField}
               id="address"
               label="Address"
               name="address"
-              variant="outlined"
               margin="normal"
               fullWidth
-              style={{ marginTop: 0 }}
             />
             <Field
-              component={Select}
-              variant="outlined"
               name="roles"
               multiple
-              fullWidth
-            >
-              {DefaultRoles.map((role) => (
-                <MenuItem
-                  key={role.id}
-                  value={role.name}
-                >
-                  {capitalize(role.name)}
-                </MenuItem>
-              ))}
-            </Field>
+              component={Autocomplete}
+              options={DefaultRoles}
+              getOptionLabel={(option) => capitalize(option.name)}
+              renderInput={(params: AutocompleteRenderInputParams) => (
+                <MuiTextField
+                  {...params}
+                  error={touched.roles && !!errors.roles}
+                  helperText={touched.roles && errors.roles}
+                  label="Roles"
+                />
+              )}
+            />
             <Button
               type="submit"
               variant="contained"

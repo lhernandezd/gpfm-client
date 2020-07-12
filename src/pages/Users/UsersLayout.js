@@ -7,6 +7,7 @@ import { getDirectionTitleFromState } from "../../utils/directions";
 import DynamicDirection from "../../components/shared/DynamicDirection";
 import UsersGrid from "./UsersGrid";
 import UserProfile from "./UserProfile";
+import CreateForm from "../../components/users/CreateForm";
 import { getUsers, getUser } from "../../actions/users";
 
 const useStyles = makeStyles(() => ({
@@ -35,7 +36,16 @@ const UsersLayout = memo(({ location, history, match }) => {
 
   return (
     <section className={classes.container}>
-      <DynamicDirection path={match.path} routes={routes} actions={actions} refresh location={location} model="user" />
+      <DynamicDirection
+        path={match.path}
+        routes={routes}
+        actions={actions}
+        location={location}
+        model="user"
+        modalComponents={{
+          add: CreateForm,
+        }}
+      />
       <Switch>
         <Route exact path={match.path} component={UsersGrid} />
         <Route path={`${match.path}/:id`} component={UserProfile} />

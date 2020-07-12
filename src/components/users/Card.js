@@ -9,7 +9,7 @@ import AvatarBadge from "../shared/AvatarBadge";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 275,
+    // minWidth: 275,
   },
   content: {
     display: "flex",
@@ -26,7 +26,10 @@ const useStyles = makeStyles((theme) => ({
   },
   roleContainer: {
     display: "block",
-    margin: "15px 20px",
+    margin: "15px 10px",
+    [theme.breakpoints.up("sm")]: {
+      margin: "15px 20px",
+    },
   },
   role: {
     marginRight: 5,
@@ -37,15 +40,16 @@ const Card = memo(({ user, onClickCard }) => {
   const classes = useStyles();
   const firtsName = get(user, "first_name", "");
   const lastName = get(user, "last_name", "");
+  const status = get(user, "status", "");
   const roles = get(user, "roles", []);
   return (
     <Paper className={classes.root} square key={user.iid}>
       <CardActionArea onClick={() => onClickCard(user.id, user)}>
         <div className={classes.content}>
-          <AvatarBadge>
+          <AvatarBadge status={status}>
             <Avatar className={classes.avatar}>{`${firtsName[0]}${lastName[0]}`}</Avatar>
           </AvatarBadge>
-          <Typography variant="h5" component="h2" className={classes.title} color="textPrimary">
+          <Typography variant="h5" component="h2" className={classes.title} color="textPrimary" noWrap>
             {startCase(`${firtsName} ${lastName}`)}
           </Typography>
           <span className={classes.roleContainer}>

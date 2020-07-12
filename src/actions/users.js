@@ -76,3 +76,29 @@ export function updateUser(id, values) {
     }
   };
 }
+
+export function createUser(values) {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: types.CREATE_USER_REQUEST,
+      });
+      const response = await http.post(`${process.env.REACT_APP_API_URL}/users`, {
+        ...values,
+      });
+      dispatch({
+        type: types.CREATE_USER_SUCCESS,
+        payload: {
+          ...response,
+          data: response.data.data,
+        },
+      });
+    } catch (e) {
+      dispatch({
+        type: types.CREATE_USER_FAILURE,
+        payload: e.response,
+      });
+      dispatch(showSnackbar("error", e.response.data.message));
+    }
+  };
+}

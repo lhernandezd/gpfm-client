@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { get } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, CircularProgress } from "@material-ui/core";
+import { Grid, CircularProgress, Fade } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { getUsers } from "../../actions/users";
 import Card from "../../components/users/Card";
@@ -44,13 +44,15 @@ export default function UsersGrid({ location, history }) {
           </div>
         )
         : (
-          <Grid container spacing={3}>
-            {users.data.map((user) => (
-              <Grid item xs sm={2} md={4} key={user.id}>
-                <Card user={user} onClickCard={onUserClick} />
-              </Grid>
-            ))}
-          </Grid>
+          <Fade in={!users.isFetching}>
+            <Grid container spacing={3}>
+              {users.data.map((user) => (
+                <Grid item xs sm={6} md={4} key={user.id}>
+                  <Card user={user} onClickCard={onUserClick} />
+                </Grid>
+              ))}
+            </Grid>
+          </Fade>
         )}
     </>
   );

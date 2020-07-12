@@ -1,11 +1,11 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { memo, useEffect } from "react";
 import PropTypes from "prop-types";
-import { get } from "lodash";
+import { get, startCase } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Paper, Typography, Avatar, CircularProgress,
+  Paper, Typography, Avatar, CircularProgress, Fade,
 } from "@material-ui/core";
 import Details from "../../components/users/Details";
 import { getUser } from "../../actions/users";
@@ -41,6 +41,10 @@ const UserProfile = memo(({ match }) => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users);
   const classes = useStyles();
+  const firstName = get(users, "user.first_name", "");
+  const lastName = get(users, "user.last_name", "");
+  const fullName = `${firstName} ${lastName}`;
+  const email = get(users, "user.email", "");
 
   useEffect(() => {
     dispatch(getUser(get(match, "params.id")));
@@ -55,20 +59,22 @@ const UserProfile = memo(({ match }) => {
           </div>
         )
         : (
-          <>
-            <Paper className={classes.paperContainer} square>
-              <Avatar className={classes.avatar}>LH</Avatar>
-              <div className={classes.basicInfo}>
-                <Typography variant="h5" component="h2">
-                  Luis Hernandez
-                </Typography>
-                <Typography variant="subtitle1" component="p">
-                  ldhdv95@gmail.com
-                </Typography>
-              </div>
-            </Paper>
-            {!Array.isArray(users.user) && <Details user={users.user} />}
-          </>
+          <Fade in={!users.isFetching}>
+            <div>
+              <Paper className={classes.paperContainer} square>
+                <Avatar className={classes.avatar}>LH</Avatar>
+                <div className={classes.basicInfo}>
+                  <Typography variant="h5" component="h2">
+                    {`${startCase(fullName)}`}
+                  </Typography>
+                  <Typography variant="subtitle1" component="p">
+                    {email}
+                  </Typography>
+                </div>
+              </Paper>
+              {!Array.isArray(users.user) && <Details user={users.user} />}
+            </div>
+          </Fade>
         )}
     </>
   );

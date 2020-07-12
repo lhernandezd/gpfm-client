@@ -5,8 +5,6 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
-    backgroundColor: "#44b700",
-    color: "#44b700",
     boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
     "&::after": {
       position: "absolute",
@@ -39,9 +37,17 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(3),
     },
   },
+  active: {
+    color: theme.palette.success.main,
+    backgroundColor: theme.palette.success.main,
+  },
+  inactive: {
+    color: theme.palette.error.main,
+    backgroundColor: theme.palette.error.main,
+  },
 }));
 
-export default function BadgeAvatars({ children }) {
+export default function BadgeAvatars({ children, status }) {
   const classes = useStyles();
 
   return (
@@ -53,6 +59,9 @@ export default function BadgeAvatars({ children }) {
           horizontal: "right",
         }}
         variant="dot"
+        classes={{
+          badge: status === "active" ? classes.active : classes.inactive,
+        }}
       >
         {children}
       </StyledBadge>
