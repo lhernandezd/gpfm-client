@@ -1,16 +1,16 @@
 import http from "../utils/http";
 import { showSnackbar } from "./snackbar";
-import * as types from "./constants/userTypes";
+import * as types from "./constants/patientTypes";
 
-export function getUsers() {
+export function getPatients() {
   return async (dispatch) => {
     try {
       dispatch({
-        type: types.GET_USERS_REQUEST,
+        type: types.GET_PATIENTS_REQUEST,
       });
-      const response = await http.get(`${process.env.REACT_APP_API_URL}/users`);
+      const response = await http.get(`${process.env.REACT_APP_API_URL}/patients`);
       dispatch({
-        type: types.GET_USERS_SUCCESS,
+        type: types.GET_PATIENTS_SUCCESS,
         payload: {
           ...response,
           data: response.data.data,
@@ -19,7 +19,7 @@ export function getUsers() {
       });
     } catch (e) {
       dispatch({
-        type: types.GET_USERS_FAILURE,
+        type: types.GET_PATIENTS_FAILURE,
         payload: e.response,
       });
       dispatch(showSnackbar("error", e.response.data.message));
@@ -27,15 +27,15 @@ export function getUsers() {
   };
 }
 
-export function getUser(id) {
+export function getPatient(id) {
   return async (dispatch) => {
     try {
       dispatch({
-        type: types.GET_USER_REQUEST,
+        type: types.GET_PATIENT_REQUEST,
       });
-      const response = await http.get(`${process.env.REACT_APP_API_URL}/users/${id}`);
+      const response = await http.get(`${process.env.REACT_APP_API_URL}/patients/${id}`);
       dispatch({
-        type: types.GET_USER_SUCCESS,
+        type: types.GET_PATIENT_SUCCESS,
         payload: {
           ...response,
           data: response.data.data,
@@ -43,7 +43,7 @@ export function getUser(id) {
       });
     } catch (e) {
       dispatch({
-        type: types.GET_USER_FAILURE,
+        type: types.GET_PATIENT_FAILURE,
         payload: e.response,
       });
       dispatch(showSnackbar("error", e.response.data.message));
@@ -51,26 +51,26 @@ export function getUser(id) {
   };
 }
 
-export function updateUser(id, values) {
+export function updatePatient(id, values) {
   return async (dispatch) => {
     try {
       dispatch({
-        type: types.UPDATE_USER_REQUEST,
+        type: types.UPDATE_PATIENT_REQUEST,
       });
-      const response = await http.put(`${process.env.REACT_APP_API_URL}/users/${id}`, {
+      const response = await http.put(`${process.env.REACT_APP_API_URL}/patients/${id}`, {
         ...values,
       });
       dispatch({
-        type: types.UPDATE_USER_SUCCESS,
+        type: types.UPDATE_PATIENT_SUCCESS,
         payload: {
           ...response,
           data: response.data.data,
         },
       });
-      dispatch(showSnackbar("success", "User updated"));
+      dispatch(showSnackbar("success", "Patient updated"));
     } catch (e) {
       dispatch({
-        type: types.UPDATE_USER_FAILURE,
+        type: types.UPDATE_PATIENT_FAILURE,
         payload: e.response,
       });
       dispatch(showSnackbar("error", e.response.data.message));
@@ -78,26 +78,26 @@ export function updateUser(id, values) {
   };
 }
 
-export function createUser(values) {
+export function createPatient(values) {
   return async (dispatch) => {
     try {
       dispatch({
-        type: types.CREATE_USER_REQUEST,
+        type: types.CREATE_PATIENT_REQUEST,
       });
-      const response = await http.post(`${process.env.REACT_APP_API_URL}/users`, {
+      const response = await http.post(`${process.env.REACT_APP_API_URL}/patients`, {
         ...values,
       });
       dispatch({
-        type: types.CREATE_USER_SUCCESS,
+        type: types.CREATE_PATIENT_SUCCESS,
         payload: {
           ...response,
           data: response.data.data,
         },
       });
-      dispatch(showSnackbar("success", "User created"));
+      dispatch(showSnackbar("success", "Patient created"));
     } catch (e) {
       dispatch({
-        type: types.CREATE_USER_FAILURE,
+        type: types.CREATE_PATIENT_FAILURE,
         payload: e.response,
       });
       dispatch(showSnackbar("error", e.response.data.message));

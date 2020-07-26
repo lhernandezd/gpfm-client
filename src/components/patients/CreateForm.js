@@ -16,8 +16,14 @@ import {
   Autocomplete,
   AutocompleteRenderInputParams,
 } from "formik-material-ui-lab";
-import { createUser, getUsers } from "../../actions/users";
-import { roles as DefaultRoles } from "../../utils/staticDataTypes";
+import { KeyboardDatePicker } from "formik-material-ui-pickers";
+import { createPatient, getPatients } from "../../actions/patients";
+import {
+  documentTypes as DefaultTypes,
+  genders as DefaultGenders,
+  civilStatus as DefaultStatus,
+  bloodTypes as DefaultBloods,
+} from "../../utils/staticDataTypes";
 import { modalFormStyles } from "../../utils/styles";
 import parseFormValues from "../../utils/parseFormValues";
 
@@ -27,22 +33,28 @@ const initialValues = {
   first_name: "",
   last_name: "",
   email: "",
-  password: "",
-  username: "",
   phone_number: "",
   address: "",
-  roles: [],
+  document: "",
+  birth_date: null,
+  neighborhood: "",
+  occupation: "",
 };
 
 const DetailSchema = Yup.object().shape({
   first_name: Yup.string().required("Required"),
   last_name: Yup.string().required("Required"),
-  email: Yup.string().email().required("Required"),
-  password: Yup.string().length(6, "Minimum password length: 6").required("Required"),
-  username: Yup.string(),
+  email: Yup.string().email(),
   phone_number: Yup.number(),
   address: Yup.string(),
-  roles: Yup.array().min(1).required("Required"),
+  document_type: Yup.object(),
+  document: Yup.string(),
+  birth_date: Yup.date(),
+  gender: Yup.object(),
+  neighborhood: Yup.string(),
+  occupation: Yup.string(),
+  civil_status: Yup.object(),
+  blood_type: Yup.object(),
 });
 
 const CreateForm = ({ toggleForm }) => {
@@ -51,8 +63,8 @@ const CreateForm = ({ toggleForm }) => {
 
   const handleSubmit = async (values) => {
     const valuesUpdated = parseFormValues(values);
-    await dispatch(createUser(valuesUpdated));
-    await dispatch(getUsers());
+    await dispatch(createPatient(valuesUpdated));
+    await dispatch(getPatients());
     toggleForm();
   };
 
@@ -93,33 +105,63 @@ const CreateForm = ({ toggleForm }) => {
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 <Field
-                  component={TextField}
-                  required
-                  id="username"
-                  label="Username"
-                  name="username"
-                  fullWidth
+                  name="document_type"
+                  component={Autocomplete}
+                  options={DefaultTypes}
+                  getOptionLabel={(option) => capitalize(option.name)}
+                  renderInput={(params: AutocompleteRenderInputParams) => (
+                    <MuiTextField
+                      {...params}
+                      error={touched.document_type && !!errors.document_type}
+                      helperText={touched.document_type && errors.document_type}
+                      label="Document Type"
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 <Field
                   component={TextField}
-                  required
-                  id="password"
-                  label="Password"
-                  name="password"
-                  type="password"
+                  id="document"
+                  label="Document Number"
+                  name="document"
                   fullWidth
                 />
               </Grid>
               <Grid item xs={12}>
                 <Field
                   component={TextField}
-                  required
-                  id="email"
-                  label="Email Address"
-                  name="email"
+                  id="address"
+                  label="Address"
+                  name="address"
                   fullWidth
+                />
+              </Grid>
+              <Grid item xs sm={12} md={6}>
+                <Field
+                  component={KeyboardDatePicker}
+                  id="birth_date"
+                  name="birth_date"
+                  label="Birth Date"
+                  variant="inline"
+                  format="dd/MM/yyyy"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs sm={12} md={6}>
+                <Field
+                  name="gender"
+                  component={Autocomplete}
+                  options={DefaultGenders}
+                  getOptionLabel={(option) => capitalize(option.name)}
+                  renderInput={(params: AutocompleteRenderInputParams) => (
+                    <MuiTextField
+                      {...params}
+                      error={touched.gender && !!errors.gender}
+                      helperText={touched.gender && errors.gender}
+                      label="Gender"
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -134,25 +176,58 @@ const CreateForm = ({ toggleForm }) => {
               <Grid item xs={12}>
                 <Field
                   component={TextField}
-                  id="address"
-                  label="Address"
-                  name="address"
+                  id="email"
+                  label="Email Address"
+                  name="email"
                   fullWidth
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={12} md={6}>
                 <Field
-                  name="roles"
-                  multiple
+                  component={TextField}
+                  id="neighborhood"
+                  label="Neighborhood"
+                  name="neighborhood"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6}>
+                <Field
+                  component={TextField}
+                  id="occupation"
+                  label="Occupation"
+                  name="occupation"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6}>
+                <Field
+                  name="civil_status"
                   component={Autocomplete}
-                  options={DefaultRoles}
+                  options={DefaultStatus}
                   getOptionLabel={(option) => capitalize(option.name)}
                   renderInput={(params: AutocompleteRenderInputParams) => (
                     <MuiTextField
                       {...params}
-                      error={touched.roles && !!errors.roles}
-                      helperText={touched.roles && errors.roles}
-                      label="Roles"
+                      error={touched.civil_status && !!errors.civil_status}
+                      helperText={touched.civil_status && errors.civil_status}
+                      label="Civil Status"
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6}>
+                <Field
+                  name="blood_type"
+                  component={Autocomplete}
+                  options={DefaultBloods}
+                  getOptionLabel={(option) => capitalize(option.name)}
+                  renderInput={(params: AutocompleteRenderInputParams) => (
+                    <MuiTextField
+                      {...params}
+                      error={touched.blood_type && !!errors.blood_type}
+                      helperText={touched.blood_type && errors.blood_type}
+                      label="Blood Type"
                     />
                   )}
                 />

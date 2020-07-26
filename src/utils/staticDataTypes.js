@@ -16,8 +16,8 @@ export const navigationLinks = [
     IconComponent: AssignmentIndIcon,
   },
   {
-    text: "Clients",
-    href: "/clients",
+    text: "Patients",
+    href: "/patients",
     IconComponent: PeopleAltIcon,
   },
   {
@@ -35,4 +35,28 @@ export const navigationLinks = [
 export const roles = [
   { name: "admin" },
   { name: "user" },
+];
+
+export const documentTypes = [
+  { name: "cc" },
+  { name: "ti" },
+  { name: "pa" },
+];
+
+export const genders = [
+  { name: "male" },
+  { name: "female" },
+  { name: "No Binary" },
+];
+
+export const civilStatus = [
+  { name: "single" },
+  { name: "married" },
+];
+
+export const bloodTypes = [
+  { name: "o" },
+  { name: "a" },
+  { name: "b" },
+  { name: "ab" },
 ];
