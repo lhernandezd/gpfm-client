@@ -60,9 +60,10 @@ const Details = memo(({ user }) => {
       });
     }
     if (get(user, "city")) {
+      const city = get(user, "city");
       list.push({
         icon: LocationCityOutlinedIcon,
-        text: capitalize(get(user, "city")),
+        text: `${city.name}, ${city.state?.name}`,
       });
     }
     if (get(user, "roles")) {

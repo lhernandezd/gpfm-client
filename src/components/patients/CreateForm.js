@@ -24,7 +24,7 @@ import {
   civilStatus as DefaultStatus,
   bloodTypes as DefaultBloods,
 } from "../../utils/staticDataTypes";
-import { modalFormStyles } from "../../utils/styles";
+import { modalFormStyles } from "../../styles";
 import parseFormValues from "../../utils/parseFormValues";
 
 const useStyles = makeStyles((theme) => modalFormStyles(theme));

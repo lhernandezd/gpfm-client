@@ -18,8 +18,10 @@ import {
 } from "formik-material-ui-lab";
 import { createUser, getUsers } from "../../actions/users";
 import { roles as DefaultRoles } from "../../utils/staticDataTypes";
-import { modalFormStyles } from "../../utils/styles";
+import { modalFormStyles } from "../../styles";
 import parseFormValues from "../../utils/parseFormValues";
+import DynamicSelectField from "../form/DynamicSelectField";
+import { getCities } from "../../actions/cities";
 
 const useStyles = makeStyles((theme) => modalFormStyles(theme));
 
@@ -32,6 +34,7 @@ const initialValues = {
   phone_number: "",
   address: "",
   roles: [],
+  city_id: null,
 };
 
 const DetailSchema = Yup.object().shape({
@@ -141,12 +144,24 @@ const CreateForm = ({ toggleForm }) => {
                 />
               </Grid>
               <Grid item xs={12}>
+                <DynamicSelectField
+                  field="city_id"
+                  reduxField="cities"
+                  label="City"
+                  fetchFunc={getCities}
+                  optionField="label"
+                  touched={touched}
+                  errors={errors}
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <Field
                   name="roles"
                   multiple
                   component={Autocomplete}
                   options={DefaultRoles}
                   getOptionLabel={(option) => capitalize(option.name)}
+                  getOptionSelected={(option, rest) => option.name === rest.name}
                   renderInput={(params: AutocompleteRenderInputParams) => (
                     <MuiTextField
                       {...params}

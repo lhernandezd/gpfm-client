@@ -17,6 +17,8 @@ import {
 } from "formik-material-ui-lab";
 import { updateUser, getUser } from "../../actions/users";
 import { roles as DefaultRoles } from "../../utils/staticDataTypes";
+import DynamicSelectField from "../form/DynamicSelectField";
+import { getCities } from "../../actions/cities";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -52,12 +54,17 @@ const DetailsForm = ({ user, toggleForm }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const roles = get(user, "roles", []);
+  const city = get(user, "city", {});
   const rolesByName = roles.map((role) => role.name);
   const initialValues = {
     username: get(user, "username", ""),
     phone_number: get(user, "phone_number", ""),
     address: get(user, "address", ""),
     roles: roles.length ? roles.map((role) => ({ name: role.name })) : [],
+    city_id: {
+      id: city.id,
+      label: `${city.name}, ${city.state?.name}`,
+    },
   };
 
   const handleSubmit = async (values) => {
@@ -108,12 +115,22 @@ const DetailsForm = ({ user, toggleForm }) => {
               margin="normal"
               fullWidth
             />
+            <DynamicSelectField
+              field="city_id"
+              reduxField="cities"
+              label="City"
+              fetchFunc={getCities}
+              optionField="label"
+              touched={touched}
+              errors={errors}
+            />
             <Field
               name="roles"
               multiple
               component={Autocomplete}
               options={DefaultRoles}
               getOptionLabel={(option) => capitalize(option.name)}
+              getOptionSelected={(option, rest) => option.name === rest.name}
               renderInput={(params: AutocompleteRenderInputParams) => (
                 <MuiTextField
                   {...params}
