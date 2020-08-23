@@ -15,7 +15,7 @@ import {
   Autocomplete,
   AutocompleteRenderInputParams,
 } from "formik-material-ui-lab";
-import { updateUser, getUser } from "../../actions/users";
+import { updateUser } from "../../actions/users";
 import { roles as DefaultRoles } from "../../utils/staticDataTypes";
 import DynamicSelectField from "../form/DynamicSelectField";
 import { getCities } from "../../actions/cities";
@@ -73,7 +73,6 @@ const DetailsForm = ({ user, toggleForm }) => {
     const rolesDiff = difference(rolesByName, rolesArray);
     if (rolesDiff.length) valuesUpdated.remove_roles = rolesDiff;
     await dispatch(updateUser(user.id, valuesUpdated));
-    await dispatch(getUser(user.id));
     toggleForm();
   };
 

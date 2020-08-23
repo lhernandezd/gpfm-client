@@ -6,6 +6,7 @@ const initialState = {
   meta: {},
   statusText: null,
   error: false,
+  patient: {},
 };
 
 export default function (state = initialState, action) {
@@ -64,6 +65,36 @@ export default function (state = initialState, action) {
     }
 
     case types.GET_PATIENT_FAILURE: {
+      return {
+        ...state,
+        patient: {},
+        isFetching: false,
+        error: true,
+        statusText: `Error ${payload.status}: ${payload.data.message}`,
+      };
+    }
+
+    case types.UPDATE_PATIENT_REQUEST: {
+      return {
+        ...state,
+        isFetching: true,
+        error: false,
+        statusText: null,
+        meta: {},
+      };
+    }
+
+    case types.UPDATE_PATIENT_SUCCESS: {
+      return {
+        ...state,
+        patient: payload.data,
+        isFetching: false,
+        error: false,
+        statusText: "Success",
+      };
+    }
+
+    case types.UPDATE_PATIENT_FAILURE: {
       return {
         ...state,
         patient: {},

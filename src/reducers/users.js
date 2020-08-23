@@ -74,6 +74,36 @@ export default function (state = initialState, action) {
       };
     }
 
+    case types.UPDATE_USER_REQUEST: {
+      return {
+        ...state,
+        isFetching: true,
+        error: false,
+        statusText: null,
+        meta: {},
+      };
+    }
+
+    case types.UPDATE_USER_SUCCESS: {
+      return {
+        ...state,
+        user: payload.data,
+        isFetching: false,
+        error: false,
+        statusText: "Success",
+      };
+    }
+
+    case types.UPDATE_USER_FAILURE: {
+      return {
+        ...state,
+        user: {},
+        isFetching: false,
+        error: true,
+        statusText: `Error ${payload.status}: ${payload.data.message}`,
+      };
+    }
+
     default:
       return state;
   }

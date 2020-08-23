@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { getDirectionTitleFromState } from "../../utils/directions";
 import DynamicDirection from "../../components/shared/DynamicDirection";
 import PatientsView from "./PatientsView";
-// import UserProfile from "./UserProfile";
+import PatientProfile from "./PatientProfile";
 import CreateForm from "../../components/patients/CreateForm";
 import { getPatients, getPatient } from "../../actions/patients";
 
@@ -48,7 +48,7 @@ const UsersLayout = memo(({ location, history, match }) => {
       />
       <Switch>
         <Route exact path={match.path} component={PatientsView} />
-        {/* <Route path={`${match.path}/:id`} component={UserProfile} /> */}
+        <Route path={`${match.path}/:id`} component={PatientProfile} />
       </Switch>
     </section>
   );

@@ -71,4 +71,5 @@ export default function BadgeAvatars({ children, status }) {
 
 BadgeAvatars.propTypes = {
   children: PropTypes.node.isRequired,
+  status: PropTypes.string.isRequired,
 };
