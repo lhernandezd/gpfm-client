@@ -77,7 +77,7 @@ const MainDirection = ({
 };
 
 const DynamicDirection = memo(({
-  routes, actions, views, location, model, modalComponents,
+  routes, actions, views, location, model, modalComponents, modalProps,
 }) => {
   const classes = useStyles();
   const routesLength = routes.length;
@@ -136,6 +136,7 @@ const DynamicDirection = memo(({
       </Paper>
       <ModalForm
         formComponent={addForm}
+        modalProps={modalProps}
         title={`Add ${startCase(model)}`}
         handleModal={handleModal}
         open={openModal}
@@ -153,6 +154,7 @@ DynamicDirection.propTypes = {
   location: PropTypes.object,
   model: PropTypes.string,
   modalComponents: PropTypes.object,
+  modalProps: PropTypes.object,
 };
 
 DynamicDirection.defaultProps = {
@@ -162,6 +164,7 @@ DynamicDirection.defaultProps = {
   model: null,
   location: null,
   modalComponents: {},
+  modalProps: {},
 };
 
 MainDirection.propTypes = {

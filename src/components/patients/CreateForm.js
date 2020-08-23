@@ -26,6 +26,8 @@ import {
 } from "../../utils/staticDataTypes";
 import { modalFormStyles } from "../../styles";
 import parseFormValues from "../../utils/parseFormValues";
+import DynamicSelectField from "../form/DynamicSelectField";
+import { getCities } from "../../actions/cities";
 
 const useStyles = makeStyles((theme) => modalFormStyles(theme));
 
@@ -126,6 +128,17 @@ const CreateForm = ({ toggleForm }) => {
                   label="Document Number"
                   name="document"
                   fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <DynamicSelectField
+                  field="city_id"
+                  reduxField="cities"
+                  label="City"
+                  fetchFunc={getCities}
+                  optionField="label"
+                  touched={touched}
+                  errors={errors}
                 />
               </Grid>
               <Grid item xs={12}>

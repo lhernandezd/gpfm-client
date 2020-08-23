@@ -2,10 +2,10 @@ import axios from "axios";
 import { getAccessToken } from "./auth";
 
 const http = {
-  get(url) {
+  get(url, params) {
     const token = getAccessToken();
     axios.defaults.headers.common.Authorization = token ? `Bearer ${getAccessToken()}` : "";
-    return axios.get(url);
+    return axios.get(url, params);
   },
   post(url, payload) {
     const token = getAccessToken();

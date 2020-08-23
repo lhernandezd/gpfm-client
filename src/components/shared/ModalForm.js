@@ -1,3 +1,5 @@
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/forbid-prop-types */
 import React, { memo } from "react";
 import PropTypes from "prop-types";
 import {
@@ -11,14 +13,20 @@ const useStyles = makeStyles((theme) => ({
       left: "calc(0% + 100px)",
     },
   },
+  dialogOriginMd: {
+    [theme.breakpoints.up("sm")]: {
+      left: "calc(0%)",
+    },
+  },
 }));
 
 const ModalForm = memo(({
-  title, formComponent: FormComponent, handleModal, open,
+  title, formComponent: FormComponent, handleModal, open, modalProps,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const setClass = modalProps?.maxWidth === "md" ? classes.dialogOriginMd : classes.dialogOrigin;
   return (
     <Dialog
       disableBackdropClick
@@ -28,8 +36,9 @@ const ModalForm = memo(({
       onClose={handleModal}
       aria-labelledby="form-dialog-add"
       classes={{
-        paper: classes.dialogOrigin,
+        paper: setClass,
       }}
+      maxWidth={modalProps?.maxWidth || "sm"}
     >
       <DialogTitle id="form-dialog-add">{title}</DialogTitle>
       <DialogContent>
@@ -45,6 +54,10 @@ ModalForm.propTypes = {
   handleModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   open: PropTypes.bool.isRequired,
-  // eslint-disable-next-line react/require-default-props
   formComponent: PropTypes.node,
+  modalProps: PropTypes.object,
+};
+
+ModalForm.defaultProps = {
+  modalProps: {},
 };

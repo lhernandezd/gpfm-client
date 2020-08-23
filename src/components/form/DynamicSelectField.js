@@ -12,7 +12,7 @@ import parseSelectOptions from "../../utils/parseSelectOptions";
 
 export default function DynamicSelectField(props) {
   const {
-    field, reduxField, optionField, label, fetchFunc, touched, errors,
+    field, reduxField, optionField, label, fetchFunc, touched, errors, multiple, fetchOnKeyInput,
   } = props;
   const dispatch = useDispatch();
   const fetchedOptions = useSelector((state) => state[reduxField]);
@@ -22,6 +22,12 @@ export default function DynamicSelectField(props) {
     dispatch(fetchFunc());
   }, []);
 
+  const onFieldChange = (e) => {
+    dispatch(fetchFunc({ search: e.target.value }));
+  };
+
+  const onChangeParam = fetchOnKeyInput ? { onChange: (e) => onFieldChange(e) } : {};
+
   return (
     <Field
       name={field}
@@ -29,12 +35,14 @@ export default function DynamicSelectField(props) {
       options={parsedOptions}
       getOptionLabel={(option) => option[optionField]}
       getOptionSelected={(option, rest) => option.id === rest.id}
+      multiple={multiple}
       renderInput={(params: AutocompleteRenderInputParams) => (
         <MuiTextField
           {...params}
           error={touched[field] && !!errors[field]}
           helperText={touched[field] && errors[field]}
           label={label}
+          {...onChangeParam}
         />
       )}
     />
@@ -49,4 +57,11 @@ DynamicSelectField.propTypes = {
   fetchFunc: PropTypes.func.isRequired,
   touched: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
+  multiple: PropTypes.bool,
+  fetchOnKeyInput: PropTypes.bool,
+};
+
+DynamicSelectField.defaultProps = {
+  multiple: false,
+  fetchOnKeyInput: false,
 };

@@ -3,6 +3,7 @@ import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import BusinessIcon from "@material-ui/icons/Business";
+import AssignmentIcon from "@material-ui/icons/Assignment";
 
 export const navigationLinks = [
   {
@@ -19,6 +20,11 @@ export const navigationLinks = [
     text: "Patients",
     href: "/patients",
     IconComponent: PeopleAltIcon,
+  },
+  {
+    text: "Histories",
+    href: "/histories",
+    IconComponent: AssignmentIcon,
   },
   {
     text: "Appointments",

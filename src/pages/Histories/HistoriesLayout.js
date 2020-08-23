@@ -1,14 +1,14 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Switch, Route } from "react-router-dom";
+// import { Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { getDirectionTitleFromState } from "../../utils/directions";
 import DynamicDirection from "../../components/shared/DynamicDirection";
-import PatientsView from "./PatientsView";
-import PatientProfile from "./PatientProfile";
-import CreateForm from "../../components/patients/CreateForm";
-import { getPatients, getPatient } from "../../actions/patients";
+// import PatientsView from "./PatientsView";
+// import PatientProfile from "./PatientProfile";
+import CreateForm from "../../components/histories/CreateForm";
+import { getHistories, getHistory } from "../../actions/histories";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const PatientsLayout = memo(({ location, history, match }) => {
+const HistoriesLayout = memo(({ location, history, match }) => {
   const classes = useStyles();
   const [routes, setRoutes] = useState([]);
   const [actions, setActions] = useState({});
@@ -30,7 +30,7 @@ const PatientsLayout = memo(({ location, history, match }) => {
     }));
     setRoutes(arrangeRoutes);
     setActions({
-      refresh: directionaTitle ? getPatient : getPatients,
+      refresh: directionaTitle ? getHistory : getHistories,
     });
   }, [location.pathname, match.path, location.search]);
 
@@ -41,22 +41,25 @@ const PatientsLayout = memo(({ location, history, match }) => {
         routes={routes}
         actions={actions}
         location={location}
-        model="patient"
+        model="history"
         modalComponents={{
           add: CreateForm,
         }}
+        modalProps={{
+          maxWidth: "md",
+        }}
       />
-      <Switch>
+      {/* <Switch>
         <Route exact path={match.path} component={PatientsView} />
         <Route path={`${match.path}/:id`} component={PatientProfile} />
-      </Switch>
+      </Switch> */}
     </section>
   );
 });
 
-export default PatientsLayout;
+export default HistoriesLayout;
 
-PatientsLayout.propTypes = {
+HistoriesLayout.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,

@@ -11,6 +11,28 @@ const parseCities = (cities) => {
   return citiesParsed;
 };
 
+const parseCodes = (cities) => {
+  const codesParsed = cities.reduce((acc, currentValue) => {
+    const codeObj = {
+      id: currentValue.id,
+      label: `${currentValue.code} - ${currentValue.description}`,
+    };
+    return acc.concat(codeObj);
+  }, []);
+  return codesParsed;
+};
+
+const parsePatients = (cities) => {
+  const codesParsed = cities.reduce((acc, currentValue) => {
+    const codeObj = {
+      id: currentValue.id,
+      label: `${currentValue.first_name} ${currentValue.last_name}`,
+    };
+    return acc.concat(codeObj);
+  }, []);
+  return codesParsed;
+};
+
 const parseOptions = (options) => {
   const optionsParsed = options.reduce((acc, currentValue) => {
     const optionObjs = {
@@ -28,6 +50,10 @@ const parseSelectOptions = (data, field) => {
   switch (field) {
     case "cities":
       return parseCities(options);
+    case "codes":
+      return parseCodes(options);
+    case "patients":
+      return parsePatients(options);
     default:
       return parseOptions(options);
   }
