@@ -1,23 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import {
-  Button,
-  LinearProgress,
   Grid,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Form, Formik, Field } from "formik";
+import { Field } from "formik";
 import * as Yup from "yup";
 import { TextField } from "formik-material-ui";
 import { createHistory, getHistories } from "../../actions/histories";
-import { modalFormStyles } from "../../styles";
 import parseFormValues from "../../utils/parseFormValues";
 import DynamicSelectField from "../form/DynamicSelectField";
 import { getCodes } from "../../actions/codes";
 import { getPatients } from "../../actions/patients";
-
-const useStyles = makeStyles((theme) => modalFormStyles(theme));
+import { FormikStepper, FormikStep } from "../form/FormikStepForm";
 
 const initialValues = {
   weight: 1,
@@ -66,15 +61,13 @@ const DetailSchema = Yup.object().shape({
 });
 
 const CreateForm = ({ toggleForm }) => {
-  const classes = useStyles();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (values) => {
-    console.log(values);
-    // const valuesUpdated = parseFormValues(values);
-    // await dispatch(createHistory(valuesUpdated));
-    // await dispatch(getHistories());
-    // toggleForm();
+    const valuesUpdated = parseFormValues(values);
+    await dispatch(createHistory(valuesUpdated));
+    await dispatch(getHistories());
+    toggleForm();
   };
 
   const onFieldChange = (e, setFieldValue, values) => {
@@ -99,299 +92,284 @@ const CreateForm = ({ toggleForm }) => {
   };
 
   return (
-    <Formik
+    <FormikStepper
+      validationSchema={DetailSchema}
       initialValues={initialValues}
       onSubmit={(values) => handleSubmit(values)}
-      validationSchema={DetailSchema}
+      toggleAction={toggleForm}
     >
-      {({
-        submitForm, isSubmitting, touched, errors, setFieldValue, values,
-      }) => (
-        <>
-          {isSubmitting
-            ? <LinearProgress className={classes.progress} />
-            : <div className={classes.progressSkeleton} />}
-          <Form className={classes.form}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={12} md={12}>
-                <DynamicSelectField
-                  field="patient_id"
-                  reduxField="patients"
-                  label="Patient"
-                  fetchFunc={getPatients}
-                  optionField="label"
-                  touched={touched}
-                  errors={errors}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={4}>
-                <Field
-                  component={TextField}
-                  id="weight"
-                  label="Weight (Kg)"
-                  name="weight"
-                  fullWidth
-                  type="number"
-                  step="any"
-                  InputProps={{ onChange: (e) => onFieldChange(e, setFieldValue, values) }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={4}>
-                <Field
-                  component={TextField}
-                  id="height"
-                  label="Height (Mt)"
-                  name="height"
-                  fullWidth
-                  type="number"
-                  step="any"
-                  InputProps={{ onChange: (e) => onFieldChange(e, setFieldValue, values) }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={4}>
-                <Field
-                  component={TextField}
-                  id="imc"
-                  label="IMC (kg/mt2)"
-                  name="imc"
-                  fullWidth
-                  type="number"
-                  disabled
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={4}>
-                <Field
-                  component={TextField}
-                  id="heart_rate"
-                  label="Heart Rate"
-                  name="heart_rate"
-                  fullWidth
-                  type="number"
-                  step="any"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={4}>
-                <Field
-                  component={TextField}
-                  id="blood_pressure"
-                  label="Blood Pressure"
-                  name="blood_pressure"
-                  fullWidth
-                  type="number"
-                  step="any"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={4}>
-                <Field
-                  component={TextField}
-                  id="breath_frequency"
-                  label="Breath Frequency"
-                  name="breath_frequency"
-                  fullWidth
-                  type="number"
-                  step="any"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={4}>
-                <Field
-                  component={TextField}
-                  id="temperature"
-                  label="Temperature (°C)"
-                  name="temperature"
-                  fullWidth
-                  type="number"
-                  step="any"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={8}>
-                <Field
-                  component={TextField}
-                  id="cause"
-                  label="External Cause"
-                  name="cause"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={12}>
-                <DynamicSelectField
-                  multiple
-                  field="code_id"
-                  reduxField="codes"
-                  label="CIE-10 Code"
-                  fetchFunc={getCodes}
-                  optionField="label"
-                  touched={touched}
-                  errors={errors}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Field
-                  component={TextField}
-                  id="medical_evolution"
-                  variant="outlined"
-                  label="Medical Evolution"
-                  name="medical_evolution"
-                  fullWidth
-                  multiline
-                  rows="4"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Field
-                  component={TextField}
-                  id="background"
-                  variant="outlined"
-                  label="Background"
-                  name="background"
-                  fullWidth
-                  multiline
-                  rows="4"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Field
-                  component={TextField}
-                  id="medicine"
-                  variant="outlined"
-                  label="Medicine"
-                  name="medicine"
-                  fullWidth
-                  multiline
-                  rows="4"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Field
-                  component={TextField}
-                  id="exam_performed"
-                  variant="outlined"
-                  label="Exam Performed"
-                  name="exam_performed"
-                  fullWidth
-                  multiline
-                  rows="4"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Field
-                  component={TextField}
-                  id="reason"
-                  variant="outlined"
-                  label="Reason"
-                  name="reason"
-                  fullWidth
-                  multiline
-                  rows="4"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Field
-                  component={TextField}
-                  id="physical_exam"
-                  variant="outlined"
-                  label="Physical Exam"
-                  name="physical_exam"
-                  fullWidth
-                  multiline
-                  rows="4"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Field
-                  component={TextField}
-                  id="treatment_plan"
-                  variant="outlined"
-                  label="Treatment Plan"
-                  name="treatment_plan"
-                  fullWidth
-                  multiline
-                  rows="4"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Field
-                  component={TextField}
-                  id="medical_formula"
-                  variant="outlined"
-                  label="Medical Formula"
-                  name="treatmemedical_formulant_plan"
-                  fullWidth
-                  multiline
-                  rows="4"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Field
-                  component={TextField}
-                  id="note"
-                  variant="outlined"
-                  label="Note"
-                  name="note"
-                  fullWidth
-                  multiline
-                  rows="4"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Field
-                  component={TextField}
-                  id="consent"
-                  variant="outlined"
-                  label="Consent"
-                  name="consent"
-                  fullWidth
-                  multiline
-                  rows="4"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Field
-                  component={TextField}
-                  id="current_illness"
-                  variant="outlined"
-                  label="Current Illness"
-                  name="current_illness"
-                  fullWidth
-                  multiline
-                  rows="4"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Field
-                  component={TextField}
-                  id="current_treatment"
-                  variant="outlined"
-                  label="Current Treatment"
-                  name="current_treatment"
-                  fullWidth
-                  multiline
-                  rows="4"
-                />
-              </Grid>
-              <Grid item xs={12} className={classes.actions}>
-                <Button
-                  color="primary"
-                  className={classes.button}
-                  onClick={toggleForm}
-                >
-                  Close
-                </Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  disabled={isSubmitting}
-                  onClick={submitForm}
-                >
-                  Submit
-                </Button>
-              </Grid>
+      <FormikStep label="Basic Information">
+        {(stepProps) => (
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={12} md={12}>
+              <DynamicSelectField
+                field="patient_id"
+                reduxField="patients"
+                label="Patient"
+                fetchFunc={getPatients}
+                optionField="label"
+                touched={stepProps.touched}
+                errors={stepProps.errors}
+              />
             </Grid>
-          </Form>
-        </>
-      )}
-    </Formik>
+            <Grid item xs={12} sm={12} md={4}>
+              <Field
+                component={TextField}
+                id="weight"
+                label="Weight (Kg)"
+                name="weight"
+                fullWidth
+                type="number"
+                step="any"
+                InputProps={
+                  { onChange: (e) => onFieldChange(e, stepProps.setFieldValue, stepProps.values) }
+                }
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={4}>
+              <Field
+                component={TextField}
+                id="height"
+                label="Height (Mt)"
+                name="height"
+                fullWidth
+                type="number"
+                step="any"
+                InputProps={
+                  { onChange: (e) => onFieldChange(e, stepProps.setFieldValue, stepProps.values) }
+                }
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={4}>
+              <Field
+                component={TextField}
+                id="imc"
+                label="IMC (kg/mt2)"
+                name="imc"
+                fullWidth
+                type="number"
+                disabled
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={4}>
+              <Field
+                component={TextField}
+                id="heart_rate"
+                label="Heart Rate"
+                name="heart_rate"
+                fullWidth
+                type="number"
+                step="any"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={4}>
+              <Field
+                component={TextField}
+                id="blood_pressure"
+                label="Blood Pressure"
+                name="blood_pressure"
+                fullWidth
+                type="number"
+                step="any"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={4}>
+              <Field
+                component={TextField}
+                id="breath_frequency"
+                label="Breath Frequency"
+                name="breath_frequency"
+                fullWidth
+                type="number"
+                step="any"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={4}>
+              <Field
+                component={TextField}
+                id="temperature"
+                label="Temperature (°C)"
+                name="temperature"
+                fullWidth
+                type="number"
+                step="any"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={8}>
+              <Field
+                component={TextField}
+                id="cause"
+                label="External Cause"
+                name="cause"
+                fullWidth
+              />
+            </Grid>
+          </Grid>
+        )}
+      </FormikStep>
+      <FormikStep label="History Information">
+        {(stepProps) => (
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={12} md={12}>
+              <DynamicSelectField
+                multiple
+                field="code_id"
+                reduxField="codes"
+                label="CIE-10 Code"
+                fetchFunc={getCodes}
+                optionField="label"
+                touched={stepProps.touched}
+                errors={stepProps.errors}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Field
+                component={TextField}
+                id="medical_evolution"
+                variant="outlined"
+                label="Medical Evolution"
+                name="medical_evolution"
+                fullWidth
+                multiline
+                rows="4"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Field
+                component={TextField}
+                id="background"
+                variant="outlined"
+                label="Background"
+                name="background"
+                fullWidth
+                multiline
+                rows="4"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Field
+                component={TextField}
+                id="medicine"
+                variant="outlined"
+                label="Medicine"
+                name="medicine"
+                fullWidth
+                multiline
+                rows="4"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Field
+                component={TextField}
+                id="exam_performed"
+                variant="outlined"
+                label="Exam Performed"
+                name="exam_performed"
+                fullWidth
+                multiline
+                rows="4"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Field
+                component={TextField}
+                id="reason"
+                variant="outlined"
+                label="Reason"
+                name="reason"
+                fullWidth
+                multiline
+                rows="4"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Field
+                component={TextField}
+                id="physical_exam"
+                variant="outlined"
+                label="Physical Exam"
+                name="physical_exam"
+                fullWidth
+                multiline
+                rows="4"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Field
+                component={TextField}
+                id="treatment_plan"
+                variant="outlined"
+                label="Treatment Plan"
+                name="treatment_plan"
+                fullWidth
+                multiline
+                rows="4"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Field
+                component={TextField}
+                id="medical_formula"
+                variant="outlined"
+                label="Medical Formula"
+                name="treatmemedical_formulant_plan"
+                fullWidth
+                multiline
+                rows="4"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Field
+                component={TextField}
+                id="note"
+                variant="outlined"
+                label="Note"
+                name="note"
+                fullWidth
+                multiline
+                rows="4"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Field
+                component={TextField}
+                id="consent"
+                variant="outlined"
+                label="Consent"
+                name="consent"
+                fullWidth
+                multiline
+                rows="4"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Field
+                component={TextField}
+                id="current_illness"
+                variant="outlined"
+                label="Current Illness"
+                name="current_illness"
+                fullWidth
+                multiline
+                rows="4"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Field
+                component={TextField}
+                id="current_treatment"
+                variant="outlined"
+                label="Current Treatment"
+                name="current_treatment"
+                fullWidth
+                multiline
+                rows="4"
+              />
+            </Grid>
+          </Grid>
+        )}
+      </FormikStep>
+    </FormikStepper>
   );
 };
 

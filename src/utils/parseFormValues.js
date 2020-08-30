@@ -10,7 +10,11 @@ const parseFormValues = (formValues) => {
       const rolesUpdated = formValues[key].map((roles) => roles.name);
       updatedFormValues[key] = rolesUpdated;
     }
-    if (key === "city_id" && isObject(value)) updatedFormValues[key] = value.id;
+    if (key.includes("_id") && isObject(value)) updatedFormValues[key] = value.id;
+    if (key.includes("_id") && isArray(value)) {
+      const valudIDS = formValues[key].map((valueKey) => valueKey.id);
+      updatedFormValues[key] = valudIDS;
+    }
   });
   return updatedFormValues;
 };
