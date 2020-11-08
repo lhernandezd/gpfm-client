@@ -1,12 +1,11 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-// import { Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { getDirectionTitleFromState } from "../../utils/directions";
 import DynamicDirection from "../../components/shared/DynamicDirection";
-// import PatientsView from "./PatientsView";
-// import PatientProfile from "./PatientProfile";
+import HistoriesListView from "./HistoriesListView";
 import CreateForm from "../../components/histories/CreateForm";
 import { getHistories, getHistory } from "../../actions/histories";
 
@@ -49,10 +48,10 @@ const HistoriesLayout = memo(({ location, history, match }) => {
           maxWidth: "md",
         }}
       />
-      {/* <Switch>
-        <Route exact path={match.path} component={PatientsView} />
-        <Route path={`${match.path}/:id`} component={PatientProfile} />
-      </Switch> */}
+      <Switch>
+        <Route exact path={match.path} component={HistoriesListView} />
+        {/* <Route path={`${match.path}/:id`} component={PatientProfile} /> */}
+      </Switch>
     </section>
   );
 });

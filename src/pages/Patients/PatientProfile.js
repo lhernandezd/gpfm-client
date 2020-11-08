@@ -7,14 +7,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Paper, Typography, Avatar, CircularProgress, Fade,
 } from "@material-ui/core";
-import Details from "../../components/users/Details";
 import { getPatient } from "../../actions/patients";
 
 const useStyles = makeStyles((theme) => ({
   paperContainer: {
     display: "flex",
     padding: "20px 40px",
-    backgroundColor: theme.palette.primary.main,
     marginBottom: 20,
   },
   avatar: {
@@ -27,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 60,
     display: "flex",
     flexDirection: "column",
-    color: theme.palette.common.white,
   },
   loadingContainer: {
     display: "flex",
@@ -77,7 +74,6 @@ const UserProfile = memo(({ match }) => {
                   </Typography>
                 </div>
               </Paper>
-              {/* {!Array.isArray(patients.user) && <Details user={patients.user} />} */}
             </div>
           </Fade>
         )}
