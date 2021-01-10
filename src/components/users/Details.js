@@ -12,7 +12,7 @@ import SubtitlesOutlinedIcon from "@material-ui/icons/SubtitlesOutlined";
 import ContactMailOutlinedIcon from "@material-ui/icons/ContactMailOutlined";
 import LocationCityOutlinedIcon from "@material-ui/icons/LocationCityOutlined";
 import EditIcon from "@material-ui/icons/Edit";
-import ClearIcon from "@material-ui/icons/Clear";
+import ModalForm from "../shared/ModalForm";
 import DetailsForm from "./DetailsForm";
 
 const useStyles = makeStyles(() => ({
@@ -37,7 +37,11 @@ const useStyles = makeStyles(() => ({
 
 const Details = memo(({ user }) => {
   const classes = useStyles();
-  const [detailForm, setDetailForm] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleModal = () => {
+    setOpenModal(!openModal);
+  };
 
   const generateList = () => {
     const list = [];
@@ -86,54 +90,59 @@ const Details = memo(({ user }) => {
   };
 
   return (
-    <Paper className={classes.root} square>
-      <div className={classes.header}>
-        <Typography variant="h5" component="h2" className={classes.title} color="textPrimary">
-          Details
-        </Typography>
-        <IconButton
-          edge="end"
-          aria-label="edit details"
-          onClick={() => setDetailForm(!detailForm)}
-          color="primary"
-        >
-          {detailForm ? <ClearIcon fontSize="small" /> : <EditIcon fontSize="small" />}
-        </IconButton>
-      </div>
-      <Divider />
-      {detailForm
-        ? <DetailsForm user={user} toggleForm={setDetailForm} />
-        : (
-          <List>
-            {generateList().map((item, index) => (
-              <ListItem key={index}>
-                <ListItemIcon>
-                  <item.icon />
-                </ListItemIcon>
-                {item.text
-                  ? (
-                    <ListItemText
-                      key={index}
-                      primary={(
-                        <Typography variant="subtitle1" component="span" className={classes.title}>
-                          {item.text}
-                        </Typography>
-                  )}
-                    />
-                  )
-                  : (
-                    <ListItemText
-                      key={index}
-                      primary={item.content.map((item2, index2) => renderSubComponent(
-                        item.component, item2, index2,
-                      ))}
-                    />
-                  )}
-              </ListItem>
-            ))}
-          </List>
-        )}
-    </Paper>
+    <>
+      <Paper className={classes.root} square>
+        <div className={classes.header}>
+          <Typography variant="h5" component="h2" className={classes.title} color="textPrimary">
+            Details
+          </Typography>
+          <IconButton
+            edge="end"
+            aria-label="edit details"
+            onClick={handleModal}
+            color="primary"
+          >
+            <EditIcon fontSize="small" />
+          </IconButton>
+        </div>
+        <Divider />
+        <List>
+          {generateList().map((item, index) => (
+            <ListItem key={index}>
+              <ListItemIcon>
+                <item.icon />
+              </ListItemIcon>
+              {item.text
+                ? (
+                  <ListItemText
+                    key={index}
+                    primary={(
+                      <Typography variant="subtitle1" component="span" className={classes.title}>
+                        {item.text}
+                      </Typography>
+                )}
+                  />
+                )
+                : (
+                  <ListItemText
+                    key={index}
+                    primary={item.content.map((item2, index2) => renderSubComponent(
+                      item.component, item2, index2,
+                    ))}
+                  />
+                )}
+            </ListItem>
+          ))}
+        </List>
+      </Paper>
+      <ModalForm
+        formComponent={() => <DetailsForm user={user} toggleForm={handleModal} />}
+        modalProps={{ maxWidth: "md" }}
+        title="Edit User Details"
+        handleModal={handleModal}
+        open={openModal}
+      />
+    </>
   );
 });
 

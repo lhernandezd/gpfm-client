@@ -5,6 +5,7 @@ import { get, capitalize, difference } from "lodash";
 import {
   Button,
   LinearProgress,
+  Grid,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Form, Formik, Field } from "formik";
@@ -41,8 +42,15 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     padding: "8px 16px",
   },
-  submit: {
+  buttons: {
     margin: theme.spacing(3, 0, 2),
+  },
+  actions: {
+    display: "flex",
+    justifyContent: "flex-end",
+    "& button:last-child": {
+      marginLeft: theme.spacing(1),
+    },
   },
 }));
 
@@ -90,67 +98,87 @@ const DetailsForm = ({ user, toggleForm }) => {
             ? <LinearProgress className={classes.progress} />
             : <div className={classes.progressSkeleton} />}
           <Form className={classes.form}>
-            <Field
-              component={TextField}
-              id="username"
-              label="Username"
-              name="username"
-              margin="normal"
-              fullWidth
-            />
-            <Field
-              component={TextField}
-              id="phone_number"
-              label="Phone Number"
-              name="phone_number"
-              margin="normal"
-              fullWidth
-            />
-            <Field
-              component={TextField}
-              id="address"
-              label="Address"
-              name="address"
-              margin="normal"
-              fullWidth
-            />
-            <DynamicSelectField
-              field="city_id"
-              reduxField="cities"
-              label="City"
-              fetchFunc={getCities}
-              optionField="label"
-              touched={touched}
-              errors={errors}
-            />
-            <Field
-              name="roles"
-              multiple
-              component={Autocomplete}
-              options={DefaultRoles}
-              getOptionLabel={(option) => capitalize(option.name)}
-              getOptionSelected={(option, rest) => option.name === rest.name}
-              renderInput={(params: AutocompleteRenderInputParams) => (
-                <MuiTextField
-                  {...params}
-                  error={touched.roles && !!errors.roles}
-                  helperText={touched.roles && errors.roles}
-                  label="Roles"
+            <Grid container>
+              <Grid item xs={12}>
+                <Field
+                  component={TextField}
+                  id="username"
+                  label="Username"
+                  name="username"
+                  margin="dense"
+                  fullWidth
                 />
-              )}
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              disabled={isSubmitting}
-              onClick={submitForm}
-              size="large"
-              fullWidth
-            >
-              Submit
-            </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Field
+                  component={TextField}
+                  id="phone_number"
+                  label="Phone Number"
+                  name="phone_number"
+                  margin="dense"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Field
+                  component={TextField}
+                  id="address"
+                  label="Address"
+                  name="address"
+                  margin="dense"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <DynamicSelectField
+                  field="city_id"
+                  reduxField="cities"
+                  label="City"
+                  fetchFunc={getCities}
+                  optionField="label"
+                  touched={touched}
+                  errors={errors}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Field
+                  name="roles"
+                  multiple
+                  component={Autocomplete}
+                  options={DefaultRoles}
+                  getOptionLabel={(option) => capitalize(option.name)}
+                  getOptionSelected={(option, rest) => option.name === rest.name}
+                  renderInput={(params: AutocompleteRenderInputParams) => (
+                    <MuiTextField
+                      {...params}
+                      error={touched.roles && !!errors.roles}
+                      helperText={touched.roles && errors.roles}
+                      label="Roles"
+                      margin="dense"
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} className={classes.actions}>
+                <Button
+                  color="primary"
+                  className={classes.buttons}
+                  onClick={toggleForm}
+                >
+                  Close
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.buttons}
+                  disabled={isSubmitting}
+                  onClick={submitForm}
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
           </Form>
         </>
       )}
