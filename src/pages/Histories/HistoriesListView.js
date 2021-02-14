@@ -25,6 +25,13 @@ export default function HistoriesListView({ location, history }) {
     dispatch(getHistories());
   }, [dispatch]);
 
+  const onHistoryClick = (id) => {
+    history.push(`${location.pathname}/${id}`, {
+      directionName: "primer_test",
+      history_id: id,
+    });
+  };
+
   return (
     <>
       {histories.isFetching
@@ -35,7 +42,7 @@ export default function HistoriesListView({ location, history }) {
         )
         : (
           <Fade in={!histories.isFetching}>
-            <Table histories={histories} fetchFunc={getHistories} />
+            <Table histories={histories} fetchFunc={getHistories} onRowClick={onHistoryClick} />
           </Fade>
         )}
     </>

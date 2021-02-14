@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const TableComponent = memo(({ histories, fetchFunc }) => {
+const TableComponent = memo(({ histories, fetchFunc, onRowClick }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [page, setPage] = useState(0);
@@ -82,7 +82,7 @@ const TableComponent = memo(({ histories, fetchFunc }) => {
           </TableHead>
           <TableBody>
             {histories.data.map((history) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={history.id}>
+              <TableRow hover role="checkbox" tabIndex={-1} key={history.id} onClick={() => onRowClick(history.id)}>
                 {columns.map((column) => {
                   const formatFunction = get(column, "formatFunction", false);
                   const multiple = get(column, "multiple", false);

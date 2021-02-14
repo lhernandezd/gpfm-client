@@ -7,6 +7,7 @@ import { getDirectionTitleFromState } from "../../utils/directions";
 import DynamicDirection from "../../components/shared/DynamicDirection";
 import HistoriesListView from "./HistoriesListView";
 import CreateForm from "../../components/histories/CreateForm";
+import HistoryProfile from "./HistoryProfile";
 import { getHistories, getHistory } from "../../actions/histories";
 
 const useStyles = makeStyles(() => ({
@@ -50,7 +51,7 @@ const HistoriesLayout = memo(({ location, history, match }) => {
       />
       <Switch>
         <Route exact path={match.path} component={HistoriesListView} />
-        {/* <Route path={`${match.path}/:id`} component={PatientProfile} /> */}
+        <Route path={`${match.path}/:id`} component={HistoryProfile} />
       </Switch>
     </section>
   );
