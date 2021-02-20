@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     padding: "20px 40px",
     marginBottom: 20,
+    flexDirection: "column"
   },
   loadingContainer: {
     display: "flex",
