@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DetailSchema = Yup.object().shape({
+const UserSchema = Yup.object().shape({
   phone_number: Yup.number(),
 });
 
@@ -88,7 +88,7 @@ const DetailsForm = ({ user, toggleForm }) => {
     <Formik
       initialValues={initialValues}
       onSubmit={(values) => handleSubmit(values)}
-      validationSchema={DetailSchema}
+      validationSchema={UserSchema}
     >
       {({
         submitForm, isSubmitting, touched, errors,

@@ -74,6 +74,36 @@ export default function (state = initialState, action) {
       };
     }
 
+    case types.UPDATE_HISTORY_REQUEST: {
+      return {
+        ...state,
+        isFetching: true,
+        error: false,
+        statusText: null,
+        meta: {},
+      };
+    }
+
+    case types.UPDATE_HISTORY_SUCCESS: {
+      return {
+        ...state,
+        history: payload.data,
+        isFetching: false,
+        error: false,
+        statusText: "Success",
+      };
+    }
+
+    case types.UPDATE_HISTORY_FAILURE: {
+      return {
+        ...state,
+        history: {},
+        isFetching: false,
+        error: true,
+        statusText: `Error ${payload.status}: ${payload.data.message}`,
+      };
+    }
+
     default:
       return state;
   }

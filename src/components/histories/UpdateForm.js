@@ -1,41 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
+import { get, difference } from "lodash";
 import {
   Grid,
 } from "@material-ui/core";
 import { Field } from "formik";
 import * as Yup from "yup";
 import { TextField } from "formik-material-ui";
-import { createHistory, getHistories } from "../../actions/histories";
-import parseFormValues from "../../utils/parseFormValues";
+import { updateHistory } from "../../actions/histories";
+import parseSelectOptions from "../../utils/parseSelectOptions";
 import DynamicSelectField from "../form/DynamicSelectField";
 import { getCodes } from "../../actions/codes";
-import { getPatients } from "../../actions/patients";
 import { FormikStepper, FormikStep } from "../form/FormikStepForm";
-
-const initialValues = {
-  weight: 1,
-  height: 1,
-  imc: 1,
-  heart_rate: 0,
-  blood_pressure: 0,
-  breath_frequency: 0,
-  temperature: 0,
-  cause: "",
-  medical_evolution: "",
-  background: "",
-  medicine: "",
-  exam_performed: "",
-  reason: "",
-  physical_exam: "",
-  treatment_plan: "",
-  medical_formula: "",
-  note: "",
-  consent: "",
-  current_illness: "",
-  current_treatment: "",
-};
 
 const HistorySchema = Yup.object().shape({
   weight: Yup.number(),
@@ -60,13 +37,42 @@ const HistorySchema = Yup.object().shape({
   current_treatment: Yup.string(),
 });
 
-const CreateForm = ({ toggleForm }) => {
+const CreateForm = ({ history, toggleForm }) => {
   const dispatch = useDispatch();
 
+  const cieCodes = get(history, "codes", []);
+
+  const initialValues = {
+    weight: get(history, "weight"),
+    height: get(history, "height"),
+    imc: get(history, "imc"),
+    heart_rate: get(history, "heart_rate"),
+    blood_pressure: get(history, "blood_pressure"),
+    breath_frequency: get(history, "breath_frequency"),
+    temperature: get(history, "temperature"),
+    cause: get(history, "cause"),
+    code_id: parseSelectOptions({ data: cieCodes }, "codes"),
+    medical_evolution: get(history, "medical_evolution"),
+    background: get(history, "background"),
+    medicine: get(history, "medicine"),
+    exam_performed: get(history, "exam_performed"),
+    reason: get(history, "reason"),
+    physical_exam: get(history, "physical_exam"),
+    treatment_plan: get(history, "treatment_plan"),
+    medical_formula: get(history, "medical_formula"),
+    note: get(history, "note"),
+    consent: get(history, "consent"),
+    current_illness: get(history, "current_illness"),
+    current_treatment: get(history, "current_treatment"),
+  };
+
   const handleSubmit = async (values) => {
-    const valuesUpdated = parseFormValues(values);
-    await dispatch(createHistory(valuesUpdated));
-    await dispatch(getHistories());
+    const codesArray = values.code_id.map((code) => code.id);
+    const baseCodesArray = cieCodes.map((code) => code.id);
+    const valuesUpdated = { ...values, code_id: codesArray };
+    const codesDiff = difference(baseCodesArray, codesArray);
+    if (codesDiff.length) valuesUpdated.remove_codes = codesDiff;
+    await dispatch(updateHistory(history.id, valuesUpdated));
     toggleForm();
   };
 
@@ -101,17 +107,6 @@ const CreateForm = ({ toggleForm }) => {
       <FormikStep label="Basic Information">
         {(stepProps) => (
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={12} md={12}>
-              <DynamicSelectField
-                field="patient_id"
-                reduxField="patients"
-                label="Patient"
-                fetchFunc={getPatients}
-                optionField="label"
-                touched={stepProps.touched}
-                errors={stepProps.errors}
-              />
-            </Grid>
             <Grid item xs={12} sm={12} md={4}>
               <Field
                 component={TextField}
@@ -377,6 +372,7 @@ export default CreateForm;
 
 CreateForm.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
+  history: PropTypes.object.isRequired,
   // eslint-disable-next-line react/require-default-props
-  toggleForm: PropTypes.func,
+  toggleForm: PropTypes.func.isRequired,
 };

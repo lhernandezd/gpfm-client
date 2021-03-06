@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import PropTypes from "prop-types";
 import {
   get, startCase, capitalize, toUpper,
@@ -7,12 +7,22 @@ import {
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import {
   Typography, Accordion, AccordionSummary, AccordionDetails,
-  Grid, List, ListItem, ListItemText,
+  Grid, List, ListItem, ListItemText, IconButton,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import EditIcon from "@material-ui/icons/Edit";
+import ModalForm from "../shared/ModalForm";
+import UpdateHistory from "./UpdateForm";
 
 const useStyles = makeStyles((theme) => ({
   coreInfo: {},
+  header: {
+    display: "flex",
+    alignItems: "center",
+    minHeight: 50,
+    padding: "0 16px",
+    lineHeight: "1.84615",
+  },
   bold: { fontWeight: 500 },
   cardTitle: { paddingBottom: 20 },
   accordionSection: {
@@ -50,6 +60,12 @@ const handleFields = (fieldValue) => {
 
 const Card = memo(({ history }) => {
   const classes = useStyles();
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleModal = () => {
+    setOpenModal(!openModal);
+  };
+
   const historyId = get(history, "iid");
   const patientFirstName = get(history, "patient.first_name", "");
   const patientLastName = get(history, "patient.last_name", "");
@@ -79,11 +95,21 @@ const Card = memo(({ history }) => {
   return (
     <>
       <div className={classes.coreInfo}>
-        <Typography className={classes.cardTitle} variant="h5" component="h2">
-          History #
-          {" "}
-          {historyId}
-        </Typography>
+        <div className={classes.header}>
+          <Typography className={classes.cardTitle} variant="h5" component="h2">
+            History #
+            {" "}
+            {historyId}
+          </Typography>
+          <IconButton
+            edge="end"
+            aria-label="edit history"
+            onClick={handleModal}
+            color="primary"
+          >
+            <EditIcon fontSize="small" />
+          </IconButton>
+        </div>
         <div className="coreInfoItem">
           <Typography className={classes.bold} variant="subtitle1" component="span">
             Patient Name:
@@ -143,6 +169,13 @@ const Card = memo(({ history }) => {
           </Accordion>
         ))}
       </div>
+      <ModalForm
+        formComponent={() => <UpdateHistory history={history} toggleForm={handleModal} />}
+        modalProps={{ maxWidth: "md" }}
+        title="Edit History"
+        handleModal={handleModal}
+        open={openModal}
+      />
     </>
   );
 });
