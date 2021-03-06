@@ -1,7 +1,7 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { memo, useEffect } from "react";
 import PropTypes from "prop-types";
-import { get, startCase } from "lodash";
+import { get, startCase, toUpper } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -67,7 +67,7 @@ const UserProfile = memo(({ match }) => {
                     {`${startCase(fullName)}`}
                   </Typography>
                   <Typography variant="subtitle1" component="p">
-                    {`${documentType}: ${document}`}
+                    {`${toUpper(documentType)}: ${document}`}
                   </Typography>
                   <Typography variant="subtitle1" component="p">
                     {email}

@@ -82,7 +82,7 @@ const TableComponent = memo(({ histories, fetchFunc, onRowClick }) => {
           </TableHead>
           <TableBody>
             {histories.data.map((history) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={history.id} onClick={() => onRowClick(history.id)}>
+              <TableRow hover role="checkbox" tabIndex={-1} key={history.id} onClick={() => onRowClick(history.id, history.iid)}>
                 {columns.map((column) => {
                   const formatFunction = get(column, "formatFunction", false);
                   const multiple = get(column, "multiple", false);
@@ -117,4 +117,5 @@ export default TableComponent;
 TableComponent.propTypes = {
   histories: PropTypes.object.isRequired,
   fetchFunc: PropTypes.func.isRequired,
+  onRowClick: PropTypes.func.isRequired,
 };

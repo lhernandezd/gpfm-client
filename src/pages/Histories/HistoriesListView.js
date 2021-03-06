@@ -25,9 +25,9 @@ export default function HistoriesListView({ location, history }) {
     dispatch(getHistories());
   }, [dispatch]);
 
-  const onHistoryClick = (id) => {
+  const onHistoryClick = (id, num) => {
     history.push(`${location.pathname}/${id}`, {
-      directionName: "primer_test",
+      directionName: `History # ${num}`,
       history_id: id,
     });
   };

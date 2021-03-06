@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontSize: 20,
+    width: "100%",
+    textAlign: "center",
   },
   avatar: {
     width: theme.spacing(9),

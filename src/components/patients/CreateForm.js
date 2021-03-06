@@ -1,7 +1,8 @@
+/* eslint-disable react/forbid-prop-types */
 import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { capitalize } from "lodash";
+import { capitalize, toUpper } from "lodash";
 import {
   Button,
   LinearProgress,
@@ -110,7 +111,7 @@ const CreateForm = ({ toggleForm }) => {
                   name="document_type"
                   component={Autocomplete}
                   options={DefaultTypes}
-                  getOptionLabel={(option) => capitalize(option.name)}
+                  getOptionLabel={(option) => toUpper(option.name)}
                   renderInput={(params: AutocompleteRenderInputParams) => (
                     <MuiTextField
                       {...params}
@@ -234,7 +235,7 @@ const CreateForm = ({ toggleForm }) => {
                   name="blood_type"
                   component={Autocomplete}
                   options={DefaultBloods}
-                  getOptionLabel={(option) => capitalize(option.name)}
+                  getOptionLabel={(option) => toUpper(option.name)}
                   renderInput={(params: AutocompleteRenderInputParams) => (
                     <MuiTextField
                       {...params}
