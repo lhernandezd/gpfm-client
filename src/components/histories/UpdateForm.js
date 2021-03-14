@@ -11,12 +11,13 @@ import { TextField } from "formik-material-ui";
 import { updateHistory } from "../../actions/histories";
 import parseSelectOptions from "../../utils/parseSelectOptions";
 import DynamicSelectField from "../form/DynamicSelectField";
+import { getPatients } from "../../actions/patients";
 import { getCodes } from "../../actions/codes";
 import { FormikStepper, FormikStep } from "../form/FormikStepForm";
 
 const HistorySchema = Yup.object().shape({
-  weight: Yup.number(),
-  height: Yup.number(),
+  weight: Yup.number().required("Required"),
+  height: Yup.number().required("Required"),
   imc: Yup.number(),
   heart_rate: Yup.number(),
   blood_pressure: Yup.number(),
@@ -40,9 +41,11 @@ const HistorySchema = Yup.object().shape({
 const CreateForm = ({ history, toggleForm }) => {
   const dispatch = useDispatch();
 
+  const patient = get(history, "patient", {});
   const cieCodes = get(history, "codes", []);
 
   const initialValues = {
+    patient_id: parseSelectOptions({ data: [patient] }, "patients")[0],
     weight: get(history, "weight"),
     height: get(history, "height"),
     imc: get(history, "imc"),
@@ -107,6 +110,19 @@ const CreateForm = ({ history, toggleForm }) => {
       <FormikStep label="Basic Information">
         {(stepProps) => (
           <Grid container spacing={3}>
+            <Grid item xs={12} sm={12} md={12}>
+              <DynamicSelectField
+                field="patient_id"
+                reduxField="patients"
+                label="Patient"
+                fetchFunc={getPatients}
+                optionField="label"
+                touched={stepProps.touched}
+                errors={stepProps.errors}
+                required
+                disabled
+              />
+            </Grid>
             <Grid item xs={12} sm={12} md={4}>
               <Field
                 component={TextField}
@@ -116,6 +132,7 @@ const CreateForm = ({ history, toggleForm }) => {
                 fullWidth
                 type="number"
                 step="any"
+                required
                 InputProps={
                   { onChange: (e) => onFieldChange(e, stepProps.setFieldValue, stepProps.values) }
                 }
@@ -130,6 +147,7 @@ const CreateForm = ({ history, toggleForm }) => {
                 fullWidth
                 type="number"
                 step="any"
+                required
                 InputProps={
                   { onChange: (e) => onFieldChange(e, stepProps.setFieldValue, stepProps.values) }
                 }
@@ -215,6 +233,7 @@ const CreateForm = ({ history, toggleForm }) => {
                 optionField="label"
                 touched={stepProps.touched}
                 errors={stepProps.errors}
+                required
               />
             </Grid>
             <Grid item xs={12} sm={12} md={6}>

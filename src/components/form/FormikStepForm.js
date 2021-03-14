@@ -35,7 +35,7 @@ export function FormikStepper({ children, ...props }: FormikConfig<FormikValues>
         }
       }}
     >
-      {({ isSubmitting, ...formikProps }) => (
+      {({ isSubmitting, dirty, ...formikProps }) => (
         <>
           {isSubmitting
             ? <LinearProgress className={classes.progress} />
@@ -73,7 +73,7 @@ export function FormikStepper({ children, ...props }: FormikConfig<FormikValues>
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                disabled={isSubmitting}
+                disabled={isSubmitting || (isLastStep() && !dirty)}
                 startIcon={isSubmitting ? <CircularProgress /> : null}
               >
                 {isLastStep() ? "Submit" : "Next"}

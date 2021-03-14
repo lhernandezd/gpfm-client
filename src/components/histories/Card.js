@@ -7,10 +7,11 @@ import {
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import {
   Typography, Accordion, AccordionSummary, AccordionDetails,
-  Grid, List, ListItem, ListItemText, IconButton,
+  Grid, List, ListItem, ListItemText, ListItemIcon, IconButton,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import EditIcon from "@material-ui/icons/Edit";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ModalForm from "../shared/ModalForm";
 import UpdateHistory from "./UpdateForm";
 
@@ -18,15 +19,15 @@ const useStyles = makeStyles((theme) => ({
   coreInfo: {},
   header: {
     display: "flex",
-    alignItems: "center",
-    minHeight: 50,
-    padding: "0 16px",
-    lineHeight: "1.84615",
+    justifyContent: "space-between",
   },
   bold: { fontWeight: 500 },
   cardTitle: { paddingBottom: 20 },
   accordionSection: {
     padding: "20px 0",
+  },
+  iconRoot: {
+    minWidth: "35px",
   },
 }));
 
@@ -34,16 +35,11 @@ const UpdatedAccordionSummary = withStyles({
   root: {
     padding: "0",
   },
-  content: {
-    "&$expanded": {
-      margin: "12px 0",
-    },
-  },
 })(AccordionSummary);
 
 const handleGridWidth = (sectionID) => {
   const defaultWidths = { sm: 4, md: 3 };
-  return sectionID === "detail" ? { sm: 12 } : defaultWidths;
+  return sectionID === "detail" ? { sm: 12, xs: 12 } : defaultWidths;
 };
 
 const handleFields = (fieldValue) => {
@@ -150,7 +146,10 @@ const Card = memo(({ history }) => {
                         ? (
                           <List dense>
                             {fieldValue.map((item) => (
-                              <ListItem>
+                              <ListItem key={index}>
+                                <ListItemIcon classes={{ root: classes.iconRoot }}>
+                                  <ArrowRightIcon />
+                                </ListItemIcon>
                                 <ListItemText primary={item} />
                               </ListItem>
                             ))}

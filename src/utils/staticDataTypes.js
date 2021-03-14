@@ -32,8 +32,8 @@ export const navigationLinks = [
     IconComponent: CalendarTodayIcon,
   },
   {
-    text: "Companies",
-    href: "/companies",
+    text: "Entities",
+    href: "/entities",
     IconComponent: BusinessIcon,
   },
 ];
@@ -61,8 +61,12 @@ export const civilStatus = [
 ];
 
 export const bloodTypes = [
-  { name: "o" },
-  { name: "a" },
-  { name: "b" },
-  { name: "ab" },
+  { name: "o-" },
+  { name: "o+" },
+  { name: "a-" },
+  { name: "a+" },
+  { name: "b-" },
+  { name: "b+" },
+  { name: "ab-" },
+  { name: "ab+" },
 ];

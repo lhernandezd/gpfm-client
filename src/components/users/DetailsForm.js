@@ -91,7 +91,7 @@ const DetailsForm = ({ user, toggleForm }) => {
       validationSchema={UserSchema}
     >
       {({
-        submitForm, isSubmitting, touched, errors,
+        submitForm, isSubmitting, touched, errors, dirty,
       }) => (
         <>
           {isSubmitting
@@ -172,7 +172,7 @@ const DetailsForm = ({ user, toggleForm }) => {
                   variant="contained"
                   color="primary"
                   className={classes.buttons}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !dirty}
                   onClick={submitForm}
                 >
                   Submit

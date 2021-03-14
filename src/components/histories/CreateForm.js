@@ -38,8 +38,8 @@ const initialValues = {
 };
 
 const HistorySchema = Yup.object().shape({
-  weight: Yup.number(),
-  height: Yup.number(),
+  weight: Yup.number().required("Required"),
+  height: Yup.number().required("Required"),
   imc: Yup.number(),
   heart_rate: Yup.number(),
   blood_pressure: Yup.number(),
@@ -110,6 +110,7 @@ const CreateForm = ({ toggleForm }) => {
                 optionField="label"
                 touched={stepProps.touched}
                 errors={stepProps.errors}
+                required
               />
             </Grid>
             <Grid item xs={12} sm={12} md={4}>
@@ -121,6 +122,7 @@ const CreateForm = ({ toggleForm }) => {
                 fullWidth
                 type="number"
                 step="any"
+                required
                 InputProps={
                   { onChange: (e) => onFieldChange(e, stepProps.setFieldValue, stepProps.values) }
                 }
@@ -135,6 +137,7 @@ const CreateForm = ({ toggleForm }) => {
                 fullWidth
                 type="number"
                 step="any"
+                required
                 InputProps={
                   { onChange: (e) => onFieldChange(e, stepProps.setFieldValue, stepProps.values) }
                 }
@@ -220,6 +223,7 @@ const CreateForm = ({ toggleForm }) => {
                 optionField="label"
                 touched={stepProps.touched}
                 errors={stepProps.errors}
+                required
               />
             </Grid>
             <Grid item xs={12} sm={12} md={6}>

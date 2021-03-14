@@ -19,6 +19,7 @@ const Home = lazy(() => import("./pages/Home/Home"));
 const Users = lazy(() => import("./pages/Users/Users"));
 const Patients = lazy(() => import("./pages/Patients/Patients"));
 const Histories = lazy(() => import("./pages/Histories/Histories"));
+const Entities = lazy(() => import("./pages/Entities/Entities"));
 
 function App() {
   const isAuthenticated = useSelector((state) => state.authentication.isAuthenticated);
@@ -67,7 +68,7 @@ function App() {
                   <Route path="/patients" component={Patients} />
                   <Route path="/histories" component={Histories} />
                   <Route path="/appointments" component={Home} />
-                  <Route path="/companies" component={Home} />
+                  <Route path="/entities" component={Entities} />
                 </AppLayout>
               </Switch>
             </Router>

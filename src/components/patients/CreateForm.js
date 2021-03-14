@@ -108,6 +108,7 @@ const CreateForm = ({ toggleForm }) => {
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 <Field
+                  required
                   name="document_type"
                   component={Autocomplete}
                   options={DefaultTypes}
