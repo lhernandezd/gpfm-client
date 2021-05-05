@@ -7,6 +7,7 @@ import cities from "./cities";
 import histories from "./histories";
 import codes from "./codes";
 import entities from "./entities";
+import agreements from "./agreements";
 
 const reducers = combineReducers({
   authentication,
@@ -17,6 +18,7 @@ const reducers = combineReducers({
   histories,
   codes,
   entities,
+  agreements,
 });
 
 export default reducers;

@@ -4,6 +4,7 @@ import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import BusinessIcon from "@material-ui/icons/Business";
 import AssignmentIcon from "@material-ui/icons/Assignment";
+import BusinessCenterIcon from "@material-ui/icons/BusinessCenter";
 
 export const navigationLinks = [
   {
@@ -35,6 +36,11 @@ export const navigationLinks = [
     text: "Entities",
     href: "/entities",
     IconComponent: BusinessIcon,
+  },
+  {
+    text: "Agreements",
+    href: "/agreements",
+    IconComponent: BusinessCenterIcon,
   },
 ];
 
