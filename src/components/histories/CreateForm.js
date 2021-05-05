@@ -1,6 +1,7 @@
+/* eslint-disable react/forbid-prop-types */
 import React from "react";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Grid,
 } from "@material-ui/core";
@@ -9,6 +10,7 @@ import * as Yup from "yup";
 import { TextField } from "formik-material-ui";
 import { createHistory, getHistories } from "../../actions/histories";
 import parseFormValues from "../../utils/parseFormValues";
+import getFieldFromState from "../../utils/getFieldFromState";
 import DynamicSelectField from "../form/DynamicSelectField";
 import { getCodes } from "../../actions/codes";
 import { getPatients } from "../../actions/patients";
@@ -58,14 +60,30 @@ const HistorySchema = Yup.object().shape({
   consent: Yup.string(),
   current_illness: Yup.string(),
   current_treatment: Yup.string(),
+  patient_id: Yup.object({
+    id: Yup.string().required("Required"),
+    label: Yup.string(),
+  }),
+  code_id: Yup.array().of(
+    Yup.object({
+      id: Yup.string(),
+      label: Yup.string(),
+    }),
+  ),
 });
 
 const CreateForm = ({ toggleForm }) => {
   const dispatch = useDispatch();
+  const patients = useSelector((state) => state.patients);
 
   const handleSubmit = async (values) => {
     const valuesUpdated = parseFormValues(values);
-    await dispatch(createHistory(valuesUpdated));
+    const patientId = valuesUpdated.patient_id;
+    const agreement = getFieldFromState(patients.data, "id", patientId, "agreement");
+    await dispatch(createHistory({
+      ...valuesUpdated,
+      agreement_id: agreement.id,
+    }));
     await dispatch(getHistories());
     toggleForm();
   };
@@ -223,7 +241,6 @@ const CreateForm = ({ toggleForm }) => {
                 optionField="label"
                 touched={stepProps.touched}
                 errors={stepProps.errors}
-                required
               />
             </Grid>
             <Grid item xs={12} sm={12} md={6}>

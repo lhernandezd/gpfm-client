@@ -46,6 +46,7 @@ export default function DynamicSelectField(props) {
           error={touched[field] && !!errors[field]}
           helperText={touched[field] && errors[field]}
           label={label}
+          required={required}
           {...onChangeParam}
         />
       )}

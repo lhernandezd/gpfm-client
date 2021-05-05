@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import { TextField } from "formik-material-ui";
 import { updateHistory } from "../../actions/histories";
 import parseSelectOptions from "../../utils/parseSelectOptions";
+import parseFormValues from "../../utils/parseFormValues";
 import DynamicSelectField from "../form/DynamicSelectField";
 import { getPatients } from "../../actions/patients";
 import { getCodes } from "../../actions/codes";
@@ -70,9 +71,9 @@ const CreateForm = ({ history, toggleForm }) => {
   };
 
   const handleSubmit = async (values) => {
-    const codesArray = values.code_id.map((code) => code.id);
     const baseCodesArray = cieCodes.map((code) => code.id);
-    const valuesUpdated = { ...values, code_id: codesArray };
+    const valuesUpdated = parseFormValues(values);
+    const codesArray = valuesUpdated.code_id;
     const codesDiff = difference(baseCodesArray, codesArray);
     if (codesDiff.length) valuesUpdated.remove_codes = codesDiff;
     await dispatch(updateHistory(history.id, valuesUpdated));
@@ -233,7 +234,6 @@ const CreateForm = ({ history, toggleForm }) => {
                 optionField="label"
                 touched={stepProps.touched}
                 errors={stepProps.errors}
-                required
               />
             </Grid>
             <Grid item xs={12} sm={12} md={6}>

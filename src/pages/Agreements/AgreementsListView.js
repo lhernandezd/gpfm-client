@@ -29,7 +29,7 @@ export default function AgreementsListView({ location, history }) {
   const onAgreementClick = (id, name) => {
     history.push(`${location.pathname}/${id}`, {
       directionName: `${startCase(name)}`,
-      entity_id: id,
+      agreement_id: id,
     });
   };
 
@@ -43,7 +43,11 @@ export default function AgreementsListView({ location, history }) {
         )
         : (
           <Fade in={!agreements.isFetching}>
-            <Table entities={agreements} fetchFunc={getAgreements} onRowClick={onAgreementClick} />
+            <Table
+              agreements={agreements}
+              fetchFunc={getAgreements}
+              onRowClick={onAgreementClick}
+            />
           </Fade>
         )}
     </>

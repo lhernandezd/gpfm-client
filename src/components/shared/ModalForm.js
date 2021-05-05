@@ -9,14 +9,12 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   dialogOrigin: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       left: "calc(0% + 100px)",
     },
   },
   dialogOriginMd: {
-    [theme.breakpoints.up("sm")]: {
-      left: "calc(0%)",
-    },
+    left: "calc(0%)",
   },
 }));
 
