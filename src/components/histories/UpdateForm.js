@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
@@ -390,8 +391,6 @@ const UpdateForm = ({ history, toggleForm }) => {
 export default UpdateForm;
 
 UpdateForm.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.object.isRequired,
-  // eslint-disable-next-line react/require-default-props
   toggleForm: PropTypes.func.isRequired,
 };

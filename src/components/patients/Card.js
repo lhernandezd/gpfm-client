@@ -44,12 +44,13 @@ const Card = memo(({ patient, onClickCard }) => {
   const lastName = get(patient, "last_name", "");
   const documentType = get(patient, "document_type", "");
   const document = get(patient, "document", "");
+  const avatarFirst = `${firtsName[0]}${lastName[0]}`;
   return (
     <Paper className={classes.root} square key={patient.iid}>
       <CardActionArea onClick={() => onClickCard(patient.id, patient)}>
         <div className={classes.content}>
-          <AvatarBadge status="active">
-            <Avatar className={classes.avatar}>{`${firtsName[0]}${lastName[0]}`}</Avatar>
+          <AvatarBadge invisible>
+            <Avatar className={classes.avatar}>{`${startCase(avatarFirst)}`}</Avatar>
           </AvatarBadge>
           <Typography variant="h5" component="h2" className={classes.title} color="textPrimary" noWrap>
             {startCase(`${firtsName} ${lastName}`)}

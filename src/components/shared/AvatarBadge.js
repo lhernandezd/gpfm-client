@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React from "react";
 import PropTypes from "prop-types";
 import Badge from "@material-ui/core/Badge";
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BadgeAvatars({ children, status }) {
+export default function BadgeAvatars({ children, status, invisible }) {
   const classes = useStyles();
 
   return (
@@ -62,6 +63,7 @@ export default function BadgeAvatars({ children, status }) {
         classes={{
           badge: status === "active" ? classes.active : classes.inactive,
         }}
+        invisible={invisible}
       >
         {children}
       </StyledBadge>
@@ -71,5 +73,10 @@ export default function BadgeAvatars({ children, status }) {
 
 BadgeAvatars.propTypes = {
   children: PropTypes.node.isRequired,
-  status: PropTypes.string.isRequired,
+  status: PropTypes.string,
+  invisible: PropTypes.bool,
+};
+
+BadgeAvatars.defaultProps = {
+  status: "inactive",
 };

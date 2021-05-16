@@ -7,25 +7,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Paper, CircularProgress, Fade,
 } from "@material-ui/core";
-import { getPatient } from "../../actions/patients";
-import PatientsProfileCard from "../../components/patients/ProfileCard";
+import { getEntity } from "../../actions/entities";
+import EntityProfileCard from "../../components/entities/ProfileCard";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   paperContainer: {
     display: "flex",
     padding: "20px 40px",
     marginBottom: 20,
-    flexDirection: "column",
-  },
-  avatar: {
-    width: theme.spacing(12),
-    height: theme.spacing(12),
-    fontSize: 30,
-    border: "1.5px solid white",
-  },
-  basicInfo: {
-    marginLeft: 60,
-    display: "flex",
     flexDirection: "column",
   },
   loadingContainer: {
@@ -36,37 +25,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PatientProfile = memo(({ match }) => {
+const EntityProfile = memo(({ match }) => {
   const dispatch = useDispatch();
-  const patients = useSelector((state) => state.patients);
+  const entities = useSelector((state) => state.entities);
   const classes = useStyles();
 
   useEffect(() => {
-    dispatch(getPatient(get(match, "params.id")));
+    dispatch(getEntity(get(match, "params.id")));
   }, [dispatch]);
 
-  const patientData = get(patients, "patient");
+  const entityData = get(entities, "entity");
   return (
     <>
-      {patients.isFetching
+      {entities.isFetching
         ? (
           <div className={classes.loadingContainer}>
             <CircularProgress />
           </div>
         )
         : (
-          <Fade in={!patients.isFetching}>
-            <Paper className={classes.paperContainer} square>
-              <PatientsProfileCard patient={patientData} />
-            </Paper>
+          <Fade in={!entities.isFetching}>
+            <div>
+              <Paper className={classes.paperContainer} square>
+                <EntityProfileCard entity={entityData} />
+              </Paper>
+            </div>
           </Fade>
         )}
     </>
   );
 });
 
-export default PatientProfile;
+export default EntityProfile;
 
-PatientProfile.propTypes = {
+EntityProfile.propTypes = {
   match: PropTypes.object.isRequired,
 };

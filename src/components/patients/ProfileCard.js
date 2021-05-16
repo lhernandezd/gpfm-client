@@ -28,11 +28,8 @@ const useStyles = makeStyles(() => ({
   accordionSection: {
     padding: "20px 0",
   },
-  iconRoot: {
-    minWidth: "35px",
-  },
   subSectionData: {
-    padding: "10px 0",
+    margin: "20px 0",
   },
 }));
 
@@ -150,7 +147,7 @@ const PatientsProfileCard = memo(({ patient }) => {
             Patient Name:
             {" "}
           </Typography>
-          <Typography variant="subtitle1" component="span">
+          <Typography variant="body1" component="span">
             {startCase(fullName)}
           </Typography>
         </div>
@@ -159,7 +156,7 @@ const PatientsProfileCard = memo(({ patient }) => {
             Patient Identification:
             {" "}
           </Typography>
-          <Typography variant="subtitle1" component="span">
+          <Typography variant="body1" component="span">
             {`${toUpper(documentType)} ${document}`}
           </Typography>
         </div>
@@ -168,7 +165,7 @@ const PatientsProfileCard = memo(({ patient }) => {
         {accordionSections.map((section) => (
           <Accordion key={section.id} elevation={0}>
             <UpdatedAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle2" component="p">{section.name}</Typography>
+              <Typography className={classes.bold} variant="subtitle1" component="p">{section.name}</Typography>
             </UpdatedAccordionSummary>
             <AccordionDetails>
               <Grid container spacing={3}>

@@ -7,6 +7,7 @@ import { getDirectionTitleFromState } from "../../utils/directions";
 import DynamicDirection from "../../components/shared/DynamicDirection";
 import EntitiesListView from "./EntitiesListView";
 import CreateForm from "../../components/entities/CreateForm";
+import EntityProfile from "./EntityProfile";
 import { getEntities, getEntity } from "../../actions/entities";
 
 const useStyles = makeStyles(() => ({
@@ -47,6 +48,7 @@ const EntitiesLayout = memo(({ location, history, match }) => {
       />
       <Switch>
         <Route exact path={match.path} component={EntitiesListView} />
+        <Route path={`${match.path}/:id`} component={EntityProfile} />
       </Switch>
     </section>
   );

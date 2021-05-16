@@ -7,25 +7,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Paper, CircularProgress, Fade,
 } from "@material-ui/core";
-import { getPatient } from "../../actions/patients";
-import PatientsProfileCard from "../../components/patients/ProfileCard";
+import { getAgreement } from "../../actions/agreements";
+import AgreementsProfileCard from "../../components/agreements/ProfileCard";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   paperContainer: {
     display: "flex",
     padding: "20px 40px",
     marginBottom: 20,
-    flexDirection: "column",
-  },
-  avatar: {
-    width: theme.spacing(12),
-    height: theme.spacing(12),
-    fontSize: 30,
-    border: "1.5px solid white",
-  },
-  basicInfo: {
-    marginLeft: 60,
-    display: "flex",
     flexDirection: "column",
   },
   loadingContainer: {
@@ -36,37 +25,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PatientProfile = memo(({ match }) => {
+const AgreementsProfile = memo(({ match }) => {
   const dispatch = useDispatch();
-  const patients = useSelector((state) => state.patients);
+  const agreements = useSelector((state) => state.agreements);
   const classes = useStyles();
 
   useEffect(() => {
-    dispatch(getPatient(get(match, "params.id")));
+    dispatch(getAgreement(get(match, "params.id")));
   }, [dispatch]);
 
-  const patientData = get(patients, "patient");
+  const agreementData = get(agreements, "agreement");
   return (
     <>
-      {patients.isFetching
+      {agreements.isFetching
         ? (
           <div className={classes.loadingContainer}>
             <CircularProgress />
           </div>
         )
         : (
-          <Fade in={!patients.isFetching}>
-            <Paper className={classes.paperContainer} square>
-              <PatientsProfileCard patient={patientData} />
-            </Paper>
+          <Fade in={!agreements.isFetching}>
+            <div>
+              <Paper className={classes.paperContainer} square>
+                <AgreementsProfileCard agreement={agreementData} />
+              </Paper>
+            </div>
           </Fade>
         )}
     </>
   );
 });
 
-export default PatientProfile;
+export default AgreementsProfile;
 
-PatientProfile.propTypes = {
+AgreementsProfile.propTypes = {
   match: PropTypes.object.isRequired,
 };

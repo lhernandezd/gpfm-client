@@ -54,7 +54,7 @@ const handleFields = (fieldValue) => {
   return capitalize(fieldValue);
 };
 
-const Card = memo(({ history }) => {
+const HistoryProfileCard = memo(({ history }) => {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState(false);
 
@@ -111,8 +111,8 @@ const Card = memo(({ history }) => {
             Patient Name:
             {" "}
           </Typography>
-          <Typography variant="subtitle1" component="span">
-            {patientFullName}
+          <Typography variant="body1" component="span">
+            {startCase(patientFullName)}
           </Typography>
         </div>
         <div className="coreInfoItem">
@@ -120,7 +120,7 @@ const Card = memo(({ history }) => {
             Patient Identification:
             {" "}
           </Typography>
-          <Typography variant="subtitle1" component="span">
+          <Typography variant="body1" component="span">
             {`${toUpper(patientDocumentType)} ${patientDocument}`}
           </Typography>
         </div>
@@ -129,7 +129,7 @@ const Card = memo(({ history }) => {
         {accordionSections.map((section) => (
           <Accordion key={section.id} elevation={0}>
             <UpdatedAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle2" component="p">{section.name}</Typography>
+              <Typography className={classes.bold} variant="subtitle1" component="p">{section.name}</Typography>
             </UpdatedAccordionSummary>
             <AccordionDetails>
               <Grid container spacing={3}>
@@ -179,9 +179,9 @@ const Card = memo(({ history }) => {
   );
 });
 
-export default Card;
+export default HistoryProfileCard;
 
-Card.propTypes = {
+HistoryProfileCard.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.object.isRequired,
 };

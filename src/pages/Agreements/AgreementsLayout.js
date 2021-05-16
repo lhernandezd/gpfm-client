@@ -7,6 +7,7 @@ import { getDirectionTitleFromState } from "../../utils/directions";
 import DynamicDirection from "../../components/shared/DynamicDirection";
 import AgreementsListView from "./AgreementsListView";
 import CreateForm from "../../components/agreements/CreateForm";
+import AgreementProfile from "./AgreementProfile";
 import { getAgreements, getAgreement } from "../../actions/agreements";
 
 const useStyles = makeStyles(() => ({
@@ -47,6 +48,7 @@ const AgreementsLayout = memo(({ location, history, match }) => {
       />
       <Switch>
         <Route exact path={match.path} component={AgreementsListView} />
+        <Route path={`${match.path}/:id`} component={AgreementProfile} />
       </Switch>
     </section>
   );

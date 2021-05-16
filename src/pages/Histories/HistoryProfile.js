@@ -8,7 +8,7 @@ import {
   Paper, CircularProgress, Fade,
 } from "@material-ui/core";
 import { getHistory } from "../../actions/histories";
-import HistoryCard from "../../components/histories/Card";
+import HistoryProfileCard from "../../components/histories/ProfileCard";
 
 const useStyles = makeStyles(() => ({
   paperContainer: {
@@ -47,7 +47,7 @@ const HistoryProfile = memo(({ match }) => {
           <Fade in={!histories.isFetching}>
             <div>
               <Paper className={classes.paperContainer} square>
-                <HistoryCard history={historyData} />
+                <HistoryProfileCard history={historyData} />
               </Paper>
             </div>
           </Fade>
