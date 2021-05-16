@@ -1,19 +1,21 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { memo, useEffect } from "react";
 import PropTypes from "prop-types";
-import { get, startCase, toUpper } from "lodash";
+import { get } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Paper, Typography, Avatar, CircularProgress, Fade,
+  Paper, CircularProgress, Fade,
 } from "@material-ui/core";
 import { getPatient } from "../../actions/patients";
+import PatientsProfileCard from "../../components/patients/PatientsProfileCard";
 
 const useStyles = makeStyles((theme) => ({
   paperContainer: {
     display: "flex",
     padding: "20px 40px",
     marginBottom: 20,
+    flexDirection: "column",
   },
   avatar: {
     width: theme.spacing(12),
@@ -34,21 +36,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UserProfile = memo(({ match }) => {
+const PatientProfile = memo(({ match }) => {
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.patients);
   const classes = useStyles();
-  const firstName = get(patients, "patient.first_name", "");
-  const lastName = get(patients, "patient.last_name", "");
-  const fullName = `${firstName} ${lastName}`;
-  const documentType = get(patients, "patient.document_type", "");
-  const document = get(patients, "patient.document", "");
-  const email = get(patients, "patient.email", "");
 
   useEffect(() => {
     dispatch(getPatient(get(match, "params.id")));
   }, [dispatch]);
 
+  const patientData = get(patients, "patient");
   return (
     <>
       {patients.isFetching
@@ -59,30 +56,17 @@ const UserProfile = memo(({ match }) => {
         )
         : (
           <Fade in={!patients.isFetching}>
-            <div>
-              <Paper className={classes.paperContainer} square>
-                <Avatar className={classes.avatar}>LH</Avatar>
-                <div className={classes.basicInfo}>
-                  <Typography variant="h5" component="h2">
-                    {`${startCase(fullName)}`}
-                  </Typography>
-                  <Typography variant="subtitle1" component="p">
-                    {`${toUpper(documentType)}: ${document}`}
-                  </Typography>
-                  <Typography variant="subtitle1" component="p">
-                    {email}
-                  </Typography>
-                </div>
-              </Paper>
-            </div>
+            <Paper className={classes.paperContainer} square>
+              <PatientsProfileCard patient={patientData} />
+            </Paper>
           </Fade>
         )}
     </>
   );
 });
 
-export default UserProfile;
+export default PatientProfile;
 
-UserProfile.propTypes = {
+PatientProfile.propTypes = {
   match: PropTypes.object.isRequired,
 };

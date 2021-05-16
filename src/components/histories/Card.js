@@ -15,7 +15,7 @@ import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ModalForm from "../shared/ModalForm";
 import UpdateHistory from "./UpdateForm";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   coreInfo: {},
   header: {
     display: "flex",

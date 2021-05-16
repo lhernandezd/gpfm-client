@@ -10,12 +10,12 @@ import {
 import { getHistory } from "../../actions/histories";
 import HistoryCard from "../../components/histories/Card";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   paperContainer: {
     display: "flex",
     padding: "20px 40px",
     marginBottom: 20,
-    flexDirection: "column"
+    flexDirection: "column",
   },
   loadingContainer: {
     display: "flex",

@@ -39,7 +39,7 @@ const HistorySchema = Yup.object().shape({
   current_treatment: Yup.string(),
 });
 
-const CreateForm = ({ history, toggleForm }) => {
+const UpdateForm = ({ history, toggleForm }) => {
   const dispatch = useDispatch();
 
   const patient = get(history, "patient", {});
@@ -387,9 +387,9 @@ const CreateForm = ({ history, toggleForm }) => {
   );
 };
 
-export default CreateForm;
+export default UpdateForm;
 
-CreateForm.propTypes = {
+UpdateForm.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.object.isRequired,
   // eslint-disable-next-line react/require-default-props

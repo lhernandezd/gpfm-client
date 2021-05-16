@@ -20,6 +20,7 @@ import { updateUser } from "../../actions/users";
 import { roles as DefaultRoles } from "../../utils/staticDataTypes";
 import DynamicSelectField from "../form/DynamicSelectField";
 import { getCities } from "../../actions/cities";
+import parseSelectOptions from "../../utils/parseSelectOptions";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -69,10 +70,7 @@ const DetailsForm = ({ user, toggleForm }) => {
     phone_number: get(user, "phone_number", ""),
     address: get(user, "address", ""),
     roles: roles.length ? roles.map((role) => ({ name: role.name })) : [],
-    city_id: {
-      id: city.id,
-      label: `${city.name}, ${city.state?.name}`,
-    },
+    city_id: parseSelectOptions({ data: [city] }, "cities")[0],
   };
 
   const handleSubmit = async (values) => {
