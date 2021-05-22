@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import EditIcon from "@material-ui/icons/Edit";
+import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ModalForm from "../shared/ModalForm";
 import UpdateHistory from "./UpdateForm";
@@ -28,6 +29,10 @@ const useStyles = makeStyles(() => ({
   },
   iconRoot: {
     minWidth: "35px",
+  },
+  iconContainer: {
+    display: "flex",
+    alignItems: "center",
   },
 }));
 
@@ -54,7 +59,7 @@ const handleFields = (fieldValue) => {
   return capitalize(fieldValue);
 };
 
-const HistoryProfileCard = memo(({ history }) => {
+const HistoryProfileCard = memo(({ history, generatePDF }) => {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState(false);
 
@@ -97,14 +102,27 @@ const HistoryProfileCard = memo(({ history }) => {
             {" "}
             {historyId}
           </Typography>
-          <IconButton
-            edge="end"
-            aria-label="edit history"
-            onClick={handleModal}
-            color="primary"
-          >
-            <EditIcon fontSize="small" />
-          </IconButton>
+          <div className={classes.iconContainer}>
+            {generatePDF
+              && (
+              <IconButton
+                edge="end"
+                aria-label="download history"
+                onClick={() => generatePDF(get(history, "id"))}
+                color="primary"
+              >
+                <PictureAsPdfIcon fontSize="small" />
+              </IconButton>
+              )}
+            <IconButton
+              edge="end"
+              aria-label="edit history"
+              onClick={handleModal}
+              color="primary"
+            >
+              <EditIcon fontSize="small" />
+            </IconButton>
+          </div>
         </div>
         <div className="coreInfoItem">
           <Typography className={classes.bold} variant="subtitle1" component="span">
@@ -184,4 +202,6 @@ export default HistoryProfileCard;
 HistoryProfileCard.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/require-default-props
+  generatePDF: PropTypes.func,
 };

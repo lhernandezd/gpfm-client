@@ -2,7 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { capitalize, toUpper } from "lodash";
+import { capitalize, toUpper, startCase } from "lodash";
 import {
   Grid,
   IconButton,
@@ -178,7 +178,7 @@ const CreateForm = ({ toggleForm }) => {
                 name="gender"
                 component={Autocomplete}
                 options={DefaultGenders}
-                getOptionLabel={(option) => capitalize(option.name)}
+                getOptionLabel={(option) => startCase(option.name)}
                 renderInput={(params: AutocompleteRenderInputParams) => (
                   <MuiTextField
                     {...params}

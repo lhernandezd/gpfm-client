@@ -58,7 +58,7 @@ export const documentTypes = [
 export const genders = [
   { name: "male" },
   { name: "female" },
-  { name: "No Binary" },
+  { name: "no_binary" },
 ];
 
 export const civilStatus = [

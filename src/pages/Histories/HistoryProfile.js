@@ -8,6 +8,7 @@ import {
   Paper, CircularProgress, Fade,
 } from "@material-ui/core";
 import { getHistory } from "../../actions/histories";
+import { createPdf } from "../../actions/pdf";
 import HistoryProfileCard from "../../components/histories/ProfileCard";
 
 const useStyles = makeStyles(() => ({
@@ -34,6 +35,13 @@ const HistoryProfile = memo(({ match }) => {
     dispatch(getHistory(get(match, "params.id")));
   }, [dispatch]);
 
+  const generatePDF = async (id) => {
+    await dispatch(createPdf({
+      dataId: id,
+      model: "history",
+    }));
+  };
+
   const historyData = get(histories, "history");
   return (
     <>
@@ -47,7 +55,7 @@ const HistoryProfile = memo(({ match }) => {
           <Fade in={!histories.isFetching}>
             <div>
               <Paper className={classes.paperContainer} square>
-                <HistoryProfileCard history={historyData} />
+                <HistoryProfileCard history={historyData} generatePDF={generatePDF} />
               </Paper>
             </div>
           </Fade>
