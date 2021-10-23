@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { Field } from "formik";
 import * as Yup from "yup";
-import { TextField } from "formik-material-ui";
+import { TextField, CheckboxWithLabel } from "formik-material-ui";
 import { updateHistory } from "../../actions/histories";
 import parseSelectOptions from "../../utils/parseSelectOptions";
 import parseFormValues from "../../utils/parseFormValues";
@@ -69,6 +69,7 @@ const UpdateForm = ({ history, toggleForm }) => {
     consent: get(history, "consent"),
     current_illness: get(history, "current_illness"),
     current_treatment: get(history, "current_treatment"),
+    updatePatientInfoField: false,
   };
 
   const handleSubmit = async (values) => {
@@ -112,7 +113,7 @@ const UpdateForm = ({ history, toggleForm }) => {
       <FormikStep label="Basic Information">
         {(stepProps) => (
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={12} md={12}>
+            <Grid item xs={8} sm={8} md={8}>
               <DynamicSelectField
                 field="patient_id"
                 reduxField="patients"
@@ -124,6 +125,9 @@ const UpdateForm = ({ history, toggleForm }) => {
                 required
                 disabled
               />
+            </Grid>
+            <Grid item xs={4} sm={4} md={4}>
+              <Field component={CheckboxWithLabel} type="checkbox" name="updatePatientInfoField" Label={{ label: "Update patient data in history?" }} color="primary" />
             </Grid>
             <Grid item xs={12} sm={12} md={4}>
               <Field

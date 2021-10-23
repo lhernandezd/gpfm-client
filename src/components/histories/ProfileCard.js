@@ -71,8 +71,8 @@ const HistoryProfileCard = memo(({ history, generatePDF }) => {
   const patientFirstName = get(history, "patient.first_name", "");
   const patientLastName = get(history, "patient.last_name", "");
   const patientFullName = `${patientFirstName} ${patientLastName}`;
-  const patientDocumentType = get(history, "patient.document_type", "");
-  const patientDocument = get(history, "patient.document", "");
+  const patientDocumentType = get(history, "patient_info_save.document_type", "");
+  const patientDocument = get(history, "patient_info_save.document", "");
   const accordionSections = [
     {
       id: "summary",
