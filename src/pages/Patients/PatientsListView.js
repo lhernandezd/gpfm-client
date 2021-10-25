@@ -3,10 +3,10 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { get } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, CircularProgress, Fade } from "@material-ui/core";
+import { CircularProgress, Fade } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { getPatients } from "../../actions/patients";
-import Card from "../../components/patients/Card";
+import Table from "../../components/patients/Table";
 
 const useStyles = makeStyles(() => ({
   loadingContainer: {
@@ -17,13 +17,18 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function PatientsGrid({ location, history }) {
+export default function PatientsListView({ location, history }) {
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.patients);
   const classes = useStyles();
+  const baseOrder = {
+    document: "asc",
+  };
 
   useEffect(() => {
-    dispatch(getPatients());
+    dispatch(getPatients({
+      order: baseOrder,
+    }));
   }, [dispatch]);
 
   const onPatientClick = (id, user) => {
@@ -45,20 +50,19 @@ export default function PatientsGrid({ location, history }) {
         )
         : (
           <Fade in={!patients.isFetching}>
-            <Grid container spacing={3}>
-              {patients.data.map((patient) => (
-                <Grid item xs sm={6} md={4} key={patient.id}>
-                  <Card patient={patient} onClickCard={onPatientClick} />
-                </Grid>
-              ))}
-            </Grid>
+            <Table
+              patients={patients}
+              fetchFunc={getPatients}
+              onRowClick={onPatientClick}
+              baseOrder
+            />
           </Fade>
         )}
     </>
   );
 }
 
-PatientsGrid.propTypes = {
+PatientsListView.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
 };
