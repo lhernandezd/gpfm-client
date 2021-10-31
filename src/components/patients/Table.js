@@ -2,7 +2,9 @@
 import React, { memo, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { format as formatDate, parseISO } from "date-fns";
-import { get, toUpper, startCase } from "lodash";
+import {
+  get, toUpper, startCase, isObject, isArray,
+} from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Paper, Table, TableBody, TableCell, TableContainer, TableHead,
@@ -62,7 +64,12 @@ const TableComponent = memo(({
   useEffect(() => {
     setPage(get(patients, "meta.page", 1) - 1);
     setRowsPerPage(get(patients, "meta.pageSize", 10));
-    setSort(Object.fromEntries(get(patients, "meta.order", sort)));
+    const orderFromMeta = get(patients, "meta.order", sort);
+    if (isObject(orderFromMeta) && !isArray(orderFromMeta)) {
+      setSort(orderFromMeta);
+    } else {
+      setSort(Object.fromEntries(orderFromMeta));
+    }
   }, [patients]);
 
   const columns = [

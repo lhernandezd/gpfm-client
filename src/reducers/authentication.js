@@ -1,4 +1,4 @@
-import { omit } from "lodash";
+import { omit, get } from "lodash";
 import { setAccessToken, removeAccessToken } from "../utils/auth";
 import * as types from "../actions/constants/authenticationTypes";
 
@@ -43,7 +43,7 @@ export default function (state = initialState, action) {
         isAuthenticated: false,
         token: null,
         error: true,
-        statusText: `Error ${payload.status}: ${payload.data.message}`,
+        statusText: `Error ${get(payload, "status", "No status")}: ${get(payload, "data.message")}`,
       };
     }
 

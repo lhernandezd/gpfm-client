@@ -54,7 +54,7 @@ export default function PatientsListView({ location, history }) {
               patients={patients}
               fetchFunc={getPatients}
               onRowClick={onPatientClick}
-              baseOrder
+              baseOrder={baseOrder}
             />
           </Fade>
         )}

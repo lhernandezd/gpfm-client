@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React, { memo, useState } from "react";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import {
   get, startCase, capitalize, toUpper,
@@ -14,6 +15,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ModalForm from "../shared/ModalForm";
+import { isAdmin } from "../../utils/user";
 import UpdateHistory from "./UpdateForm";
 
 const useStyles = makeStyles(() => ({
@@ -61,6 +63,8 @@ const handleFields = (fieldValue) => {
 
 const HistoryProfileCard = memo(({ history, generatePDF }) => {
   const classes = useStyles();
+  const currentUser = useSelector((state) => state.authentication.currentUser);
+  const roles = get(currentUser, "roles", []);
   const [openModal, setOpenModal] = useState(false);
 
   const handleModal = () => {
@@ -114,14 +118,17 @@ const HistoryProfileCard = memo(({ history, generatePDF }) => {
                 <PictureAsPdfIcon fontSize="small" />
               </IconButton>
               )}
-            <IconButton
-              edge="end"
-              aria-label="edit history"
-              onClick={handleModal}
-              color="primary"
-            >
-              <EditIcon fontSize="small" />
-            </IconButton>
+            {isAdmin(roles)
+              && (
+              <IconButton
+                edge="end"
+                aria-label="edit history"
+                onClick={handleModal}
+                color="primary"
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+              )}
           </div>
         </div>
         <div className="coreInfoItem">
