@@ -3,7 +3,7 @@ const base64ToArrayBuffer = (binaryString) => {
   const bString = window.atob(sanitizedBinary);
   const bLength = bString.length;
   const bytes = new Uint8Array(bLength);
-  for (let i = 0; i < bLength; i++) {
+  for (let i = 0; i < bLength; i + 1) {
     const ascii = bString.charCodeAt(i);
     bytes[i] = ascii;
   }

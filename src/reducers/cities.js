@@ -8,7 +8,7 @@ const initialState = {
   error: false,
 };
 
-export default function (state = initialState, action) {
+export default function cityReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case types.GET_CITIES_REQUEST: {

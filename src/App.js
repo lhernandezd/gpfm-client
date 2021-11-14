@@ -21,6 +21,7 @@ const Patients = lazy(() => import("./pages/Patients/Patients"));
 const Histories = lazy(() => import("./pages/Histories/Histories"));
 const Entities = lazy(() => import("./pages/Entities/Entities"));
 const Agreements = lazy(() => import("./pages/Agreements/Agreements"));
+const Appointments = lazy(() => import("./pages/Appointments/Appointments"));
 
 function App() {
   const isAuthenticated = useSelector((state) => state.authentication.isAuthenticated);
@@ -68,7 +69,7 @@ function App() {
                   <Route path="/users" component={Users} />
                   <Route path="/patients" component={Patients} />
                   <Route path="/histories" component={Histories} />
-                  <Route path="/appointments" component={Home} />
+                  <Route path="/appointments" component={Appointments} />
                   <Route path="/entities" component={Entities} />
                   <Route path="/agreements" component={Agreements} />
                 </AppLayout>

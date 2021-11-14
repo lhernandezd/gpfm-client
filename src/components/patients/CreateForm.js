@@ -281,7 +281,7 @@ const CreateForm = ({ toggleForm }) => {
       <FormikStep label="Contacts Information">
         {(stepProps) => (
           <FieldArray name="contacts">
-            {({ insert, remove, push }) => (
+            {({ remove, push }) => (
               <Grid container spacing={3}>
                 <Grid item container xs={12} alignItems="center">
                   <Grid item>

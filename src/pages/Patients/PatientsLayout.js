@@ -1,4 +1,5 @@
 /* eslint-disable react/forbid-prop-types */
+/* eslint-disable no-unused-vars */
 import React, { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Switch, Route } from "react-router-dom";

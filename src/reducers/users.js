@@ -9,7 +9,7 @@ const initialState = {
   user: {},
 };
 
-export default function (state = initialState, action) {
+export default function userReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case types.GET_USERS_REQUEST: {

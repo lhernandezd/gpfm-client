@@ -9,7 +9,7 @@ const initialState = {
   entity: {},
 };
 
-export default function (state = initialState, action) {
+export default function entityReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case types.GET_ENTITIES_REQUEST: {

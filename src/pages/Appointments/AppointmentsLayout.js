@@ -1,15 +1,14 @@
-/* eslint-disable react/forbid-prop-types */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/forbid-prop-types */
 import React, { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { getDirectionTitleFromState } from "../../utils/directions";
 import DynamicDirection from "../../components/shared/DynamicDirection";
-import EntitiesListView from "./EntitiesListView";
-import CreateForm from "../../components/entities/CreateForm";
-import EntityProfile from "./EntityProfile";
-import { getEntities, getEntity } from "../../actions/entities";
+import AppointmentsCalendar from "./AppointmentsCalendar";
+import CreateForm from "../../components/agreements/CreateForm";
+import { getAppointments } from "../../actions/appointments";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -17,23 +16,20 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const EntitiesLayout = memo(({ location, history, match }) => {
+const AgreementsLayout = memo(({ location, history, match }) => {
   const classes = useStyles();
   const [routes, setRoutes] = useState([]);
   const [actions, setActions] = useState({});
 
   useEffect(() => {
-    const directionaTitle = getDirectionTitleFromState(location.state);
     const pathnames = location.pathname.split("/").filter((x) => x);
     const arrangeRoutes = pathnames.map((item, index) => ({
-      title: index !== 0 && directionaTitle ? directionaTitle : item,
+      title: item,
       path: index === 0 ? match.path : `${match.path}/${item}`,
     }));
     setRoutes(arrangeRoutes);
-    setActions({
-      refresh: directionaTitle ? getEntity : getEntities,
-    });
-  }, [location.pathname, match.path, location.search]);
+    setActions({ refresh: getAppointments });
+  }, [location.pathname, match.path]);
 
   return (
     <section className={classes.container}>
@@ -42,22 +38,19 @@ const EntitiesLayout = memo(({ location, history, match }) => {
         routes={routes}
         actions={actions}
         location={location}
-        model="entity"
+        model="appoinment"
         modalComponents={{
           add: CreateForm,
         }}
       />
-      <Switch>
-        <Route exact path={match.path} component={EntitiesListView} />
-        <Route path={`${match.path}/:id`} component={EntityProfile} />
-      </Switch>
+      <AppointmentsCalendar />
     </section>
   );
 });
 
-export default EntitiesLayout;
+export default AgreementsLayout;
 
-EntitiesLayout.propTypes = {
+AgreementsLayout.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,

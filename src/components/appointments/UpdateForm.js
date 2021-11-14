@@ -1,0 +1,212 @@
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/forbid-prop-types */
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Button, LinearProgress, Grid, Dialog, DialogTitle, DialogActions,
+} from "@material-ui/core";
+import { Form, Formik, Field } from "formik";
+import * as Yup from "yup";
+import { get } from "lodash";
+import { TextField } from "formik-material-ui";
+import { KeyboardTimePicker } from "formik-material-ui-pickers";
+import DynamicSelectField from "../form/DynamicSelectField";
+import { getPatients } from "../../actions/patients";
+import { updateAppointment, deleteAppointment } from "../../actions/appointments";
+import { modalFormStyles } from "../../styles";
+import parseFormValues from "../../utils/parseFormValues";
+import parseSelectOptions from "../../utils/parseSelectOptions";
+
+const useStyles = makeStyles((theme) => ({
+  ...modalFormStyles(theme),
+  customActions: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  deleteDialog: {
+    [theme.breakpoints.up("md")]: {
+      left: "calc(0% + 100px)",
+    },
+  },
+}));
+
+const AppointmentSchema = Yup.object().shape({
+  title: Yup.string().required("Required"),
+  description: Yup.string(),
+  start_date: Yup.date(),
+  end_date: Yup.date(),
+  patient_id: Yup.object({
+    id: Yup.string().required("Required"),
+    label: Yup.string(),
+  }),
+});
+
+const UpdateForm = ({ toggleForm, appointment }) => {
+  const classes = useStyles();
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const dispatch = useDispatch();
+  const appPatient = get(appointment, "objectValues.extendedProps.patient");
+  const initialValues = {
+    title: get(appointment, "objectValues.title"),
+    description: get(appointment, "objectValues.extendedProps.description"),
+    patient_id: parseSelectOptions({ data: [appPatient] }, "patients")[0],
+    start_date: get(appointment, "objectValues.start"),
+    end_date: get(appointment, "objectValues.end"),
+  };
+
+  const handleDeleteModal = () => {
+    setOpenDeleteModal(!openDeleteModal);
+  };
+
+  const handleDeleteAppointment = async () => {
+    await dispatch(deleteAppointment(appointment.objectValues.id));
+    appointment.appEvent.remove();
+    handleDeleteModal();
+    toggleForm();
+  };
+
+  const handleSubmit = async (values) => {
+    const valuesUpdated = parseFormValues(values);
+    await dispatch(updateAppointment(appointment.objectValues.id, {
+      ...valuesUpdated,
+      all_day: false,
+    }));
+    appointment.appEvent.setProp("title", valuesUpdated.title);
+    appointment.appEvent.setExtendedProp("description", valuesUpdated.description);
+    appointment.appEvent.setDates(valuesUpdated.start_date, valuesUpdated.end_date, {
+      allDay: valuesUpdated.allDay,
+    });
+    toggleForm();
+  };
+
+  return (
+    <Formik
+      initialValues={initialValues}
+      onSubmit={(values) => handleSubmit(values)}
+      validationSchema={AppointmentSchema}
+    >
+      {({
+        submitForm, isSubmitting, dirty, touched, errors,
+      }) => (
+        <>
+          {isSubmitting
+            ? <LinearProgress className={classes.progress} />
+            : <div className={classes.progressSkeleton} />}
+          <Form className={classes.form}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={12} md={12}>
+                <Field
+                  component={TextField}
+                  required
+                  id="title"
+                  label="Appointment Title"
+                  name="title"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <Field
+                  component={TextField}
+                  id="description"
+                  label="Description"
+                  name="description"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <DynamicSelectField
+                  field="patient_id"
+                  reduxField="patients"
+                  label="Patient"
+                  fetchFunc={getPatients}
+                  optionField="label"
+                  touched={touched}
+                  errors={errors}
+                  required
+                />
+              </Grid>
+              <Grid item xs sm={12} md={6}>
+                <Field
+                  component={KeyboardTimePicker}
+                  id="start_date"
+                  name="start_date"
+                  label="Start Date"
+                  variant="inline"
+                  fullWidth
+                  required
+                />
+              </Grid>
+              <Grid item xs sm={12} md={6}>
+                <Field
+                  component={KeyboardTimePicker}
+                  id="end_date"
+                  name="end_date"
+                  label="End Date"
+                  variant="inline"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} className={classes.actions}>
+                <Grid item xs={12} className={classes.customActions}>
+                  <Button
+                    color="secondary"
+                    className={classes.button}
+                    onClick={handleDeleteModal}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    color="primary"
+                    className={classes.button}
+                    onClick={toggleForm}
+                  >
+                    Close
+                  </Button>
+                </Grid>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  disabled={isSubmitting || !dirty}
+                  onClick={submitForm}
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
+          </Form>
+          <Dialog
+            open={openDeleteModal}
+            onClose={handleDeleteModal}
+            classes={{
+              paper: classes.deleteDialog,
+            }}
+            maxWidth="sm"
+          >
+            <DialogTitle>Are you sure you want to continue with this action ?</DialogTitle>
+            <DialogActions>
+              <Button onClick={handleDeleteModal} color="secondary">
+                No
+              </Button>
+              <Button onClick={handleDeleteAppointment} color="primary">
+                Yes
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      )}
+    </Formik>
+  );
+};
+
+export default UpdateForm;
+
+UpdateForm.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  // eslint-disable-next-line react/require-default-props
+  toggleForm: PropTypes.func,
+  appointment: PropTypes.object,
+};

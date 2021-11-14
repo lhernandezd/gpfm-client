@@ -1,4 +1,4 @@
-import * as types from "../actions/constants/agreementTypes";
+import * as types from "../actions/constants/appointmentTypes";
 
 const initialState = {
   data: [],
@@ -6,13 +6,13 @@ const initialState = {
   meta: {},
   statusText: null,
   error: false,
-  agreement: {},
+  appointment: {},
 };
 
-export default function agreementReducer(state = initialState, action) {
+export default function appointmentRedcuer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case types.GET_AGREEMENTS_REQUEST: {
+    case types.GET_APPOINTMENTS_REQUEST: {
       return {
         ...state,
         isFetching: true,
@@ -22,7 +22,7 @@ export default function agreementReducer(state = initialState, action) {
       };
     }
 
-    case types.GET_AGREEMENTS_SUCCESS: {
+    case types.GET_APPOINTMENTS_SUCCESS: {
       return {
         ...state,
         data: payload.data,
@@ -33,7 +33,7 @@ export default function agreementReducer(state = initialState, action) {
       };
     }
 
-    case types.GET_AGREEMENTS_FAILURE: {
+    case types.GET_APPOINTMENTS_FAILURE: {
       return {
         ...state,
         data: [],
@@ -44,7 +44,7 @@ export default function agreementReducer(state = initialState, action) {
       };
     }
 
-    case types.GET_AGREEMENT_REQUEST: {
+    case types.GET_APPOINTMENT_REQUEST: {
       return {
         ...state,
         isFetching: true,
@@ -54,20 +54,20 @@ export default function agreementReducer(state = initialState, action) {
       };
     }
 
-    case types.GET_AGREEMENT_SUCCESS: {
+    case types.GET_APPOINTMENT_SUCCESS: {
       return {
         ...state,
-        agreement: payload.data,
+        appointment: payload.data,
         isFetching: false,
         error: false,
         statusText: "Success",
       };
     }
 
-    case types.GET_AGREEMENT_FAILURE: {
+    case types.GET_APPOINTMENT_FAILURE: {
       return {
         ...state,
-        agreement: {},
+        appointment: {},
         isFetching: false,
         error: true,
         statusText: `Error ${payload.status}: ${payload.data.message}`,

@@ -25,9 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Alert(props) {
-  return <MuiAlert elevation={6} {...props} />;
-}
+const Alert = (props) => <MuiAlert elevation={6} {...props} />;
 
 export default function NotificationSnackbar({ isAuthenticated }) {
   const classes = useStyles();
@@ -37,9 +35,9 @@ export default function NotificationSnackbar({ isAuthenticated }) {
     (state) => state.snackbar,
   );
 
-  function handleClose() {
+  const handleClose = () => {
     dispatch(clearSnackbar());
-  }
+  };
 
   return (
     <Snackbar
