@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { Suspense, lazy } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -22,9 +23,13 @@ const Histories = lazy(() => import("./pages/Histories/Histories"));
 const Entities = lazy(() => import("./pages/Entities/Entities"));
 const Agreements = lazy(() => import("./pages/Agreements/Agreements"));
 const Appointments = lazy(() => import("./pages/Appointments/Appointments"));
+const Recover = lazy(() => import("./pages/Recover/Recover"));
+const Reset = lazy(() => import("./pages/Reset/Reset"));
 
 function App() {
   const isAuthenticated = useSelector((state) => state.authentication.isAuthenticated);
+  const isResetRequest = window.location.pathname.includes("resetPassword");
+  const tokenParam = window.location.pathname.split("/")[2] || "";
   return (
     <ThemeProvider theme={CustomTheme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -54,15 +59,24 @@ function App() {
                     pathname: "/home",
                   }}
                 />
-              ) : (
-                <Redirect
-                  to={{
-                    pathname: "/login",
-                  }}
-                />
-              )}
+              ) : isResetRequest && tokenParam
+                ? (
+                  <Redirect
+                    to={{
+                      pathname: `/resetPassword/${tokenParam}`,
+                    }}
+                  />
+                ) : (
+                  <Redirect
+                    to={{
+                      pathname: "/login",
+                    }}
+                  />
+                )}
               <Switch>
                 <Route path="/login" component={Login} />
+                <Route path="/recoverPassword" component={Recover} />
+                <Route path="/resetPassword/:token" component={Reset} />
                 <AppLayout>
                   <Route exact path="/" component={Home} />
                   <Route path="/home" component={Home} />

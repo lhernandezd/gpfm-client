@@ -2,9 +2,7 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { getDirectionTitleFromState } from "../../utils/directions";
 import DynamicDirection from "../../components/shared/DynamicDirection";
 import AppointmentsCalendar from "./AppointmentsCalendar";
 import CreateForm from "../../components/agreements/CreateForm";

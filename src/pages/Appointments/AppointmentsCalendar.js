@@ -90,6 +90,8 @@ const AppointmentsCalendar = ({ location, history }) => {
               <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, momentTimezonePlugin]}
                 timeZone="America/Bogota"
+                slotMinTime="06:00:00"
+                slotMaxTime="20:00:00"
                 headerToolbar={{
                   left: "prev,next today",
                   center: "title",

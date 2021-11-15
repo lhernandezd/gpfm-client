@@ -5,15 +5,15 @@ import {
   Avatar,
   Typography,
   Button,
-  Grid,
   LinearProgress,
+  Grid,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import { Form, Formik, Field } from "formik";
 import * as Yup from "yup";
 import { TextField } from "formik-material-ui";
-import { login } from "../../actions/authentication";
+import { recoverAccount } from "../../actions/authentication";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -38,39 +38,36 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    fontSize: 14,
   },
 }));
 
 const initialValues = {
   email: "",
-  password: "",
 };
 
-const LoginSchema = Yup.object().shape({
-  email: Yup.string().email().required("Required"),
+const RecoverSchema = Yup.object().shape({
+  email: Yup.string().email().required("Email Required"),
 });
 
-const LoginForm = () => {
+const RecoverForm = () => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const handleSubmit = (values, setSubmitting) => {
-    setTimeout(() => {
-      dispatch(login(values, history));
-      setSubmitting(false);
-    }, 1000);
+  const handleSubmit = async (values) => {
+    await dispatch(recoverAccount(values, history));
   };
 
   const onLinkClick = () => {
-    history.push("/recoverPassword");
+    history.push("/login");
   };
 
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={(values, { setSubmitting }) => handleSubmit(values, setSubmitting)}
-      validationSchema={LoginSchema}
+      onSubmit={(values) => handleSubmit(values)}
+      validationSchema={RecoverSchema}
     >
       {({ submitForm, isSubmitting }) => (
         <>
@@ -82,7 +79,7 @@ const LoginForm = () => {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Recover your account
             </Typography>
             <Form className={classes.form}>
               <Field
@@ -96,38 +93,35 @@ const LoginForm = () => {
                 margin="normal"
                 fullWidth
               />
-              <Field
-                component={TextField}
-                required
-                id="password"
-                label="Password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                variant="outlined"
-                margin="normal"
-                fullWidth
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                disabled={isSubmitting}
-                onClick={submitForm}
-                size="large"
-                fullWidth
-              >
-                Sign In
-              </Button>
-            </Form>
-            <Grid container>
-              <Grid item xs>
-                <Typography color="primary" component="a" variant="body2" onClick={onLinkClick}>
-                  Forgot password?
-                </Typography>
+              <Grid container spacing={2}>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="default"
+                    className={classes.submit}
+                    onClick={onLinkClick}
+                    size="large"
+                    fullWidth
+                  >
+                    Return to login
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    disabled={isSubmitting}
+                    onClick={submitForm}
+                    size="large"
+                    fullWidth
+                  >
+                    Send email
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
+            </Form>
           </div>
         </>
       )}
@@ -135,4 +129,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RecoverForm;

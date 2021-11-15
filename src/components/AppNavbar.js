@@ -14,7 +14,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import FaceIcon from "@material-ui/icons/Face";
-import { makeStyles, fade } from "@material-ui/core/styles";
+import { makeStyles, alpha } from "@material-ui/core/styles";
 import { logout } from "../actions/authentication";
 
 const drawerWidth = 200;
@@ -53,9 +53,9 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.black, 0.05),
+    backgroundColor: alpha(theme.palette.common.black, 0.05),
     "&:hover": {
-      backgroundColor: fade(theme.palette.common.black, 0.1),
+      backgroundColor: alpha(theme.palette.common.black, 0.1),
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,

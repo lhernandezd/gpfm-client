@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { Link as RouterLink } from "react-router-dom";
 import { startCase, get } from "lodash";
 import { useDispatch } from "react-redux";
-import { makeStyles, fade } from "@material-ui/core/styles";
+import { makeStyles, alpha } from "@material-ui/core/styles";
 import {
   Paper, Breadcrumbs, Typography, Link, IconButton,
 } from "@material-ui/core";
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     "&:hover": {
-      color: fade(theme.palette.primary.light, 1),
+      color: alpha(theme.palette.primary.light, 1),
     },
   },
 }));

@@ -1,11 +1,12 @@
+/* eslint-disable react/forbid-prop-types */
 import React from "react";
+import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   Avatar,
   Typography,
   Button,
-  Grid,
   LinearProgress,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -13,7 +14,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Form, Formik, Field } from "formik";
 import * as Yup from "yup";
 import { TextField } from "formik-material-ui";
-import { login } from "../../actions/authentication";
+import { get } from "lodash";
+import { resetPassword } from "../../actions/authentication";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -42,35 +44,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initialValues = {
-  email: "",
   password: "",
+  passwordConfirm: "",
 };
 
-const LoginSchema = Yup.object().shape({
-  email: Yup.string().email().required("Required"),
+const ResetSchema = Yup.object().shape({
+  password: Yup.string().required("Password is Required"),
+  passwordConfirm: Yup.string()
+    .oneOf([Yup.ref("password"), null])
+    .required("Password confirm is required"),
 });
 
-const LoginForm = () => {
+const ResetForm = ({ match }) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const handleSubmit = (values, setSubmitting) => {
-    setTimeout(() => {
-      dispatch(login(values, history));
-      setSubmitting(false);
-    }, 1000);
-  };
-
-  const onLinkClick = () => {
-    history.push("/recoverPassword");
+  const handleSubmit = async (values) => {
+    const token = get(match, "params.token");
+    const password = get(values, "password");
+    await dispatch(resetPassword({
+      password,
+      token,
+    }, history));
   };
 
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={(values, { setSubmitting }) => handleSubmit(values, setSubmitting)}
-      validationSchema={LoginSchema}
+      onSubmit={(values) => handleSubmit(values)}
+      validationSchema={ResetSchema}
     >
       {({ submitForm, isSubmitting }) => (
         <>
@@ -82,16 +85,17 @@ const LoginForm = () => {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Reset Password
             </Typography>
             <Form className={classes.form}>
               <Field
                 component={TextField}
                 required
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="password"
+                label="New Password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
                 variant="outlined"
                 margin="normal"
                 fullWidth
@@ -99,11 +103,10 @@ const LoginForm = () => {
               <Field
                 component={TextField}
                 required
-                id="password"
-                label="Password"
-                name="password"
+                id="passwordConfirm"
+                label="Confirm Password"
+                name="passwordConfirm"
                 type="password"
-                autoComplete="current-password"
                 variant="outlined"
                 margin="normal"
                 fullWidth
@@ -118,16 +121,9 @@ const LoginForm = () => {
                 size="large"
                 fullWidth
               >
-                Sign In
+                Update Password
               </Button>
             </Form>
-            <Grid container>
-              <Grid item xs>
-                <Typography color="primary" component="a" variant="body2" onClick={onLinkClick}>
-                  Forgot password?
-                </Typography>
-              </Grid>
-            </Grid>
           </div>
         </>
       )}
@@ -135,4 +131,8 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default ResetForm;
+
+ResetForm.propTypes = {
+  match: PropTypes.object.isRequired,
+};
