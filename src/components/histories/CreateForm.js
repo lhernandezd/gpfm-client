@@ -109,6 +109,14 @@ const CreateForm = ({ toggleForm }) => {
     }
   };
 
+  const handlingPatientsDynamicField = (value) => {
+    const [firstName, lastName] = value.split(" ");
+    const searchObj = {};
+    if (firstName) searchObj.first_name = firstName;
+    if (lastName) searchObj.last_name = lastName;
+    return searchObj;
+  };
+
   return (
     <FormikStepper
       validationSchema={HistorySchema}
@@ -129,6 +137,9 @@ const CreateForm = ({ toggleForm }) => {
                 touched={stepProps.touched}
                 errors={stepProps.errors}
                 required
+                fetchOnKeyInput
+                searchOnInputField="first_name"
+                customDynamicFieldHandling={handlingPatientsDynamicField}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={4}>

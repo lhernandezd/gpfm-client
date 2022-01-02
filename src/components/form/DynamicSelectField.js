@@ -1,9 +1,12 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable react/forbid-prop-types */
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Field } from "formik";
+import { debounce } from "lodash";
 import MuiTextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import {
   Autocomplete,
   AutocompleteRenderInputParams,
@@ -14,21 +17,41 @@ export default function DynamicSelectField(props) {
   const {
     field, reduxField, optionField, label, fetchFunc,
     touched, errors, multiple, fetchOnKeyInput, required,
-    disabled,
+    disabled, customDynamicFieldHandling, searchOnInputField,
   } = props;
+
   const dispatch = useDispatch();
   const fetchedOptions = useSelector((state) => state[reduxField]);
   const parsedOptions = parseSelectOptions(fetchedOptions, reduxField);
+  const { isFetching = false } = fetchedOptions;
+  const [isLoading, setIsLoading] = useState(isFetching);
 
   useEffect(() => {
     dispatch(fetchFunc());
-  }, []);
+  }, [dispatch]);
 
-  const onFieldChange = (e) => {
-    dispatch(fetchFunc({ search: e.target.value }));
+  const onFieldChange = async (e) => {
+    const { value } = e.target;
+    if (customDynamicFieldHandling) {
+      const searchObj = customDynamicFieldHandling(value);
+      await dispatch(fetchFunc({ search: searchObj }));
+    } else {
+      await dispatch(fetchFunc({ search: {
+        [searchOnInputField]: value,
+      } }));
+    }
+    setIsLoading(false);
   };
 
-  const onChangeParam = fetchOnKeyInput ? { onChange: (e) => onFieldChange(e) } : {};
+  const debounceCheckboxSelection = useMemo(
+    () => debounce(onFieldChange, 800), [],
+  );
+
+  const onChangeParam = fetchOnKeyInput ? { onChange: (e) => {
+    e.persist();
+    setIsLoading(true);
+    debounceCheckboxSelection(e);
+  } } : {};
 
   return (
     <Field
@@ -40,6 +63,7 @@ export default function DynamicSelectField(props) {
       multiple={multiple}
       required={required}
       disabled={disabled}
+      loading={isLoading}
       renderInput={(params: AutocompleteRenderInputParams) => (
         <MuiTextField
           {...params}
@@ -47,6 +71,15 @@ export default function DynamicSelectField(props) {
           helperText={touched[field] && errors[field]}
           label={label}
           required={required}
+          InputProps={{
+            ...params.InputProps,
+            endAdornment: (
+              <>
+                {isLoading ? <CircularProgress color="primary" size={15} /> : null}
+                {params.InputProps.endAdornment}
+              </>
+            ),
+          }}
           {...onChangeParam}
         />
       )}
@@ -66,6 +99,8 @@ DynamicSelectField.propTypes = {
   required: PropTypes.bool,
   disabled: PropTypes.bool,
   fetchOnKeyInput: PropTypes.bool,
+  customDynamicFieldHandling: PropTypes.func,
+  searchOnInputField: PropTypes.string,
 };
 
 DynamicSelectField.defaultProps = {
@@ -73,4 +108,6 @@ DynamicSelectField.defaultProps = {
   required: false,
   disabled: false,
   fetchOnKeyInput: false,
+  customDynamicFieldHandling: false,
+  searchOnInputField: "id",
 };

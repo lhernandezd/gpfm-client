@@ -11,8 +11,8 @@ const parseCities = (cities) => {
   return citiesParsed;
 };
 
-const parseCodes = (cities) => {
-  const codesParsed = cities.reduce((acc, currentValue) => {
+const parseCodes = (codes) => {
+  const codesParsed = codes.reduce((acc, currentValue) => {
     const codeObj = {
       id: currentValue.id,
       label: `${currentValue.code} - ${currentValue.description}`,
@@ -22,8 +22,8 @@ const parseCodes = (cities) => {
   return codesParsed;
 };
 
-const parsePatients = (cities) => {
-  const codesParsed = cities.reduce((acc, currentValue) => {
+const parsePatients = (patients) => {
+  const codesParsed = patients.reduce((acc, currentValue) => {
     const codeObj = {
       id: currentValue.id,
       label: `${currentValue.first_name} ${currentValue.last_name}`,
