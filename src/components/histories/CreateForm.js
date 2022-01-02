@@ -5,12 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   Grid,
 } from "@material-ui/core";
+import { differenceInSeconds, parseISO } from "date-fns";
+import { omit } from "lodash";
 import { Field } from "formik";
 import * as Yup from "yup";
 import { TextField } from "formik-material-ui";
 import { createHistory, getHistories } from "../../actions/histories";
 import parseFormValues from "../../utils/parseFormValues";
 import getFieldFromState from "../../utils/getFieldFromState";
+import parseSelectOptions from "../../utils/parseSelectOptions";
 import DynamicSelectField from "../form/DynamicSelectField";
 import { getCodes } from "../../actions/codes";
 import { getPatients } from "../../actions/patients";
@@ -112,9 +115,30 @@ const CreateForm = ({ toggleForm }) => {
   const handlingPatientsDynamicField = (value) => {
     const [firstName, lastName] = value.split(" ");
     const searchObj = {};
-    if (firstName) searchObj.first_name = firstName;
-    if (lastName) searchObj.last_name = lastName;
-    return searchObj;
+    if (firstName) searchObj.first_name = { value: firstName, operator: "search" };
+    if (lastName) searchObj.last_name = { value: lastName, operator: "search" };
+    return {
+      searchObj,
+    };
+  };
+
+  const getLastHistory = (setValues, patient) => {
+    const patientNeeded = patients.data.find((item) => item.id === patient.id);
+    if (patientNeeded?.histories && patientNeeded?.histories.length) {
+      let dateNeed;
+      let valueWanted;
+      const currentDate = new Date();
+      patientNeeded.histories.forEach((value, index) => {
+        const difference = differenceInSeconds(currentDate, parseISO(value.updated_at));
+        if (index === 0 || dateNeed > difference) {
+          dateNeed = difference;
+          valueWanted = value;
+        }
+      });
+      const sanitizedValues = omit(valueWanted, ["id", "iid", "patient_info_save", "created_by_id", "updated_by_id", "created_at", "updated_at"]);
+      const parsedCodes = parseSelectOptions(sanitizedValues.codes, "codes");
+      setValues({ ...sanitizedValues, code_id: parsedCodes });
+    }
   };
 
   return (
@@ -129,6 +153,7 @@ const CreateForm = ({ toggleForm }) => {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={12}>
               <DynamicSelectField
+                {...stepProps}
                 field="patient_id"
                 reduxField="patients"
                 label="Patient"
@@ -140,6 +165,13 @@ const CreateForm = ({ toggleForm }) => {
                 fetchOnKeyInput
                 searchOnInputField="first_name"
                 customDynamicFieldHandling={handlingPatientsDynamicField}
+                selectedOptionFillFormData={getLastHistory}
+                includesOnFetch={[
+                  {
+                    model: "history",
+                    include: "code",
+                  },
+                ]}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={4}>

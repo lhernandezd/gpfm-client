@@ -18,6 +18,7 @@ export default function DynamicSelectField(props) {
     field, reduxField, optionField, label, fetchFunc,
     touched, errors, multiple, fetchOnKeyInput, required,
     disabled, customDynamicFieldHandling, searchOnInputField,
+    selectedOptionFillFormData, setValues, includesOnFetch,
   } = props;
 
   const dispatch = useDispatch();
@@ -27,18 +28,21 @@ export default function DynamicSelectField(props) {
   const [isLoading, setIsLoading] = useState(isFetching);
 
   useEffect(() => {
-    dispatch(fetchFunc());
+    dispatch(fetchFunc({ includes: includesOnFetch }));
   }, [dispatch]);
 
   const onFieldChange = async (e) => {
     const { value } = e.target;
     if (customDynamicFieldHandling) {
-      const searchObj = customDynamicFieldHandling(value);
-      await dispatch(fetchFunc({ search: searchObj }));
+      const { searchObj } = customDynamicFieldHandling(value);
+      await dispatch(fetchFunc({ search: searchObj, includes: includesOnFetch }));
     } else {
-      await dispatch(fetchFunc({ search: {
-        [searchOnInputField]: value,
-      } }));
+      await dispatch(fetchFunc({
+        search: {
+          [searchOnInputField]: value,
+        },
+        includes: includesOnFetch,
+      }));
     }
     setIsLoading(false);
   };
@@ -46,6 +50,12 @@ export default function DynamicSelectField(props) {
   const debounceCheckboxSelection = useMemo(
     () => debounce(onFieldChange, 800), [],
   );
+
+  const handlingFillForm = selectedOptionFillFormData ? {
+    onChange: (e, value) => {
+      selectedOptionFillFormData(setValues, value);
+    },
+  } : {};
 
   const onChangeParam = fetchOnKeyInput ? { onChange: (e) => {
     e.persist();
@@ -64,6 +74,7 @@ export default function DynamicSelectField(props) {
       required={required}
       disabled={disabled}
       loading={isLoading}
+      {...handlingFillForm}
       renderInput={(params: AutocompleteRenderInputParams) => (
         <MuiTextField
           {...params}
@@ -101,6 +112,10 @@ DynamicSelectField.propTypes = {
   fetchOnKeyInput: PropTypes.bool,
   customDynamicFieldHandling: PropTypes.func,
   searchOnInputField: PropTypes.string,
+  selectedOptionFillFormData: PropTypes.func,
+  values: PropTypes.object,
+  setValues: PropTypes.func.isRequired,
+  includesOnFetch: PropTypes.array,
 };
 
 DynamicSelectField.defaultProps = {
@@ -110,4 +125,7 @@ DynamicSelectField.defaultProps = {
   fetchOnKeyInput: false,
   customDynamicFieldHandling: false,
   searchOnInputField: "id",
+  selectedOptionFillFormData: false,
+  values: {},
+  includesOnFetch: [],
 };

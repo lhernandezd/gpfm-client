@@ -45,7 +45,7 @@ const parseOptions = (options) => {
 };
 
 const parseSelectOptions = (data, field) => {
-  const options = get(data, "data");
+  const options = get(data, "data", data);
   if (!options.length) return [];
   switch (field) {
     case "cities":
