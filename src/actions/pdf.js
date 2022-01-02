@@ -1,25 +1,16 @@
 import { format as formatDate } from "date-fns";
 import http from "../utils/http";
-import base64ToArrayBuffer from "../utils/base64ToArrayBuffer";
 import { showSnackbar } from "./snackbar";
 import * as types from "./constants/pdfTypes";
 
 const base64toPDF = (data) => (dispatch) => {
   const { binary, fileName } = data;
-  const bufferArray = base64ToArrayBuffer(binary);
-  const blobStore = new Blob([bufferArray], { type: "application/pdf" });
-  if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-    window.navigator.msSaveOrOpenBlob(blobStore);
-    return;
-  }
-  const newData = window.URL.createObjectURL(blobStore);
   const link = document.createElement("a");
   const dateNow = formatDate(new Date(), "dd/MM/yyyy");
   document.body.appendChild(link);
-  link.href = newData;
+  link.href = binary;
   link.download = `${fileName}_${dateNow}.pdf`;
   link.click();
-  window.URL.revokeObjectURL(newData);
   link.remove();
   dispatch({
     type: types.CREATE_PDF_SUCCESS,
