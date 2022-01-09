@@ -9,6 +9,7 @@ import codes from "./codes";
 import entities from "./entities";
 import agreements from "./agreements";
 import appointments from "./appointments";
+import settings from "./settings";
 
 const reducers = combineReducers({
   authentication,
@@ -21,6 +22,7 @@ const reducers = combineReducers({
   entities,
   agreements,
   appointments,
+  settings,
 });
 
 export default reducers;

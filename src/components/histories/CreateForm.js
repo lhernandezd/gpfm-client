@@ -78,6 +78,7 @@ const HistorySchema = Yup.object().shape({
 const CreateForm = ({ toggleForm }) => {
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.patients);
+  const settings = useSelector((state) => state.settings);
 
   const handleSubmit = async (values) => {
     const valuesUpdated = parseFormValues(values);
@@ -85,6 +86,7 @@ const CreateForm = ({ toggleForm }) => {
     const agreement = getFieldFromState(patients.data, "id", patientId, "agreement");
     await dispatch(createHistory({
       ...valuesUpdated,
+      template: settings.data[0].history_template,
       agreement_id: agreement.id,
     }));
     await dispatch(getHistories());
@@ -122,7 +124,7 @@ const CreateForm = ({ toggleForm }) => {
     };
   };
 
-  const getLastHistory = (setValues, patient) => {
+  const getLastHistory = (setValues, patient, setFieldValue) => {
     const patientNeeded = patients.data.find((item) => item.id === patient.id);
     if (patientNeeded?.histories && patientNeeded?.histories.length) {
       let dateNeed;
@@ -137,8 +139,8 @@ const CreateForm = ({ toggleForm }) => {
       });
       const sanitizedValues = omit(valueWanted, ["id", "iid", "patient_info_save", "created_by_id", "updated_by_id", "created_at", "updated_at"]);
       const parsedCodes = parseSelectOptions(sanitizedValues.codes, "codes");
-      setValues({ ...sanitizedValues, code_id: parsedCodes });
-    }
+      setValues({ ...sanitizedValues, code_id: parsedCodes, patient_id: patient });
+    } else setFieldValue("patient_id", patient);
   };
 
   return (

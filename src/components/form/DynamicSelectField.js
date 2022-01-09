@@ -18,7 +18,7 @@ export default function DynamicSelectField(props) {
     field, reduxField, optionField, label, fetchFunc,
     touched, errors, multiple, fetchOnKeyInput, required,
     disabled, customDynamicFieldHandling, searchOnInputField,
-    selectedOptionFillFormData, setValues, includesOnFetch,
+    selectedOptionFillFormData, setValues, includesOnFetch, setFieldValue,
   } = props;
 
   const dispatch = useDispatch();
@@ -53,7 +53,7 @@ export default function DynamicSelectField(props) {
 
   const handlingFillForm = selectedOptionFillFormData ? {
     onChange: (e, value) => {
-      selectedOptionFillFormData(setValues, value);
+      selectedOptionFillFormData(setValues, value, setFieldValue);
     },
   } : {};
 
@@ -110,7 +110,10 @@ DynamicSelectField.propTypes = {
   required: PropTypes.bool,
   disabled: PropTypes.bool,
   fetchOnKeyInput: PropTypes.bool,
-  customDynamicFieldHandling: PropTypes.func,
+  customDynamicFieldHandling: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.bool,
+  ]),
   searchOnInputField: PropTypes.string,
   selectedOptionFillFormData: PropTypes.oneOfType([
     PropTypes.func,
@@ -118,6 +121,7 @@ DynamicSelectField.propTypes = {
   ]),
   values: PropTypes.object,
   setValues: PropTypes.func,
+  setFieldValue: PropTypes.func,
   includesOnFetch: PropTypes.array,
 };
 
@@ -132,4 +136,5 @@ DynamicSelectField.defaultProps = {
   values: {},
   includesOnFetch: [],
   setValues: () => {},
+  setFieldValue: () => {},
 };

@@ -17,7 +17,7 @@ import { TextField } from "formik-material-ui";
 import { KeyboardTimePicker } from "formik-material-ui-pickers";
 import DynamicSelectField from "../form/DynamicSelectField";
 import { getPatients } from "../../actions/patients";
-import { createAppointment } from "../../actions/appointments";
+import { createAppointment, getAppointments } from "../../actions/appointments";
 import { modalFormStyles } from "../../styles";
 import parseFormValues from "../../utils/parseFormValues";
 
@@ -60,6 +60,7 @@ const CreateForm = ({ toggleForm, appointment }) => {
       end: valuesUpdated.end_date,
       allDay: valuesUpdated.allDay,
     });
+    await dispatch(getAppointments());
     toggleForm();
   };
 

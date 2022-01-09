@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
-import React, { Suspense, lazy } from "react";
-import { useSelector } from "react-redux";
+import React, { Suspense, lazy, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   BrowserRouter as Router,
   Switch,
@@ -14,6 +14,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import NotificationSnackbar from "./components/shared/NotificationSnackbar";
 import CustomTheme from "./utils/theme";
 import AppLayout from "./components/AppLayout";
+import { getSettings } from "./actions/settings";
 
 const Login = lazy(() => import("./pages/Login/Login"));
 const Home = lazy(() => import("./pages/Home/Home"));
@@ -27,9 +28,15 @@ const Recover = lazy(() => import("./pages/Recover/Recover"));
 const Reset = lazy(() => import("./pages/Reset/Reset"));
 
 function App() {
+  const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.authentication.isAuthenticated);
   const isResetRequest = window.location.pathname.includes("resetPassword");
   const tokenParam = window.location.pathname.split("/")[2] || "";
+
+  useEffect(() => {
+    dispatch(getSettings());
+  }, []);
+
   return (
     <ThemeProvider theme={CustomTheme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
