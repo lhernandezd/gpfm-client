@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/forbid-prop-types */
 import React, { memo } from "react";
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ModalForm = memo(({
   title, formComponent: FormComponent, handleModal, open, modalProps,
+  customFunctionForForm, customPropsForForm,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -40,7 +42,7 @@ const ModalForm = memo(({
     >
       <DialogTitle id="form-dialog-add">{title}</DialogTitle>
       <DialogContent>
-        {FormComponent && <FormComponent toggleForm={handleModal} />}
+        {FormComponent && <FormComponent toggleForm={handleModal} customFunctionForForm={customFunctionForForm} customPropsForForm={customPropsForForm} />}
       </DialogContent>
     </Dialog>
   );
@@ -54,6 +56,8 @@ ModalForm.propTypes = {
   open: PropTypes.bool.isRequired,
   formComponent: PropTypes.node,
   modalProps: PropTypes.object,
+  customFunctionForForm: PropTypes.func,
+  customPropsForForm: PropTypes.object,
 };
 
 ModalForm.defaultProps = {

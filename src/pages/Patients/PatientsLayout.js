@@ -46,6 +46,9 @@ const PatientsLayout = memo(({ location, history, match }) => {
         modalComponents={{
           add: CreateForm,
         }}
+        modalProps={{
+          maxWidth: "md",
+        }}
       />
       <Switch>
         <Route exact path={match.path} component={PatientsListView} />

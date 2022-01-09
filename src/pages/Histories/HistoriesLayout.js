@@ -8,6 +8,7 @@ import { getDirectionTitleFromState } from "../../utils/directions";
 import DynamicDirection from "../../components/shared/DynamicDirection";
 import HistoriesListView from "./HistoriesListView";
 import CreateForm from "../../components/histories/CreateForm";
+import SortForm from "../../components/histories/SortForm";
 import HistoryProfile from "./HistoryProfile";
 import { getHistories, getHistory } from "../../actions/histories";
 
@@ -32,6 +33,7 @@ const HistoriesLayout = memo(({ location, history, match }) => {
     setRoutes(arrangeRoutes);
     setActions({
       refresh: directionaTitle ? getHistory : getHistories,
+      sort: !directionaTitle && getHistories,
     });
   }, [location.pathname, match.path, location.search]);
 
@@ -45,6 +47,7 @@ const HistoriesLayout = memo(({ location, history, match }) => {
         model="history"
         modalComponents={{
           add: CreateForm,
+          sort: SortForm,
         }}
         modalProps={{
           maxWidth: "md",

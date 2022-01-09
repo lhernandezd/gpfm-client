@@ -112,9 +112,12 @@ DynamicSelectField.propTypes = {
   fetchOnKeyInput: PropTypes.bool,
   customDynamicFieldHandling: PropTypes.func,
   searchOnInputField: PropTypes.string,
-  selectedOptionFillFormData: PropTypes.func,
+  selectedOptionFillFormData: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.bool,
+  ]),
   values: PropTypes.object,
-  setValues: PropTypes.func.isRequired,
+  setValues: PropTypes.func,
   includesOnFetch: PropTypes.array,
 };
 
@@ -128,4 +131,5 @@ DynamicSelectField.defaultProps = {
   selectedOptionFillFormData: false,
   values: {},
   includesOnFetch: [],
+  setValues: () => {},
 };

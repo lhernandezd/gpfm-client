@@ -8,7 +8,6 @@ import {
   Paper, CircularProgress, Fade,
 } from "@material-ui/core";
 import { getPatient } from "../../actions/patients";
-import { getHistories } from "../../actions/histories";
 import PatientsProfileCard from "../../components/patients/ProfileCard";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,9 +44,6 @@ const PatientProfile = memo(({ match }) => {
   useEffect(() => {
     dispatch(getPatient(get(match, "params.id")));
     // TO DO - Bring patient histories (last one or last 5)
-    dispatch(getHistories({
-      patientId: get(match, "params.id"),
-    }));
   }, [dispatch]);
 
   const patientData = get(patients, "patient");

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/forbid-prop-types */
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import PropTypes from "prop-types";
 import { Link as RouterLink } from "react-router-dom";
 import { startCase, get } from "lodash";
@@ -12,12 +12,20 @@ import {
 } from "@material-ui/core";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import AutorenewIcon from "@material-ui/icons/Autorenew";
+import SortIcon from "@material-ui/icons/Sort";
 import AddIcon from "@material-ui/icons/Add";
 import ModalForm from "./ModalForm";
+import parseFormValues from "../../utils/parseFormValues";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     height: 50,
+    padding: "0 20px",
+    display: "flex",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  popoverPaper: {
     padding: "0 20px",
     display: "flex",
     alignItems: "center",
@@ -50,19 +58,37 @@ const useStyles = makeStyles((theme) => ({
 
 const MainDirection = ({
   classes, text, actions, state, model, add, handleModal,
+  sort, handleSortModal, sortOptions,
 }) => {
   const dispatch = useDispatch();
   const refreshAction = get(actions, "refresh", false);
   const refreshID = get(state, `${model}_id`, "");
+  const sortOptionsUpdated = parseFormValues(sortOptions);
+  const refreshParams = sort ? {
+    search: sortOptionsUpdated,
+  } : refreshID;
+
   return (
     <>
       <div className={classes.breadcrumbSubItem}>
         <Typography color="textPrimary" variant="subtitle1" component="p" className={classes.title}>
           {startCase(text)}
         </Typography>
-        {refreshAction && <AutorenewIcon className={classes.icon} fontSize="small" color="primary" onClick={() => refreshAction && dispatch(refreshAction(refreshID))} />}
+        {refreshAction && <AutorenewIcon className={classes.icon} fontSize="small" color="primary" onClick={() => refreshAction && dispatch(refreshAction(refreshParams))} />}
       </div>
-      {add
+      <div>
+        {sort
+        && (
+        <IconButton
+          edge="end"
+          aria-label="Sort"
+          onClick={handleSortModal}
+          color="primary"
+        >
+          <SortIcon className={classes.icon} fontSize="small" color="primary" />
+        </IconButton>
+        )}
+        {add
         && (
           <IconButton
             edge="end"
@@ -73,6 +99,7 @@ const MainDirection = ({
             <AddIcon className={classes.icon} fontSize="small" />
           </IconButton>
         )}
+      </div>
     </>
   );
 };
@@ -84,10 +111,21 @@ const DynamicDirection = memo(({
   const routesLength = routes.length;
   const locationState = get(location, "state", false);
   const addForm = get(modalComponents, "add", false);
-  const [openModal, setOpenModal] = React.useState(false);
+  const sortForm = get(modalComponents, "sort", false);
+  const [openModal, setOpenModal] = useState(false);
+  const [openSort, setOpenSort] = useState(false);
+  const [sortOptions, setSortOptions] = useState({});
 
   const handleModal = () => {
     setOpenModal(!openModal);
+  };
+
+  const handleSortModal = () => {
+    setOpenSort(!openSort);
+  };
+
+  const handleSortOptions = (options) => {
+    setSortOptions(options);
   };
 
   return routesLength > 0 && (
@@ -110,7 +148,10 @@ const DynamicDirection = memo(({
                 state={locationState}
                 model={model}
                 add={!!addForm}
+                sort={!!sortForm}
                 handleModal={handleModal}
+                handleSortModal={handleSortModal}
+                sortOptions={sortOptions}
               />
             )
             : routes.map((route, index) => {
@@ -141,6 +182,17 @@ const DynamicDirection = memo(({
         title={`Add ${startCase(model)}`}
         handleModal={handleModal}
         open={openModal}
+      />
+      <ModalForm
+        formComponent={sortForm}
+        modalProps={modalProps}
+        title={`Sort ${startCase(model)} table`}
+        handleModal={handleSortModal}
+        open={openSort}
+        customFunctionForForm={handleSortOptions}
+        customPropsForForm={{
+          options: sortOptions,
+        }}
       />
     </>
   );
@@ -176,10 +228,16 @@ MainDirection.propTypes = {
   state: PropTypes.any.isRequired,
   add: PropTypes.bool,
   handleModal: PropTypes.func.isRequired,
+  sort: PropTypes.bool,
+  handleSortModal: PropTypes.func,
+  sortOptions: PropTypes.object,
 };
 
 MainDirection.defaultProps = {
   model: null,
   actions: {},
   add: false,
+  sort: false,
+  handleSortModal: () => {},
+  sortOptions: {},
 };
