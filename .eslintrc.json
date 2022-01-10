@@ -1,6 +1,6 @@
 {
     "extends": "airbnb",
-    "parser": "react-scripts/node_modules/babel-eslint",
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
