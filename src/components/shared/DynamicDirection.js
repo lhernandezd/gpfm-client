@@ -15,7 +15,7 @@ import AutorenewIcon from "@material-ui/icons/Autorenew";
 import SortIcon from "@material-ui/icons/Sort";
 import AddIcon from "@material-ui/icons/Add";
 import ModalForm from "./ModalForm";
-import parseFormValues from "../../utils/parseFormValues";
+import parseFormValues from "../../utils/helpers/parseFormValues";
 
 const useStyles = makeStyles((theme) => ({
   paper: {

@@ -11,7 +11,7 @@ import {
   Autocomplete,
   AutocompleteRenderInputParams,
 } from "formik-material-ui-lab";
-import parseSelectOptions from "../../utils/parseSelectOptions";
+import parseSelectOptions from "../../utils/helpers/parseSelectOptions";
 
 const DynamicSelectField = (props) => {
   const {

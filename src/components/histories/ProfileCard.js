@@ -16,7 +16,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ModalForm from "../shared/ModalForm";
-import { isAdmin } from "../../utils/user";
+import { isAdmin } from "../../utils/helpers/user";
 import UpdateHistory from "./UpdateForm";
 
 const useStyles = makeStyles(() => ({

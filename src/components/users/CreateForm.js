@@ -19,7 +19,7 @@ import {
 import { createUser, getUsers } from "../../actions/users";
 import { roles as DefaultRoles } from "../../utils/staticDataTypes";
 import { modalFormStyles } from "../../styles";
-import parseFormValues from "../../utils/parseFormValues";
+import parseFormValues from "../../utils/helpers/parseFormValues";
 import DynamicSelectField from "../form/DynamicSelectField";
 import { getCities } from "../../actions/cities";
 

@@ -12,7 +12,7 @@ import * as Yup from "yup";
 import { TextField } from "formik-material-ui";
 import { createEntity, getEntities } from "../../actions/entities";
 import { modalFormStyles } from "../../styles";
-import parseFormValues from "../../utils/parseFormValues";
+import parseFormValues from "../../utils/helpers/parseFormValues";
 
 const useStyles = makeStyles((theme) => modalFormStyles(theme));
 

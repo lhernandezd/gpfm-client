@@ -20,7 +20,7 @@ import { updateUser } from "../../actions/users";
 import { roles as DefaultRoles } from "../../utils/staticDataTypes";
 import DynamicSelectField from "../form/DynamicSelectField";
 import { getCities } from "../../actions/cities";
-import parseSelectOptions from "../../utils/parseSelectOptions";
+import parseSelectOptions from "../../utils/helpers/parseSelectOptions";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {

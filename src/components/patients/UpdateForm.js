@@ -30,8 +30,8 @@ import {
   civilStatus as DefaultStatus,
   bloodTypes as DefaultBloods,
 } from "../../utils/staticDataTypes";
-import parseFormValues from "../../utils/parseFormValues";
-import parseSelectOptions from "../../utils/parseSelectOptions";
+import parseFormValues from "../../utils/helpers/parseFormValues";
+import parseSelectOptions from "../../utils/helpers/parseSelectOptions";
 import DynamicSelectField from "../form/DynamicSelectField";
 import { getCities } from "../../actions/cities";
 import { getAgreements } from "../../actions/agreements";

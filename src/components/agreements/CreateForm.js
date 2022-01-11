@@ -15,7 +15,7 @@ import DynamicSelectField from "../form/DynamicSelectField";
 import { createAgreement, getAgreements } from "../../actions/agreements";
 import { getEntities } from "../../actions/entities";
 import { modalFormStyles } from "../../styles";
-import parseFormValues from "../../utils/parseFormValues";
+import parseFormValues from "../../utils/helpers/parseFormValues";
 
 const useStyles = makeStyles((theme) => modalFormStyles(theme));
 

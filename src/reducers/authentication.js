@@ -1,5 +1,5 @@
 import { omit, get } from "lodash";
-import { setAccessToken, removeAccessToken } from "../utils/auth";
+import { setAccessToken, removeAccessToken } from "../utils/api/auth";
 import * as types from "../actions/constants/authenticationTypes";
 
 const initialState = {

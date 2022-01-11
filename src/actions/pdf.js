@@ -1,5 +1,5 @@
 import { format as formatDate } from "date-fns";
-import http from "../utils/http";
+import http from "../utils/api/http";
 import { showSnackbar } from "./snackbar";
 import * as types from "./constants/pdfTypes";
 

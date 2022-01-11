@@ -16,8 +16,8 @@ import DynamicSelectField from "../form/DynamicSelectField";
 import { getPatients } from "../../actions/patients";
 import { updateAppointment, deleteAppointment } from "../../actions/appointments";
 import { modalFormStyles } from "../../styles";
-import parseFormValues from "../../utils/parseFormValues";
-import parseSelectOptions from "../../utils/parseSelectOptions";
+import parseFormValues from "../../utils/helpers/parseFormValues";
+import parseSelectOptions from "../../utils/helpers/parseSelectOptions";
 
 const useStyles = makeStyles((theme) => ({
   ...modalFormStyles(theme),
