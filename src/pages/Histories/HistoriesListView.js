@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function HistoriesListView({ location, history }) {
+const HistoriesListView = ({ location, history }) => {
   const dispatch = useDispatch();
   const histories = useSelector((state) => state.histories);
   const classes = useStyles();
@@ -48,6 +48,8 @@ export default function HistoriesListView({ location, history }) {
     </>
   );
 }
+
+export default HistoriesListView;
 
 HistoriesListView.propTypes = {
   location: PropTypes.object.isRequired,

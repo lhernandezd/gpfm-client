@@ -1,3 +1,6 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/function-component-definition */
+/* eslint-disable react/destructuring-assignment */
 import React from "react";
 import PropTypes from "prop-types";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -5,22 +8,21 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { useField } from "formik";
 
 export default function FormikCheckbox(props) {
+  const { label, name, disabled, isSubmitting } = props;
   const fieldToCheckbox = ({ field, meta, helper }) => ({
     ...props,
     ...field,
     ...meta,
     ...helper,
-    disabled: props.disabled ?? props.isSubmitting,
+    disabled: disabled ?? isSubmitting,
     checked: field.value,
   });
-
-  const { label, name } = props;
 
   const CustomCheckbox = (customProps) => {
     if (label) {
       return (
         <FormControlLabel
-          label={props.label}
+          label={label}
           control={<Checkbox {...fieldToCheckbox(customProps)} />}
         />
       );

@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Alert = (props) => <MuiAlert elevation={6} {...props} />;
 
-export default function NotificationSnackbar({ isAuthenticated }) {
+const NotificationSnackbar = ({ isAuthenticated }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -62,6 +62,8 @@ export default function NotificationSnackbar({ isAuthenticated }) {
     </Snackbar>
   );
 }
+
+export default NotificationSnackbar;
 
 NotificationSnackbar.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,

@@ -51,8 +51,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 5,
   },
 }));
-
-export default function SummaryCard() {
+const SummaryCard= () => {
   const classes = useStyles();
 
   return (
@@ -95,3 +94,5 @@ export default function SummaryCard() {
     </Paper>
   );
 }
+
+export default SummaryCard;

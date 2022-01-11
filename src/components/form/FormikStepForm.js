@@ -17,7 +17,7 @@ import { modalFormStyles } from "../../styles";
 
 const useStyles = makeStyles((theme) => modalFormStyles(theme));
 
-export function FormikStepper({ children, ...props }: FormikConfig<FormikValues>) {
+export const FormikStepper = ({ children, ...props }: FormikConfig<FormikValues>) => {
   const classes = useStyles();
   const childrenArray = React.Children.toArray(children);
   const [step, setStep] = useState(0);
@@ -86,13 +86,11 @@ export function FormikStepper({ children, ...props }: FormikConfig<FormikValues>
   );
 }
 
-export function FormikStep({ children, ...props }) {
-  return (
-    <>
-      {children(props)}
-    </>
-  );
-}
+export const FormikStep = ({ children, ...props }) => (
+  <>
+    {children(props)}
+  </>
+);
 
 FormikStep.propTypes = {
   children: PropTypes.node.isRequired,

@@ -27,8 +27,7 @@ const AgreementProfileCard = memo(({ agreement }) => {
   const agreementCode = get(agreement, "code");
 
   return (
-    <>
-      <div className={classes.coreInfo}>
+    <div className={classes.coreInfo}>
         <div className={classes.header}>
           <Typography className={classes.cardTitle} variant="h5" component="h2">
             Agreement #
@@ -55,7 +54,6 @@ const AgreementProfileCard = memo(({ agreement }) => {
           </Typography>
         </div>
       </div>
-    </>
   );
 });
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/no-array-index-key */
 import React, { memo, useState } from "react";
 import { useSelector } from "react-redux";
@@ -170,8 +171,8 @@ const HistoryProfileCard = memo(({ history, generatePDF }) => {
                       {Array.isArray(fieldValue)
                         ? (
                           <List dense>
-                            {fieldValue.map((item) => (
-                              <ListItem key={index}>
+                            {fieldValue.map((item, fieldIndex) => (
+                              <ListItem key={fieldIndex}>
                                 <ListItemIcon classes={{ root: classes.iconRoot }}>
                                   <ArrowRightIcon />
                                 </ListItemIcon>

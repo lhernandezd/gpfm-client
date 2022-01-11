@@ -13,7 +13,7 @@ import {
 } from "formik-material-ui-lab";
 import parseSelectOptions from "../../utils/parseSelectOptions";
 
-export default function DynamicSelectField(props) {
+const DynamicSelectField = (props) => {
   const {
     field, reduxField, optionField, label, fetchFunc,
     touched, errors, multiple, fetchOnKeyInput, required,
@@ -97,6 +97,8 @@ export default function DynamicSelectField(props) {
     />
   );
 }
+
+export default DynamicSelectField;
 
 DynamicSelectField.propTypes = {
   field: PropTypes.string.isRequired,

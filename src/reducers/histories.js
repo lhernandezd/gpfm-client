@@ -9,8 +9,7 @@ const initialState = {
   history: {},
 };
 
-export default function historyReducer(state = initialState, action) {
-  const { type, payload } = action;
+export default function historyReducer(state = initialState, { type, payload } = {}) {
   switch (type) {
     case types.GET_HISTORIES_REQUEST: {
       return {

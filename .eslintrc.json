@@ -1,11 +1,10 @@
 {
-    "extends": "airbnb",
-    "parser": "babel-eslint",
+    "extends": ["airbnb", "prettier"],
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 11,
+        "ecmaVersion": "latest",
         "sourceType": "module"
     },
     "settings": {
@@ -25,7 +24,19 @@
       "react/static-property-placement": "off",
       "react/jsx-filename-extension": "off",
       "react/state-in-constructor": "off",
-      "react/jsx-props-no-spreading": "off"
+      "react/jsx-no-useless-fragment": [2, {
+        "allowExpressions": true
+      }],
+      "react/jsx-props-no-spreading": "off",
+      "import/no-named-as-default": 0,
+      "import/no-named-as-default-member": 0,
+      "import/named": 0,
+      "no-unused-vars": 1,
+      "no-console": "off",
+      "react/function-component-definition": [ 2, { 
+          "namedComponents": "arrow-function",
+          "unnamedComponents": "arrow-function"
+      }]
     },
     "globals": {
       "window": true,

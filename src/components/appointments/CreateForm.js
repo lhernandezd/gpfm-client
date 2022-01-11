@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/forbid-prop-types */
 import React from "react";

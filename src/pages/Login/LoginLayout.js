@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function LoginLayout() {
+const LoginLayout = () => {
   const classes = useStyles();
   return (
     <div className={classes.layout}>
@@ -36,3 +36,5 @@ export default function LoginLayout() {
     </div>
   );
 }
+
+export default LoginLayout;

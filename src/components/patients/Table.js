@@ -77,7 +77,7 @@ const TableComponent = memo(({
       id: "document_type", label: "Document Type", minWidth: 100, formatFunction: (value) => toUpper(value),
     },
     {
-      id: "document", label: "Document #", minWidth: 100, order: true,
+      id: "document", label: "Document #", minWidth: 100, order: "asc",
     },
     {
       id: "first_name", label: "Name", minWidth: 100, formatFunction: (value) => startCase(value),
@@ -134,8 +134,8 @@ const TableComponent = memo(({
                   sortDirection={get(column, "order", false)}
                 >
                   <TableSortLabel
-                    active={column?.order}
-                    direction={column?.order ? findSortOrder(column.id) : "asc"}
+                    active={!!column.order}
+                    direction={column.order ? findSortOrder(column.id) : "asc"}
                     onClick={() => sortColumnHandler(column.id)}
                   >
                     {column.label}
@@ -174,8 +174,8 @@ const TableComponent = memo(({
         count={10}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
   );

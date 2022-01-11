@@ -27,35 +27,33 @@ const EntityProfileCard = memo(({ entity }) => {
   const entityNit = get(entity, "nit", "");
 
   return (
-    <>
-      <div className={classes.coreInfo}>
-        <div className={classes.header}>
-          <Typography className={classes.cardTitle} variant="h5" component="h2">
-            Entity #
-            {" "}
-            {entityId}
-          </Typography>
-        </div>
-        <div className="coreInfoItem">
-          <Typography className={classes.bold} variant="subtitle1" component="span">
-            Entity Name:
-            {" "}
-          </Typography>
-          <Typography variant="body1" component="span">
-            {startCase(entityName)}
-          </Typography>
-        </div>
-        <div className="coreInfoItem">
-          <Typography className={classes.bold} variant="subtitle1" component="span">
-            Entity NIT #:
-            {" "}
-          </Typography>
-          <Typography variant="body1" component="span">
-            {entityNit}
-          </Typography>
-        </div>
+    <div className={classes.coreInfo}>
+      <div className={classes.header}>
+        <Typography className={classes.cardTitle} variant="h5" component="h2">
+          Entity #
+          {" "}
+          {entityId}
+        </Typography>
       </div>
-    </>
+      <div className="coreInfoItem">
+        <Typography className={classes.bold} variant="subtitle1" component="span">
+          Entity Name:
+          {" "}
+        </Typography>
+        <Typography variant="body1" component="span">
+          {startCase(entityName)}
+        </Typography>
+      </div>
+      <div className="coreInfoItem">
+        <Typography className={classes.bold} variant="subtitle1" component="span">
+          Entity NIT #:
+          {" "}
+        </Typography>
+        <Typography variant="body1" component="span">
+          {entityNit}
+        </Typography>
+      </div>
+    </div>
   );
 });
 

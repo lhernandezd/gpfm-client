@@ -11,8 +11,7 @@ const initialState = {
   error: false,
 };
 
-export default function authenticationReducer(state = initialState, action) {
-  const { type, payload } = action;
+export default function authenticationReducer(state = initialState, { type, payload } = {}) {
   switch (type) {
     case types.LOGIN_USER_REQUEST: {
       return {

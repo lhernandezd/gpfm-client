@@ -9,8 +9,7 @@ const initialState = {
   appointment: {},
 };
 
-export default function appointmentRedcuer(state = initialState, action) {
-  const { type, payload } = action;
+export default function appointmentRedcuer(state = initialState, { type, payload } = {}) {
   switch (type) {
     case types.GET_APPOINTMENTS_REQUEST: {
       return {

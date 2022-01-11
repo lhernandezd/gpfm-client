@@ -6,8 +6,7 @@ const initialState = {
   message: "",
 };
 
-export default function snackbarReducer(state = initialState, action) {
-  const { type, payload } = action;
+export default function snackbarReducer(state = initialState, { type, payload } = {}) {
   switch (type) {
     case types.SNACKBAR_OPEN:
       return {

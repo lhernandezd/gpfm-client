@@ -73,12 +73,12 @@ const DetailsForm = ({ user, toggleForm }) => {
     city_id: parseSelectOptions({ data: [city] }, "cities")[0],
   };
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = (values) => {
     const rolesArray = values.roles.map((rolesForm) => rolesForm.name);
     const valuesUpdated = { ...values, roles: rolesArray };
     const rolesDiff = difference(rolesByName, rolesArray);
     if (rolesDiff.length) valuesUpdated.remove_roles = rolesDiff;
-    await dispatch(updateUser(user.id, valuesUpdated));
+    dispatch(updateUser(user.id, valuesUpdated));
     toggleForm();
   };
 

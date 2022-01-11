@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function PatientsListView({ location, history }) {
+const PatientsListView = ({ location, history }) => {
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.patients);
   const classes = useStyles();
@@ -61,6 +61,8 @@ export default function PatientsListView({ location, history }) {
     </>
   );
 }
+
+export default PatientsListView;
 
 PatientsListView.propTypes = {
   location: PropTypes.object.isRequired,

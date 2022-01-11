@@ -9,8 +9,7 @@ const initialState = {
   agreement: {},
 };
 
-export default function agreementReducer(state = initialState, action) {
-  const { type, payload } = action;
+export default function agreementReducer(state = initialState, { type, payload } = {}) {
   switch (type) {
     case types.GET_AGREEMENTS_REQUEST: {
       return {

@@ -48,13 +48,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BadgeAvatars({ children, status, invisible }) {
+const BadgeAvatars = ({ children, status, invisible }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <StyledBadge
-        overlap="circle"
+        overlap="circular"
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "right",
@@ -70,6 +70,8 @@ export default function BadgeAvatars({ children, status, invisible }) {
     </div>
   );
 }
+
+export default BadgeAvatars;
 
 BadgeAvatars.propTypes = {
   children: PropTypes.node.isRequired,

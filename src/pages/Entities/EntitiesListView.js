@@ -16,8 +16,7 @@ const useStyles = makeStyles(() => ({
     height: "50vh",
   },
 }));
-
-export default function EntitiesListView({ location, history }) {
+const EntitiesListView = ({ location, history }) => {
   const dispatch = useDispatch();
   const entities = useSelector((state) => state.entities);
   const classes = useStyles();
@@ -49,6 +48,8 @@ export default function EntitiesListView({ location, history }) {
     </>
   );
 }
+
+export default EntitiesListView;
 
 EntitiesListView.propTypes = {
   location: PropTypes.object.isRequired,

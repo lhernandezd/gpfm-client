@@ -1,3 +1,4 @@
+/* eslint-disable react/function-component-definition */
 import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
@@ -32,10 +33,10 @@ const CreateForm = ({ toggleForm }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = (values) => {
     const valuesUpdated = parseFormValues(values);
-    await dispatch(createAgreement(valuesUpdated));
-    await dispatch(getAgreements());
+    dispatch(createAgreement(valuesUpdated));
+    dispatch(getAgreements());
     toggleForm();
   };
 

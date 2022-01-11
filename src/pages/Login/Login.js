@@ -1,8 +1,8 @@
 import React from "react";
 import LoginLayout from "./LoginLayout";
 
-export default function Login() {
-  return (
+const Login = () => (
     <LoginLayout />
-  );
-}
+);
+
+export default Login;

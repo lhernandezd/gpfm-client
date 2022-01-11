@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AppLayout({ children, location }) {
+const AppLayout = ({ children, location }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -90,6 +90,8 @@ export default function AppLayout({ children, location }) {
     </div>
   );
 }
+
+export default AppLayout;
 
 AppLayout.propTypes = {
   children: PropTypes.node.isRequired,

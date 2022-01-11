@@ -169,7 +169,7 @@ const renderMenu = (
   </Popover>
 );
 
-export default function AppNavbar({ handleDrawerToggle }) {
+const AppNavbar = ({ handleDrawerToggle }) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -246,6 +246,8 @@ export default function AppNavbar({ handleDrawerToggle }) {
     </AppBar>
   );
 }
+
+export default AppNavbar;
 
 AppNavbar.propTypes = {
   handleDrawerToggle: PropTypes.func.isRequired,

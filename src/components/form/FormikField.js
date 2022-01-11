@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
 import { useField } from "formik";
 
-export default function FormikField(props) {
+const FormikField = (props) => {
   const {
     name, disabled, isSubmitting, helperText,
   } = props;
@@ -31,6 +31,8 @@ export default function FormikField(props) {
     />
   );
 }
+
+export default FormikField;
 
 FormikField.propTypes = {
   name: PropTypes.string.isRequired,

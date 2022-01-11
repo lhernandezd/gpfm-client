@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable max-len */
 /* eslint-disable react/forbid-prop-types */
 import React, { useEffect, useState } from "react";
@@ -130,6 +131,11 @@ const AppointmentsCalendar = ({ location, history }) => {
 export default AppointmentsCalendar;
 
 AppointmentsCalendar.propTypes = {
-  location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
+  location: PropTypes.object,
+  history: PropTypes.object,
+};
+
+AppointmentsCalendar.defaultProps = {
+  location: {},
+  history: {},
 };

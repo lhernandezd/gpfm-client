@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function AgreementsListView({ location, history }) {
+const AgreementsListView = ({ location, history }) => {
   const dispatch = useDispatch();
   const agreements = useSelector((state) => state.agreements);
   const classes = useStyles();
@@ -53,6 +53,8 @@ export default function AgreementsListView({ location, history }) {
     </>
   );
 }
+
+export default AgreementsListView;
 
 AgreementsListView.propTypes = {
   location: PropTypes.object.isRequired,

@@ -9,8 +9,7 @@ const initialState = {
   patient: {},
 };
 
-export default function patientReducer(state = initialState, action) {
-  const { type, payload } = action;
+export default function patientReducer(state = initialState, { type, payload } = {}) {
   switch (type) {
     case types.GET_PATIENTS_REQUEST: {
       return {

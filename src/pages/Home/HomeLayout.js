@@ -2,11 +2,13 @@
 /* eslint-disable no-unused-vars */
 import React, { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import HomeGrid from "./HomeGrid";
 import HomeList from "./HomeList";
 import DynamicDirection from "../../components/shared/DynamicDirection";
+import { getSettings } from "../../actions/settings";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -15,6 +17,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const HomeLayout = memo(({ location, history, match }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [routes, setRoutes] = useState([]);
 
@@ -25,6 +28,7 @@ const HomeLayout = memo(({ location, history, match }) => {
       path: index === 0 ? match.path : `${match.path}/${item}`,
     }));
     setRoutes(arrangeRoutes);
+    dispatch(getSettings());
   }, [location.pathname, match.path]);
 
   return (

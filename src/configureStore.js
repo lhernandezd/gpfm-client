@@ -1,6 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-import-module-exports */
 import { applyMiddleware, createStore } from "redux";
 import thunkMiddleware from "redux-thunk";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import rootReducer from "./reducers";
 
